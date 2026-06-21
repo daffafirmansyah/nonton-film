@@ -81,6 +81,10 @@ const backdropUrl = p => p ? `${IMG_BACKDROP}${p}` : '';
 const year = d => d ? d.substring(0, 4) : 'N/A';
 const rating = r => r ? r.toFixed(1) : '0.0';
 const truncate = (s, n) => s && s.length > n ? s.slice(0, n) + '...' : s;
+const displayTitle = item => {
+    const t = item.title || item.name || 'Untitled';
+    return item.original_language === 'id' ? (item.original_title || t) : t;
+};
 
 // ===== API =====
 async function tmdb(path, params = {}) {
@@ -109,7 +113,7 @@ async function loadCountries(selectEl) {
 // ===== CARD =====
 function createCard(item, type) {
     const mediaType = type || item.media_type || 'movie';
-    const title = item.title || item.name || 'Untitled';
+    const title = displayTitle(item);
     const date = item.release_date || item.first_air_date;
     const div = document.createElement('div');
     div.className = 'card';
@@ -144,7 +148,7 @@ async function openDetail(id, type = 'movie') {
     ]);
     if (!detail) { modal.classList.add('hidden'); return; }
 
-    const title = detail.title || detail.name;
+    const title = displayTitle(detail);
     const date = detail.release_date || detail.first_air_date;
     const runtime = detail.runtime || (detail.episode_run_time?.[0]) || 0;
     const genres = detail.genres?.map(g => g.name).join(', ') || '';
@@ -319,7 +323,7 @@ async function loadHero() {
     const item = items[Math.floor(Math.random()*items.length)];
     const type = item.media_type||'movie';
     $('#hero').style.backgroundImage = `url(${backdropUrl(item.backdrop_path)})`;
-    $('#heroTitle').textContent = item.title||item.name;
+    $('#heroTitle').textContent = displayTitle(item);
     $('#heroOverview').textContent = truncate(item.overview, 200);
     $('#heroMeta').innerHTML = `<span class="rating">★ ${rating(item.vote_average)}</span><span>${year(item.release_date||item.first_air_date)}</span><span>${type==='movie'?'🎬 Film':'📺 Series'}</span>`;
     $('#heroBtn').onclick = () => {
@@ -691,7 +695,7 @@ async function loadDetailPage(id, type) {
     loading?.classList.add('hidden');
     page.classList.remove('hidden');
 
-    const title = detail.title || detail.name;
+    const title = displayTitle(detail);
     const date = detail.release_date || detail.first_air_date;
     const runtime = detail.runtime || (detail.episode_run_time?.[0]) || 0;
     const genres = detail.genres?.map(g => g.name).join(', ') || '';
