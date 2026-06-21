@@ -255,12 +255,13 @@ function closeAllModals() {
     document.body.style.overflow = '';
     // Exit fullscreen
     const pc = $('.player-content');
+    const modal = $('#playerModal');
     if (pc && pc.classList.contains('is-fullscreen')) {
         pc.classList.remove('is-fullscreen');
+        if (modal) modal.classList.remove('is-fullscreen');
         const panel = $('#playerInfoPanel');
         if (panel) panel.style.display = 'none';
     }
-    if (document.fullscreenElement) document.exitFullscreen();
 }
 
 // ===== PAGINATION =====
@@ -673,72 +674,65 @@ async function loadDetailPage(id, type) {
 function toggleFullscreenPlayer(id, type, title) {
     const pc = $('.player-content');
     if (!pc) return;
+    const modal = $('#playerModal');
+    if (!modal) return;
     const isActive = pc.classList.contains('is-fullscreen');
     if (isActive) {
         pc.classList.remove('is-fullscreen');
+        modal.classList.remove('is-fullscreen');
         const panel = $('#playerInfoPanel');
         if (panel) panel.style.display = 'none';
-        if (document.fullscreenElement) document.exitFullscreen();
         document.querySelector('.fullscreen-btn').innerHTML = '⛶ Fullscreen';
+        document.body.style.overflow = 'hidden'; // restore modal state
+        const guard = document.getElementById('scrollGuard');
+        if (guard) guard.style.display = 'none';
     } else {
         pc.classList.add('is-fullscreen');
+        modal.classList.add('is-fullscreen');
         const panel = $('#playerInfoPanel');
         if (panel) {
             panel.style.display = 'flex';
-            // Scroll capture — prevent scroll from reaching video/fullscreen
+            // Scroll capture — prevent scroll propagation
             const scrollEl = panel.querySelector('.panel-scroll');
             if (scrollEl) {
-                const stopScroll = (e) => {
+                scrollEl.addEventListener('wheel', (e) => {
                     const t = scrollEl;
-                    const canScrollDown = t.scrollTop + t.clientHeight < t.scrollHeight;
-                    const canScrollUp = t.scrollTop > 0;
-                    const delta = e.deltaY || (e.touches ? e.touches[0].clientY : 0);
-                    if ((delta > 0 && canScrollDown) || (delta < 0 && canScrollUp)) {
+                    const atTop = t.scrollTop <= 0;
+                    const atBottom = t.scrollTop + t.clientHeight >= t.scrollHeight;
+                    if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+                        // At boundary — let browser handle (no-op for volume)
+                    } else {
                         e.stopPropagation();
                         e.preventDefault();
-                    } else if (t.scrollHeight <= t.clientHeight) {
-                        e.preventDefault();
-                        e.stopPropagation();
                     }
-                };
-                scrollEl.addEventListener('wheel', stopScroll, { passive: false });
-                scrollEl.addEventListener('touchmove', stopScroll, { passive: false });
-                // Keyboard scroll
-                scrollEl.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                        e.stopPropagation();
-                    }
-                });
+                }, { passive: false });
+                scrollEl.addEventListener('touchmove', (e) => {
+                    e.stopPropagation();
+                }, { passive: true });
             }
         }
-        pc.requestFullscreen ? pc.requestFullscreen() :
-        pc.webkitRequestFullscreen ? pc.webkitRequestFullscreen() :
-        pc.msRequestFullscreen ? pc.msRequestFullscreen() : null;
+        document.body.style.overflow = 'hidden';
         document.querySelector('.fullscreen-btn').innerHTML = '✕ Keluar';
+        // Add scroll guard overlay on iframe
+        let guard = document.getElementById('scrollGuard');
+        if (!guard) {
+            guard = document.createElement('div');
+            guard.id = 'scrollGuard';
+            guard.style.cssText = 'position:absolute;inset:0;z-index:5;background:transparent;';
+            guard.addEventListener('wheel', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+            guard.addEventListener('touchmove', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+            const ic = $('.iframe-container');
+            if (ic) { ic.style.position = 'relative'; ic.appendChild(guard); }
+        }
+        guard.style.display = 'block';
     }
 }
-// Listen for fullscreen change (Escape key)
-document.addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement) {
+// Escape key exits custom fullscreen
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
         const pc = $('.player-content');
         if (pc && pc.classList.contains('is-fullscreen')) {
-            pc.classList.remove('is-fullscreen');
-            const panel = $('#playerInfoPanel');
-            if (panel) panel.style.display = 'none';
-            const fb = document.querySelector('.fullscreen-btn');
-            if (fb) fb.innerHTML = '⛶ Fullscreen';
-        }
-    }
-});
-document.addEventListener('webkitfullscreenchange', () => {
-    if (!document.webkitFullscreenElement) {
-        const pc = $('.player-content');
-        if (pc && pc.classList.contains('is-fullscreen')) {
-            pc.classList.remove('is-fullscreen');
-            const panel = $('#playerInfoPanel');
-            if (panel) panel.style.display = 'none';
-            const fb = document.querySelector('.fullscreen-btn');
-            if (fb) fb.innerHTML = '⛶ Fullscreen';
+            toggleFullscreenPlayer();
         }
     }
 });
