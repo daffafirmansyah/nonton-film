@@ -195,62 +195,28 @@ async function openPlayer(id, type, title, season=1, episode=1) {
         };
     });
 
-    // Fullscreen button — Fullscreen API on container DIV (not video)
-    let fsBtn = document.getElementById('fullscreenBtn');
-    if (!fsBtn) {
-        fsBtn = document.createElement('button');
-        fsBtn.id = 'fullscreenBtn';
-        fsBtn.textContent = '⛶';
-        fsBtn.style.cssText = 'position:absolute;top:-14px;right:50px;z-index:10;width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;font-size:1.3rem;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(229,9,20,0.4);display:flex;align-items:center;justify-content:center;';
-        fsBtn.onclick = () => {
-            const pc = $('.player-content');
-            if (!pc) return;
-            if (document.fullscreenElement || document.webkitFullscreenElement) {
-                if (document.exitFullscreen) document.exitFullscreen();
-                else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-                pc.classList.remove('fs');
-            } else {
-                pc.classList.add('fs');
-                const el = pc;
-                if (el.requestFullscreen) el.requestFullscreen();
-                else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-            }
+    // Floating subtitle overlay — scrollable, on top of video
+    let subOverlay = document.getElementById('subtitleOverlay');
+    if (!subOverlay) {
+        subOverlay = document.createElement('div');
+        subOverlay.id = 'subtitleOverlay';
+        subOverlay.className = 'subtitle-overlay';
+        subOverlay.innerHTML = '<div class="subtitle-handle">Subtitle <span class="subtitle-toggle">Tampilkan</span></div><div class="subtitle-body"><p class="subtitle-text">Memuat...</p></div>';
+        $('.iframe-container').appendChild(subOverlay);
+        subOverlay.querySelector('.subtitle-toggle').onclick = () => {
+            const body = subOverlay.querySelector('.subtitle-body');
+            const open = body.classList.toggle('open');
+            subOverlay.querySelector('.subtitle-toggle').textContent = open ? 'Sembunyikan' : 'Tampilkan';
         };
-        $('.player-content').appendChild(fsBtn);
-    }
-    // Fullscreenchange cleanup
-    const fsc = () => {
-        const pc = $('.player-content');
-        if (pc && !document.fullscreenElement && !document.webkitFullscreenElement) {
-            pc.classList.remove('fs');
-        }
-    };
-    document.removeEventListener('fullscreenchange', fsc);
-    document.addEventListener('fullscreenchange', fsc);
-    document.removeEventListener('webkitfullscreenchange', fsc);
-    document.addEventListener('webkitfullscreenchange', fsc);
-
-    // Info panel — always visible below video
-    let infoPanel = document.getElementById('playerInfoPanel');
-    if (!infoPanel) {
-        infoPanel = document.createElement('div');
-        infoPanel.id = 'playerInfoPanel';
-        infoPanel.className = 'player-info-panel';
-        infoPanel.style.display = 'block';
-        infoPanel.innerHTML = `<div class="panel-header"><h4>${title}</h4><button class="panel-toggle" id="panelToggle">Sembunyikan</button></div><div class="panel-scroll"><p class="info-text">Memuat...</p></div>`;
-        $('.player-content').appendChild(infoPanel);
-        // Toggle show/hide
-        document.getElementById('panelToggle').onclick = () => {
-            const ps = infoPanel.querySelector('.panel-scroll');
-            const hidden = ps.style.display === 'none';
-            ps.style.display = hidden ? 'block' : 'none';
-            document.getElementById('panelToggle').textContent = hidden ? 'Sembunyikan' : 'Tampilkan';
-        };
-        // Fetch detail
         tmdb(`/${type}/${id}`).then(d => {
             if (d) {
-                const txt = infoPanel.querySelector('.info-text');
-                txt.innerHTML = (d.overview||'Tidak ada deskripsi.') + '<br><br><strong>Genre:</strong> ' + (d.genres?.map(g=>g.name).join(', ')||'-') + '<br><strong>Rating:</strong> ★ ' + (d.vote_average?.toFixed(1)||'0.0');
+                const txt = subOverlay.querySelector('.subtitle-text');
+                let html = (d.overview||'Tidak ada deskripsi.') + '<br><br>';
+                html += '<strong>Genre:</strong> ' + (d.genres?.map(g=>g.name).join(', ')||'-') + '<br>';
+                html += '<strong>Rating:</strong> ★ ' + (d.vote_average?.toFixed(1)||'0.0') + '<br>';
+                if (d.runtime) html += '<strong>Durasi:</strong> ' + Math.floor(d.runtime/60) + 'j ' + (d.runtime%60) + 'm';
+                if (d.release_date || d.first_air_date) html += '<br><strong>Rilis:</strong> ' + (d.release_date||d.first_air_date);
+                txt.innerHTML = html;
             }
         });
     }
@@ -284,13 +250,6 @@ function closeAllModals() {
     const f = $('#playerFrame');
     if (f) f.src = '';
     document.body.style.overflow = '';
-    // Exit fullscreen if active
-    if (document.fullscreenElement || document.webkitFullscreenElement) {
-        if (document.exitFullscreen) document.exitFullscreen();
-        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-    }
-    const pc = $('.player-content');
-    if (pc) pc.classList.remove('fs');
 }
 
 // ===== PAGINATION =====
