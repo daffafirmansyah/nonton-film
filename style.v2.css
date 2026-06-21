@@ -921,77 +921,26 @@ select { font-family: inherit; }
 .section:nth-child(5) { animation-delay: 0.2s; }
 
 /* ===== PLAYER INFO PANEL ===== */
-.player-info-panel { display: none; }
-
-/* ===== FULLSCREEN OVERLAY ===== */
-/* CSS-only fullscreen — NO browser Fullscreen API, so scroll→volume never triggers */
-.player-modal.is-fullscreen {
-    position: fixed !important;
-    inset: 0 !important;
-    z-index: 99999 !important;
-    padding: 0 !important;
-    background: #000 !important;
-    border-radius: 0 !important;
-}
-.player-modal.is-fullscreen .player-content {
-    height: 100vh;
-    width: 100vw;
-    max-width: 100%;
-    max-height: 100vh;
-    padding: 12px 16px;
-    gap: 8px;
-    background: #000;
-    display: flex;
-    flex-direction: column;
-    border-radius: 0;
-}
-.player-modal.is-fullscreen .player-content .player-header {
-    flex-shrink: 0;
-    padding: 4px 8px;
-}
-.player-modal.is-fullscreen .player-content .player-header h3 {
-    font-size: 0.9rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 50%;
-}
-.player-modal.is-fullscreen .player-content iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-.player-modal.is-fullscreen .player-content .iframe-container {
-    flex: 1 1 auto;
-    min-height: 0;
-    aspect-ratio: unset;
-    border-radius: 8px;
-}
-.player-modal.is-fullscreen .player-content .player-info-panel {
-    display: flex !important;
-    flex-direction: column;
-    max-height: 35vh;
-    flex-shrink: 0;
-    background: rgba(20,20,30,0.95);
+.player-info-panel {
+    display: block;
+    margin-top: 12px;
+    background: rgba(255,255,255,0.03);
     border-radius: 10px;
     padding: 12px 16px;
     border: 1px solid rgba(255,255,255,0.06);
-    overflow: hidden;
-    touch-action: pan-y;
 }
-.player-modal.is-fullscreen .player-content .player-info-panel .panel-header {
+.player-info-panel .panel-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
-    flex-shrink: 0;
 }
-.player-modal.is-fullscreen .player-content .player-info-panel .panel-header h4 {
-    font-size: 0.85rem;
+.player-info-panel .panel-header h4 {
+    font-size: 0.9rem;
     font-weight: 600;
     color: var(--text1);
 }
-.player-modal.is-fullscreen .player-content .player-info-panel .panel-header .panel-toggle {
+.player-info-panel .panel-toggle {
     font-size: 0.75rem;
     padding: 3px 10px;
     border-radius: 12px;
@@ -1000,63 +949,21 @@ select { font-family: inherit; }
     color: var(--text2);
     cursor: pointer;
 }
-.player-modal.is-fullscreen .player-content .player-info-panel .panel-scroll {
-    flex: 1;
+.player-info-panel .panel-scroll {
+    max-height: 200px;
     overflow-y: auto;
-    min-height: 0;
     padding-right: 4px;
     -webkit-overflow-scrolling: touch;
 }
-.player-modal.is-fullscreen .player-content .player-info-panel .panel-scroll::-webkit-scrollbar {
-    width: 3px;
-}
-.player-modal.is-fullscreen .player-content .player-info-panel .panel-scroll::-webkit-scrollbar-thumb {
+.player-info-panel .panel-scroll::-webkit-scrollbar { width: 3px; }
+.player-info-panel .panel-scroll::-webkit-scrollbar-thumb {
     background: rgba(255,255,255,0.2);
     border-radius: 3px;
 }
-.player-modal.is-fullscreen .player-content .player-info-panel .panel-scroll p,
-.player-modal.is-fullscreen .player-content .player-info-panel .panel-scroll .info-text {
-    font-size: 0.82rem;
+.player-info-panel .panel-scroll p,
+.player-info-panel .panel-scroll .info-text {
+    font-size: 0.85rem;
     line-height: 1.6;
     color: var(--text2);
     margin-bottom: 8px;
 }
-.player-modal.is-fullscreen .player-content .player-close {
-    position: fixed;
-    top: 12px;
-    right: 12px;
-    width: 36px;
-    height: 36px;
-    font-size: 1.2rem;
-    z-index: 10000;
-}
-.player-modal.is-fullscreen .player-content .player-servers {
-    display: none;
-}
-@media (max-width: 768px) {
-    .player-modal.is-fullscreen .player-content { padding: 8px; gap: 6px; }
-    .player-modal.is-fullscreen .player-content .player-info-panel { max-height: 30vh; padding: 10px 12px; }
-    .player-modal.is-fullscreen .player-content .player-info-panel .panel-scroll p { font-size: 0.78rem; }
-}
-@media (min-width: 1024px) {
-    .player-modal.is-fullscreen .player-content { flex-direction: row; flex-wrap: wrap; }
-    .player-modal.is-fullscreen .player-content .player-header { width: 100%; }
-    .player-modal.is-fullscreen .player-content .iframe-container { flex: 0 0 70%; height: calc(100vh - 60px); }
-    .player-modal.is-fullscreen .player-content .player-info-panel { flex: 0 0 calc(30% - 12px); max-height: calc(100vh - 60px); margin-left: auto; }
-}
-/* ===== FULLSCREEN BTN ===== */
-.fullscreen-btn {
-    padding: 6px 12px;
-    border-radius: 16px;
-    background: rgba(255,255,255,0.08);
-    color: var(--text1);
-    font-size: 0.8rem;
-    font-weight: 600;
-    transition: var(--transition);
-    border: 1px solid rgba(255,255,255,0.06);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-.fullscreen-btn:hover { background: rgba(255,255,255,0.15); }

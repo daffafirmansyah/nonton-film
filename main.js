@@ -195,31 +195,27 @@ async function openPlayer(id, type, title, season=1, episode=1) {
         };
     });
 
-    // Inject fullscreen button + info panel
-    const fsBtn = document.getElementById('fullscreenBtn');
-    if (!fsBtn) {
-        const b = document.createElement('button');
-        b.id = 'fullscreenBtn';
-        b.className = 'fullscreen-btn';
-        b.innerHTML = '⛶ Expand';
-        b.onclick = () => toggleFullscreenPlayer(id, type, title);
-        $('#playerTitle').parentNode.appendChild(b);
-    }
-    const infoPanel = document.getElementById('playerInfoPanel');
+    // Info panel — always visible below video
+    let infoPanel = document.getElementById('playerInfoPanel');
     if (!infoPanel) {
-        const el = document.createElement('div');
-        el.id = 'playerInfoPanel';
-        el.className = 'player-info-panel';
-        el.style.display = 'none';
-        el.innerHTML = `<div class="panel-header"><h4>${title}</h4><button class="panel-toggle">Sembunyikan</button></div><div class="panel-scroll"><p class="info-text">Memuat...</p></div>`;
-        el.querySelector('.panel-toggle').onclick = () => { el.classList.toggle('collapsed'); el.querySelector('.panel-scroll').style.display = el.classList.contains('collapsed') ? 'none' : ''; };
-        el.querySelector('.panel-toggle').textContent = 'Sembunyikan';
-        $('.player-content').appendChild(el);
-        // Fetch detail for info panel
+        infoPanel = document.createElement('div');
+        infoPanel.id = 'playerInfoPanel';
+        infoPanel.className = 'player-info-panel';
+        infoPanel.style.display = 'block';
+        infoPanel.innerHTML = `<div class="panel-header"><h4>${title}</h4><button class="panel-toggle" id="panelToggle">Sembunyikan</button></div><div class="panel-scroll"><p class="info-text">Memuat...</p></div>`;
+        $('.player-content').appendChild(infoPanel);
+        // Toggle show/hide
+        document.getElementById('panelToggle').onclick = () => {
+            const ps = infoPanel.querySelector('.panel-scroll');
+            const hidden = ps.style.display === 'none';
+            ps.style.display = hidden ? 'block' : 'none';
+            document.getElementById('panelToggle').textContent = hidden ? 'Sembunyikan' : 'Tampilkan';
+        };
+        // Fetch detail
         tmdb(`/${type}/${id}`).then(d => {
             if (d) {
-                const txt = el.querySelector('.info-text');
-                txt.innerHTML = (d.overview||'Tidak ada deskripsi.') + '<br><br><strong>Genre:</strong> ' + (d.genres?.map(g=>g.name).join(', ')||'-') + '<br><strong>Rating:</strong> ★ ' + d.vote_average?.toFixed(1)||'0.0';
+                const txt = infoPanel.querySelector('.info-text');
+                txt.innerHTML = (d.overview||'Tidak ada deskripsi.') + '<br><br><strong>Genre:</strong> ' + (d.genres?.map(g=>g.name).join(', ')||'-') + '<br><strong>Rating:</strong> ★ ' + (d.vote_average?.toFixed(1)||'0.0');
             }
         });
     }
@@ -253,15 +249,6 @@ function closeAllModals() {
     const f = $('#playerFrame');
     if (f) f.src = '';
     document.body.style.overflow = '';
-    // Exit fullscreen
-    const pc = $('.player-content');
-    const modal = $('#playerModal');
-    if (pc && pc.classList.contains('is-fullscreen')) {
-        pc.classList.remove('is-fullscreen');
-        if (modal) modal.classList.remove('is-fullscreen');
-        const panel = $('#playerInfoPanel');
-        if (panel) panel.style.display = 'none';
-    }
 }
 
 // ===== PAGINATION =====
@@ -670,62 +657,7 @@ async function loadDetailPage(id, type) {
     });
 }
 
-// ===== FULLSCREEN PLAYER (CSS-only, no Fullscreen API) =====
-function toggleFullscreenPlayer(id, type, title) {
-    const pc = $('.player-content');
-    const modal = $('#playerModal');
-    if (!pc || !modal) return;
-    const isActive = pc.classList.contains('is-fullscreen');
 
-    if (isActive) {
-        pc.classList.remove('is-fullscreen');
-        modal.classList.remove('is-fullscreen');
-        const panel = $('#playerInfoPanel');
-        if (panel) panel.style.display = 'none';
-        document.querySelector('.fullscreen-btn').innerHTML = '⛶ Fullscreen';
-        document.body.style.overflow = 'hidden'; // restore modal lock
-    } else {
-        pc.classList.add('is-fullscreen');
-        modal.classList.add('is-fullscreen');
-        const panel = $('#playerInfoPanel');
-        if (panel) {
-            panel.style.display = 'flex';
-            const scrollEl = panel.querySelector('.panel-scroll');
-            if (scrollEl && !scrollEl._guard) {
-                scrollEl._guard = true;
-                const handler = (e) => {
-                    const t = scrollEl;
-                    const atTop = t.scrollTop <= 0;
-                    const atBottom = t.scrollTop + t.clientHeight >= t.scrollHeight;
-                    if (!((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom))) {
-                        e.stopPropagation();
-                        e.preventDefault();
-                    }
-                };
-                scrollEl.addEventListener('wheel', handler, { passive: false });
-                scrollEl.addEventListener('touchmove', handler, { passive: false });
-            }
-        }
-        document.querySelector('.fullscreen-btn').innerHTML = '✕ Exit';
-        document.body.style.overflow = 'hidden';
-    }
-}
-
-// Escape exits CSS fullscreen
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        const pc = $('.player-content');
-        if (pc && pc.classList.contains('is-fullscreen')) {
-            pc.classList.remove('is-fullscreen');
-            const modal = $('#playerModal');
-            if (modal) modal.classList.remove('is-fullscreen');
-            const panel = $('#playerInfoPanel');
-            if (panel) panel.style.display = 'none';
-            document.querySelector('.fullscreen-btn').innerHTML = '⛶ Fullscreen';
-            document.body.style.overflow = 'hidden';
-        }
-    }
-});
 document.addEventListener('DOMContentLoaded', () => {
     initGlobalEvents();
 
