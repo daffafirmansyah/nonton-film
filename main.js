@@ -544,6 +544,13 @@ function initGlobalEvents() {
         menuBtn.onclick = () => mobileMenu.classList.toggle('open');
     }
 
+    // Mobile search
+    const mobSearchBtn = $('#mobileSearchBtn');
+    const mobSearchInput = $('#mobileSearchInput');
+    const doMobSearch = () => { const q = mobSearchInput?.value.trim(); if (q) { mobileMenu?.classList.remove('open'); doSearch(q); } };
+    if (mobSearchBtn) mobSearchBtn.onclick = doMobSearch;
+    if (mobSearchInput) mobSearchInput.onkeydown = e => { if (e.key === 'Enter') doMobSearch(); };
+
     // Close modals
     document.querySelectorAll('.modal-close, .modal-backdrop').forEach(el => {
         el.onclick = closeAllModals;
