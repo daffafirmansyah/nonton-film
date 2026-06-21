@@ -8,7 +8,7 @@ const IMG_CAST = `${IMG}/w185`;
 const NO_POSTER = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="500" height="750" fill="%231a1a2e"><rect width="500" height="750"/><text x="250" y="375" text-anchor="middle" fill="%23666" font-size="24">No Poster</text></svg>');
 const VIDSRV = 'https://vidsrcme.ru/embed';
 const VIDSRV2 = 'https://vidsrc.su/embed';
-const PROXY_URL = 'https://small-snowflake-9ad9.daffafirmansyah14.workers.dev/proxy?url=';
+const PROXY_URL = '';
 
 // ===== GENRES =====
 const MOVIE_GENRES = [
