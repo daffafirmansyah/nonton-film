@@ -507,6 +507,7 @@ input { font-family: inherit; outline: none; }
 }
 .modal-close:hover { transform: scale(1.1); }
 .seasons-section.hidden { display: none; }
+.loading.hidden { display: none; }
 /* ===== OLD MODAL (detail modal on list pages) ===== */
 .modal-overlay {
     position: fixed; inset: 0; z-index: 200;
