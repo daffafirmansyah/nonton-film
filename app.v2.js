@@ -6,8 +6,8 @@ const IMG_POSTER = `${IMG}/w500`;
 const IMG_BACKDROP = `${IMG}/original`;
 const IMG_CAST = `${IMG}/w185`;
 const NO_POSTER = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="500" height="750" fill="%231a1a2e"><rect width="500" height="750"/><text x="250" y="375" text-anchor="middle" fill="%23666" font-size="24">No Poster</text></svg>');
-const VIDSRV = 'https://vidsrc.xyz/embed';
-const EMBED2 = 'https://2embed.org/embed';
+const VIDSRV = 'https://vidsrcme.ru/embed';
+const EMBED2 = 'https://www.2embed.cc/embed';
 
 // ===== STATE =====
 let currentTab = 'movies';
@@ -217,11 +217,11 @@ let currentServer = 'vidsrc';
 
 function getPlayerUrl(id, type, season, episode) {
     if (currentServer === 'vidsrc') {
-        if (type === 'tv') return `${VIDSRV}/tv/${id}/${season}-${episode}`;
-        return `${VIDSRV}/movie/${id}`;
+        if (type === 'tv') return `${VIDSRV}/tv?tmdb=${id}&season=${season}&episode=${episode}`;
+        return `${VIDSRV}/movie?tmdb=${id}`;
     } else {
-        if (type === 'tv') return `${EMBED2}/tv?id=${id}&s=${season}&e=${episode}`;
-        return `${EMBED2}/movie?id=${id}`;
+        if (type === 'tv') return `https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`;
+        return `https://www.2embed.cc/embed/${id}`;
     }
 }
 
