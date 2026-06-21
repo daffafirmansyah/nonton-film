@@ -8,7 +8,7 @@ const IMG_CAST = `${IMG}/w185`;
 const NO_POSTER = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="500" height="750" fill="%231a1a2e"><rect width="500" height="750"/><text x="250" y="375" text-anchor="middle" fill="%23666" font-size="24">No Poster</text></svg>');
 const VIDSRV = 'https://vidsrcme.ru/embed';
 const VIDSRV2 = 'https://vidsrc.su/embed';
-const EMBEDSU = 'https://embed.su/embed';
+const EMBEDSU = 'https://multiembed.mov';
 
 // ===== GENRES =====
 const MOVIE_GENRES = [
@@ -209,8 +209,8 @@ function getPlayerUrl(id, type, season, episode) {
         if (type === 'tv') return `${VIDSRV2}/tv/${id}/${season}/${episode}`;
         return `${VIDSRV2}/movie/${id}`;
     } else if (currentServer === 'embed_su') {
-        if (type === 'tv') return `${EMBEDSU}/tv/${id}/${season}/${episode}`;
-        return `${EMBEDSU}/movie/${id}`;
+        if (type === 'tv') return `${EMBEDSU}/?video_id=${id}&tmdb=1&s=${season}&e=${episode}`;
+        return `${EMBEDSU}/?video_id=${id}&tmdb=1`;
     } else {
         if (type === 'tv') return `https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`;
         return `https://www.2embed.cc/embed/${id}`;
