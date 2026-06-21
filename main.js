@@ -571,11 +571,11 @@ async function loadGenreResults(type, genreId, genreName, page=1) {
     const yv = yearSel?.value;
     if (yv) {
         if(type==='movie') {
-            params.primary_release_date_gte = `${yv}-01-01`;
-            params.primary_release_date_lte = `${yv}-12-31`;
+            params['primary_release_date.gte'] = `${yv}-01-01`;
+            params['primary_release_date.lte'] = `${yv}-12-31`;
         } else {
-            params.first_air_date_gte = `${yv}-01-01`;
-            params.first_air_date_lte = `${yv}-12-31`;
+            params['first_air_date.gte'] = `${yv}-01-01`;
+            params['first_air_date.lte'] = `${yv}-12-31`;
         }
     }
 
