@@ -358,8 +358,8 @@ async function loadMovies(page = 1) {
     const params = { page, sort_by: currentSort };
     if (currentGenreId) params.with_genres = currentGenreId;
     if (currentYear) {
-        params.primary_release_date_gte = `${currentYear}-01-01`;
-        params.primary_release_date_lte = `${currentYear}-12-31`;
+        params['primary_release_date.gte'] = `${currentYear}-01-01`;
+        params['primary_release_date.lte'] = `${currentYear}-12-31`;
     }
     if (currentCountry) params.with_origin_country = currentCountry;
 
@@ -427,8 +427,8 @@ async function loadTvShows(page = 1) {
     const params = { page, sort_by: currentSort };
     if (currentGenreId) params.with_genres = currentGenreId;
     if (currentYear) {
-        params.first_air_date_gte = `${currentYear}-01-01`;
-        params.first_air_date_lte = `${currentYear}-12-31`;
+        params['first_air_date.gte'] = `${currentYear}-01-01`;
+        params['first_air_date.lte'] = `${currentYear}-12-31`;
     }
     if (currentCountry) params.with_origin_country = currentCountry;
     if (currentNetwork) params.with_networks = currentNetwork;
