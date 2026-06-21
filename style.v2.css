@@ -439,18 +439,19 @@ input { font-family: inherit; outline: none; }
     display: flex; flex-direction: column; gap: 12px;
 }
 .player-close {
-    position: absolute; top: 8px; right: 8px; z-index: 10;
-    width: 36px; height: 36px; border-radius: 50%;
+    position: static;
+    width: 32px; height: 32px; border-radius: 50%;
     background: var(--accent); color: #fff;
-    font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
     box-shadow: 0 4px 16px rgba(229,9,20,0.4);
     transition: var(--transition);
+    flex-shrink: 0;
+    margin-left: auto;
 }
 .player-close:hover { transform: scale(1.1); }
 .player-header {
     display: flex; align-items: center; justify-content: space-between;
     flex-wrap: wrap; gap: 8px;
-    padding-right: 44px;
 }
 .player-header h3 { font-size: 1rem; font-weight: 600; }
 .player-servers {
