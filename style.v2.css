@@ -226,6 +226,10 @@ input { font-family: inherit; outline: none; }
 }
 .section-link:hover { background: rgba(229,9,20,0.1); border-color: var(--accent); }
 
+/* ===== PAGE CONTENT (movies/tv/genre) ===== */
+.page-content { padding-top: calc(var(--nav-height) + 16px); }
+.page-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; }
+
 /* ===== CARDS ===== */
 .carousel {
     display: flex; gap: 12px; overflow-x: auto;
