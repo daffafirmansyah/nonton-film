@@ -506,8 +506,7 @@ async function doSearch(query, page=1) {
 
     let section = $('#searchResults');
     if (!section) {
-        // We're on a sub-page, redirect to home with search
-        window.location.href = `./?q=${encodeURIComponent(query)}`;
+        window.location.href = `/?q=${encodeURIComponent(query)}`;
         return;
     }
     section.classList.remove('hidden');

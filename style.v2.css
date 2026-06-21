@@ -491,44 +491,58 @@ select { font-family: inherit; }
 .genre-type-btn:hover { background: rgba(255,255,255,0.1); }
 .genre-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
     margin-bottom: 40px;
 }
 .genre-card {
-    padding: 28px 16px;
-    border-radius: var(--radius);
+    padding: 20px 16px;
+    border-radius: 12px;
     cursor: pointer;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 10px;
-    transition: all 0.3s ease;
-    text-align: center;
+    gap: 14px;
+    transition: all 0.25s ease;
     position: relative;
     overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
 }
 .genre-card::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%);
     pointer-events: none;
 }
 .genre-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    transform: scale(1.03);
+    border-color: rgba(255,255,255,0.15);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
 }
 .genre-card:hover::after {
     content: '';
     position: absolute;
-    inset: 0;
-    border-radius: var(--radius);
-    border: 2px solid rgba(255,255,255,0.2);
+    inset: -1px;
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,0.15);
     pointer-events: none;
 }
-.genre-icon { font-size: 2rem; }
-.genre-name { font-weight: 700; font-size: 0.9rem; }
+.genre-icon { 
+    font-size: 1.6rem; 
+    width: 44px; 
+    height: 44px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+.genre-name { 
+    font-weight: 600; 
+    font-size: 0.9rem; 
+    letter-spacing: -0.2px;
+}
 .genre-results-header {
     display: flex;
     justify-content: space-between;
