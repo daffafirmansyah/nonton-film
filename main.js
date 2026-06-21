@@ -24,6 +24,19 @@ const TV_GENRES = [
     {id:10768,name:"War & Politics"},{id:37,name:"Western"}
 ];
 
+// ===== NETWORKS (for TV filter) =====
+const NETWORKS = [
+  {id:213,name:'Netflix'},{id:49,name:'HBO'},{id:453,name:'Hulu'},{id:1024,name:'Amazon Prime'},
+  {id:335984,name:'Disney+'},{id:2552,name:'Apple TV+'},{id:4330,name:'Paramount+'},
+  {id:335977,name:'Peacock'},{id:19,name:'FOX'},{id:16,name:'CBS'},{id:35,name:'NBC'},
+  {id:6,name:'ABC'},{id:174,name:'AMC'},{id:67,name:'Showtime'},{id:110,name:'BBC One'},
+  {id:332,name:'BBC Two'},{id:2739,name:'Globoplay'},{id:25,name:'MTV'},{id:30,name:'Syfy'},
+  {id:99,name:'VH1'},{id:170,name:'Star TV'},{id:190,name:'TNT'},{id:226,name:'TBS'},
+  {id:331,name:'PBS'},{id:343,name:'History Channel'},{id:390,name:'National Geographic'},
+  {id:473,name:'FX'},{id:541,name:'Comedy Central'},{id:573,name:'ESPN'},
+  {id:1286,name:'Nickelodeon'},{id:1288,name:'Cartoon Network'}
+];
+
 // ===== STATE =====
 let currentServer = '2embed';
 let currentPage = 1;
@@ -32,6 +45,8 @@ let currentGenreId = null;
 let currentGenreName = '';
 let currentSort = 'popularity.desc';
 let currentYear = '';
+let currentCountry = '';
+let currentNetwork = '';
 
 // ===== UTILS =====
 const $ = s => document.querySelector(s);
@@ -53,6 +68,17 @@ async function tmdb(path, params = {}) {
         if (!res.ok) throw new Error(res.status);
         return await res.json();
     } catch (e) { console.error('TMDB error:', e); return null; }
+}
+
+// ===== COUNTRIES =====
+async function loadCountries(selectEl) {
+    const data = await tmdb('/configuration/countries');
+    if (!data) return;
+    selectEl.innerHTML = '<option value="">Semua Negara</option>';
+    data.sort((a,b) => a.native_name.localeCompare(b.native_name));
+    data.forEach(c => {
+        selectEl.innerHTML += `<option value="${c.iso_3166_1}">${c.native_name}</option>`;
+    });
 }
 
 // ===== CARD =====
@@ -304,6 +330,7 @@ async function loadMovies(page = 1) {
         params.primary_release_date_gte = `${currentYear}-01-01`;
         params.primary_release_date_lte = `${currentYear}-12-31`;
     }
+    if (currentCountry) params.with_origin_country = currentCountry;
 
     const data = await tmdb('/discover/movie', params);
     loading?.classList.add('hidden');
@@ -321,6 +348,7 @@ function initMoviesPage() {
     const genreSel = $('#genreFilter');
     const yearSel = $('#yearFilter');
     const sortSel = $('#sortFilter');
+    const countrySel = $('#countryFilter');
 
     if (genreSel) {
         genreSel.innerHTML = '<option value="">Semua Genre</option>';
@@ -331,11 +359,16 @@ function initMoviesPage() {
     }
     if (yearSel) {
         const now = new Date().getFullYear();
+        yearSel.innerHTML = '<option value="">Semua Tahun</option>';
         for (let y = now; y >= 1950; y--) yearSel.innerHTML += `<option value="${y}">${y}</option>`;
         yearSel.onchange = () => { currentYear = yearSel.value; currentPage=1; loadMovies(); };
     }
     if (sortSel) {
         sortSel.onchange = () => { currentSort = sortSel.value; currentPage=1; loadMovies(); };
+    }
+    if (countrySel) {
+        countrySel.onchange = () => { currentCountry = countrySel.value; currentPage=1; loadMovies(); };
+        loadCountries(countrySel);
     }
     loadMovies();
 }
@@ -354,6 +387,8 @@ async function loadTvShows(page = 1) {
         params.first_air_date_gte = `${currentYear}-01-01`;
         params.first_air_date_lte = `${currentYear}-12-31`;
     }
+    if (currentCountry) params.with_origin_country = currentCountry;
+    if (currentNetwork) params.with_networks = currentNetwork;
 
     const data = await tmdb('/discover/tv', params);
     loading?.classList.add('hidden');
@@ -371,6 +406,8 @@ function initTvPage() {
     const genreSel = $('#genreFilter');
     const yearSel = $('#yearFilter');
     const sortSel = $('#sortFilter');
+    const countrySel = $('#countryFilter');
+    const networkSel = $('#networkFilter');
 
     if (genreSel) {
         genreSel.innerHTML = '<option value="">Semua Genre</option>';
@@ -381,11 +418,21 @@ function initTvPage() {
     }
     if (yearSel) {
         const now = new Date().getFullYear();
+        yearSel.innerHTML = '<option value="">Semua Tahun</option>';
         for (let y = now; y >= 1950; y--) yearSel.innerHTML += `<option value="${y}">${y}</option>`;
         yearSel.onchange = () => { currentYear = yearSel.value; currentPage=1; loadTvShows(); };
     }
     if (sortSel) {
         sortSel.onchange = () => { currentSort = sortSel.value; currentPage=1; loadTvShows(); };
+    }
+    if (countrySel) {
+        countrySel.onchange = () => { currentCountry = countrySel.value; currentPage=1; loadTvShows(); };
+        loadCountries(countrySel);
+    }
+    if (networkSel) {
+        networkSel.innerHTML = '<option value="">Semua Network</option>';
+        NETWORKS.forEach(n => { networkSel.innerHTML += `<option value="${n.id}">${n.name}</option>`; });
+        networkSel.onchange = () => { currentNetwork = networkSel.value; currentPage=1; loadTvShows(); };
     }
     loadTvShows();
 }
