@@ -411,9 +411,11 @@ function initMoviesPage() {
         countrySel.onchange = () => { currentCountry = countrySel.value; currentPage=1; loadMovies(); updateURL(); };
         loadCountries(countrySel).then(() => {
             if (urlCountry) { countrySel.value = urlCountry; currentCountry = urlCountry; }
+            loadMovies();
         });
+    } else {
+        loadMovies();
     }
-    loadMovies();
 }
 
 // ===== TV PAGE =====
@@ -459,6 +461,7 @@ function initTvPage() {
     const urlSort = urlParams.get('sort');
     const urlNetwork = urlParams.get('network');
 
+    // Sync filters (semua synchronous)
     if (genreSel) {
         genreSel.innerHTML = '<option value="">Semua Genre</option>';
         TV_GENRES.forEach(g => {
@@ -478,19 +481,21 @@ function initTvPage() {
         if (urlSort) { sortSel.value = urlSort; currentSort = urlSort; }
         sortSel.onchange = () => { currentSort = sortSel.value; currentPage=1; loadTvShows(); updateURL(); };
     }
-    if (countrySel) {
-        countrySel.onchange = () => { currentCountry = countrySel.value; currentPage=1; loadTvShows(); updateURL(); };
-        loadCountries(countrySel).then(() => {
-            if (urlCountry) { countrySel.value = urlCountry; currentCountry = urlCountry; }
-        });
-    }
     if (networkSel) {
         networkSel.innerHTML = '<option value="">Semua Network</option>';
         NETWORKS.forEach(n => { networkSel.innerHTML += `<option value="${n.id}">${n.name}</option>`; });
         if (urlNetwork) { networkSel.value = urlNetwork; currentNetwork = urlNetwork; }
         networkSel.onchange = () => { currentNetwork = networkSel.value; currentPage=1; loadTvShows(); updateURL(); };
     }
-    loadTvShows();
+    if (countrySel) {
+        countrySel.onchange = () => { currentCountry = countrySel.value; currentPage=1; loadTvShows(); updateURL(); };
+        loadCountries(countrySel).then(() => {
+            if (urlCountry) { countrySel.value = urlCountry; currentCountry = urlCountry; }
+            loadTvShows();
+        });
+    } else {
+        loadTvShows();
+    }
 }
 
 // ===== GENRE PAGE =====
