@@ -195,6 +195,41 @@ async function openPlayer(id, type, title, season=1, episode=1) {
         };
     });
 
+    // Fullscreen button — Fullscreen API on container DIV (not video)
+    let fsBtn = document.getElementById('fullscreenBtn');
+    if (!fsBtn) {
+        fsBtn = document.createElement('button');
+        fsBtn.id = 'fullscreenBtn';
+        fsBtn.textContent = '⛶';
+        fsBtn.style.cssText = 'position:absolute;top:-14px;right:50px;z-index:10;width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;font-size:1.3rem;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(229,9,20,0.4);display:flex;align-items:center;justify-content:center;';
+        fsBtn.onclick = () => {
+            const pc = $('.player-content');
+            if (!pc) return;
+            if (document.fullscreenElement || document.webkitFullscreenElement) {
+                if (document.exitFullscreen) document.exitFullscreen();
+                else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                pc.classList.remove('fs');
+            } else {
+                pc.classList.add('fs');
+                const el = pc;
+                if (el.requestFullscreen) el.requestFullscreen();
+                else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+            }
+        };
+        $('.player-content').appendChild(fsBtn);
+    }
+    // Fullscreenchange cleanup
+    const fsc = () => {
+        const pc = $('.player-content');
+        if (pc && !document.fullscreenElement && !document.webkitFullscreenElement) {
+            pc.classList.remove('fs');
+        }
+    };
+    document.removeEventListener('fullscreenchange', fsc);
+    document.addEventListener('fullscreenchange', fsc);
+    document.removeEventListener('webkitfullscreenchange', fsc);
+    document.addEventListener('webkitfullscreenchange', fsc);
+
     // Info panel — always visible below video
     let infoPanel = document.getElementById('playerInfoPanel');
     if (!infoPanel) {
@@ -249,6 +284,13 @@ function closeAllModals() {
     const f = $('#playerFrame');
     if (f) f.src = '';
     document.body.style.overflow = '';
+    // Exit fullscreen if active
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    }
+    const pc = $('.player-content');
+    if (pc) pc.classList.remove('fs');
 }
 
 // ===== PAGINATION =====
