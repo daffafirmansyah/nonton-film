@@ -821,8 +821,8 @@ function initNavDropdowns() {
     const countryDD = el('#countryDropdown');
     const yearDD = el('#yearDropdown');
     if (genreDD) {
-        let html = '<a href="genre.html">Semua Genre</a>';
-        MOVIE_GENRES.forEach(g => { html += '<a href="genre.html?id='+g.id+'">'+g.name+'</a>'; });
+        let html = '<a href="movies.html">Semua Genre</a>';
+        MOVIE_GENRES.forEach(g => { html += '<a href="movies.html?genre='+g.id+'">'+g.name+'</a>'; });
         genreDD.innerHTML = html;
     }
     if (countryDD) {
