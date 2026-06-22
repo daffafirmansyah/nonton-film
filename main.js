@@ -849,8 +849,13 @@ async function doSearch(query, page=1) {
     window.history.replaceState(null, '', url);
     const grid = el('#searchGrid');
     grid.innerHTML = '';
-    data.results.filter(i=>['movie','tv'].includes(i.media_type)).forEach(i => grid.appendChild(createCard(i, i.media_type)));
-    renderPagination('searchPagination', Math.min(data.total_pages, 20), page, p => doSearch(query, p));
+    // Fetch 21 items (7×3) from 2 TMDB pages
+    const data2 = data.total_pages > 1 ? await tmdb('/search/multi', { query, page: page+1 }) : {results:[]};
+    [...data.results, ...data2.results]
+        .filter((item, i, arr) => arr.findIndex(x => x.id === item.id) === i)
+        .filter(i => ['movie','tv'].includes(i.media_type))
+        .slice(0,21).forEach(i => grid.appendChild(createCard(i, i.media_type)));
+    renderPagination('searchPagination', Math.ceil(Math.min(data.total_pages, 20) / 2), page, p => doSearch(query, p));
 }
 
 function hideSearch() {
