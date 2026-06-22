@@ -1092,11 +1092,13 @@ function initGlobalEvents() {
     initKeyboard();
     // Set active nav link based on current page
     const curPage = window.location.pathname.split('/').pop() || 'index.html';
+    const hasWatchlist = window.location.search.includes('watchlist');
     document.querySelectorAll('.nav-links a[href], .mobile-menu a[href]').forEach(a => {
+        a.classList.remove('active');
         const href = a.getAttribute('href') || '';
-        if (href === './' && (curPage === 'index.html' || curPage === '')) a.classList.add('active');
-        else if (href && href !== './' && href !== '#' && href === curPage) a.classList.add('active');
-        else if (href && href.startsWith('./?')) a.classList.remove('active');
+        if (href === './' && (curPage === 'index.html' || curPage === '') && !hasWatchlist) a.classList.add('active');
+        else if (href && href.includes('watchlist') && hasWatchlist) a.classList.add('active');
+        else if (href && href !== './' && href !== '#' && !href.includes('?') && href === curPage) a.classList.add('active');
     });
     // Search
     const searchInput = el('#searchInput');
