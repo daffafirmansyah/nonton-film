@@ -451,8 +451,7 @@ function addCarouselArrows(carousel) {
         if (!isDown) return; e.preventDefault();
         const x = e.pageX - carousel.offsetLeft;
         const walk = (x - startX) * 0.8;
-        if (Math.abs(walk) > 5) dragged = true;
-        carousel.scrollLeft = scrollLeft - walk;
+        if (Math.abs(walk) > 5) { dragged = true; carousel.scrollLeft = scrollLeft - walk; }
     });
     carousel.addEventListener('mouseup', () => {
         isDown = false;
@@ -480,8 +479,7 @@ function addCarouselArrows(carousel) {
         const t = Array.from(e.changedTouches).find(tc => tc.identifier === touchId);
         if (!t) return;
         const walk = (t.clientX - carousel.offsetLeft - startX) * 0.8;
-        if (Math.abs(walk) > 5) dragged = true;
-        carousel.scrollLeft = scrollLeft - walk;
+        if (Math.abs(walk) > 5) { dragged = true; carousel.scrollLeft = scrollLeft - walk; }
     }, { passive: true });
     carousel.addEventListener('touchend', () => {
         touchId = null;
