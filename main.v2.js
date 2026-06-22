@@ -547,10 +547,12 @@ function initHomePage() {
 }
 
 // MOVIES PAGE
+let movieLoadId = 0;
 async function loadMovies(page = 1) {
     const grid = el('#movieGrid');
     const loading = el('#loading');
     if (!grid) return;
+    const loadId = ++movieLoadId;
     loading?.classList.remove('hidden');
     grid.innerHTML = '';
 
@@ -563,9 +565,11 @@ async function loadMovies(page = 1) {
     if (currentCountry) params.with_origin_country = currentCountry;
 
     const data = await tmdb('/discover/movie', {...params, page: (currentPage - 1) * 2 + 1});
+    if (loadId !== movieLoadId) return;
     loading?.classList.add('hidden');
     if (!data?.results) return;
     const data2 = data.total_pages > 1 ? await tmdb('/discover/movie', {...params, page: (currentPage - 1) * 2 + 2}) : {results:[]};
+    if (loadId !== movieLoadId) return;
     [...data.results, ...data2.results].slice(0,21).forEach(i => grid.appendChild(createCard(i, 'movie')));
     fillGrid(grid);
     const totalPages = Math.ceil(Math.min(data.total_pages, 500) / 2);
@@ -619,10 +623,13 @@ function initMoviesPage() {
 }
 
 // TV PAGE
+// TV PAGE
+let tvLoadId = 0;
 async function loadTvShows(page = 1) {
     const grid = el('#tvGrid');
     const loading = el('#loading');
     if (!grid) return;
+    const loadId = ++tvLoadId;
     loading?.classList.remove('hidden');
     grid.innerHTML = '';
 
@@ -636,9 +643,11 @@ async function loadTvShows(page = 1) {
     if (currentNetwork) params.with_networks = currentNetwork;
 
     const data = await tmdb('/discover/tv', {...params, page: (currentPage - 1) * 2 + 1});
+    if (loadId !== tvLoadId) return;
     loading?.classList.add('hidden');
     if (!data?.results) return;
     const data2 = data.total_pages > 1 ? await tmdb('/discover/tv', {...params, page: (currentPage - 1) * 2 + 2}) : {results:[]};
+    if (loadId !== tvLoadId) return;
     [...data.results, ...data2.results].slice(0,21).forEach(i => grid.appendChild(createCard(i, 'tv')));
     fillGrid(grid);
     const totalPages = Math.ceil(Math.min(data.total_pages, 500) / 2);
