@@ -892,7 +892,7 @@ async function doSearch(query, page=1) {
     if (!data) return;
 
     // On home page: hide sections, show search
-    const homeSections = ['trending','popularMovies','popularTv','topRated','nowPlaying','hero','indoMovies','indoSeries'];
+    const homeSections = ['trending','popularMovies','popularTv','topRated','nowPlaying','hero','indoMovies','indoSeries','genrePills'];
     homeSections.forEach(id => {
         const sec = el(`#${id}`);
         if (sec) sec.classList.add('hidden');
@@ -973,7 +973,7 @@ function renderWatchlist() {
 }
 
 function hideSearch() {
-    ['trending','popularMovies','popularTv','topRated','nowPlaying','hero','indoMovies','indoSeries'].forEach(id => {
+    ['trending','popularMovies','popularTv','topRated','nowPlaying','hero','indoMovies','indoSeries','genrePills'].forEach(id => {
         const sec = el(`#${id}`);
         if (sec) sec.classList.remove('hidden');
     });
