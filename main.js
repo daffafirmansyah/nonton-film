@@ -658,20 +658,9 @@ function initGlobalEvents() {
     const menuBtn = el('#mobileMenuBtn');
     const mobileMenu = el('#mobileMenu');
     if (menuBtn && mobileMenu) {
-        let scrollCleanup = null;
         function toggleMenu(force) {
             const open = force !== undefined ? force : !mobileMenu.classList.contains('open');
             mobileMenu.classList.toggle('open', open);
-            if (open) {
-                // Close on scroll/touchmove
-                const handler = () => toggleMenu(false);
-                window.addEventListener('scroll', handler, { once: true });
-                window.addEventListener('touchmove', handler, { once: true, passive: true });
-                scrollCleanup = () => { window.removeEventListener('scroll', handler); window.removeEventListener('touchmove', handler); };
-            } else if (scrollCleanup) {
-                scrollCleanup();
-                scrollCleanup = null;
-            }
         }
         menuBtn.onclick = (e) => { e.stopPropagation(); toggleMenu(); };
         mobileMenu.onclick = (e) => { if (e.target === mobileMenu) toggleMenu(false); };
