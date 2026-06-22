@@ -863,6 +863,7 @@ function initNavDropdowns() {
 
 // GLOBAL EVENTS
 function initGlobalEvents() {
+    initNavDropdowns();
     // Search
     const searchInput = el('#searchInput');
     const searchBtn = el('#searchBtn');
