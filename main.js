@@ -577,6 +577,16 @@ async function loadGenreResults(type, genreId, genreName, page=1) {
     grid.innerHTML = '';
     el('#genreResultsTitle').textContent = genreName;
 
+    // Back to genre grid on back button click or tapping empty header
+    const backBtn = el('#backToGenresBtn');
+    if (backBtn) {
+        backBtn.onclick = () => {
+            section.classList.add('hidden');
+            el('#genreGrid')?.classList.remove('hidden');
+            el('#genreGrid')?.scrollIntoView({behavior:'smooth', block:'start'});
+        };
+    }
+
     const yearSel = el('#yearFilter');
     const sortSel = el('#sortFilter');
     const params = { page, sort_by: sortSel?.value||'popularity.desc', with_genres: genreId };

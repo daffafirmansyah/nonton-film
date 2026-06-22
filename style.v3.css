@@ -332,8 +332,31 @@ input { font-family: inherit; outline: none; }
     transition: var(--transition); cursor: pointer; text-align: center;
 }
 .genre-card:hover { background: var(--bg-hover); border-color: rgba(255,255,255,0.12); transform: translateY(-2px); }
-
 .genre-card span { font-size: 0.85rem; font-weight: 600; }
+.genre-results-header {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+.genre-results-header h2 { font-size: 1.1rem; font-weight: 700; }
+.genre-toggle {
+    display: flex; gap: 8px; margin-bottom: 20px;
+}
+.genre-type-btn {
+    padding: 10px 24px; border-radius: 20px;
+    font-size: 0.88rem; font-weight: 600;
+    background: var(--bg-card); border: 1px solid var(--border);
+    color: var(--text2); cursor: pointer; transition: var(--transition);
+    touch-action: manipulation;
+}
+.genre-type-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.back-to-genres {
+    padding: 8px 16px; border-radius: 8px;
+    font-size: 0.85rem; font-weight: 600;
+    background: var(--bg-card); border: 1px solid var(--border);
+    color: var(--text2); cursor: pointer; transition: var(--transition);
+    touch-action: manipulation;
+}
+.back-to-genres:active { background: var(--bg-hover); }
 
 /* FILTERS */
 .filters {
