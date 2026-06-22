@@ -173,7 +173,12 @@ input{font-family:inherit;outline:none}
 .detail-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
 .detail-meta span{padding:3px 12px;background:rgba(255,255,255,.06);border-radius:999px;font-size:.8rem;color:var(--text2);border:1px solid var(--border);font-weight:300;letter-spacing:.3px}
 .detail-overview{color:var(--text2);line-height:1.8;margin-bottom:24px;font-size:.95rem;max-width:740px;font-weight:300}
-.detail-actions{display:flex;gap:12px;margin-bottom:32px}
+.detail-actions{display:flex;gap:14px;margin-bottom:32px}
+.detail-actions .btn-watch{padding:14px 34px;font-size:1rem;position:relative;overflow:hidden}
+.detail-actions .btn-watch::after{content:'▶';margin-left:8px;font-size:.85rem}
+.detail-actions .btn-secondary{padding:14px 30px;font-size:1rem;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);position:relative;overflow:hidden;backdrop-filter:blur(4px)}
+.detail-actions .btn-secondary::after{content:'▷';margin-left:8px;font-size:.8rem}
+.detail-actions .btn-secondary:hover{background:rgba(249,115,22,.15);border-color:var(--accent);color:var(--accent);box-shadow:0 0 24px rgba(249,115,22,.15)}
 .detail-cast{display:flex;gap:16px;overflow-x:auto;margin-bottom:32px;padding-bottom:8px}
 .detail-cast-item{flex:0 0 70px;text-align:center}
 .detail-cast-item img{width:54px;height:54px;border-radius:50%;object-fit:cover;margin-bottom:6px;background:var(--bg3);border:2px solid var(--border);transition:var(--transition)}
