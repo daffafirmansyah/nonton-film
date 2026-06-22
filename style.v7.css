@@ -186,6 +186,9 @@ input{font-family:inherit;outline:none}
 
 /* === GENRE === */
 .genre-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px}
+#genreResults.hidden,
+#genreResults{display:none!important}
+#genreResults:not(.hidden){display:block!important}
 .genre-card{display:flex;flex-direction:column;align-items:center;gap:10px;padding:30px 16px;background:var(--bg2);border-radius:var(--radius-lg);border:1px solid var(--border);transition:var(--transition);cursor:pointer;text-align:center}
 .genre-card:hover{background:var(--bg3);border-color:var(--accent);transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .genre-card span{font-size:.85rem;font-weight:500;letter-spacing:.3px}
