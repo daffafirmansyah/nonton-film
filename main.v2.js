@@ -441,19 +441,21 @@ function addCarouselArrows(carousel) {
     carousel.dataset.arrows = '1';
     
     // Mouse drag scroll — prevent card click when dragging
-    let isDown = false, startX = 0, scrollLeft = 0, dragged = false;
+    let isDown = false, startX = 0, scrollLeft = 0, dragged = false, dragTimer = null;
     carousel.addEventListener('mousedown', (e) => {
         isDown = true; dragged = false; startX = e.pageX - carousel.offsetLeft; scrollLeft = carousel.scrollLeft;
         carousel.style.cursor = 'grabbing';
         carousel.style.userSelect = 'none';
+        dragTimer = setTimeout(() => { if (isDown) dragged = true; }, 120);
     });
     carousel.addEventListener('mousemove', (e) => {
         if (!isDown) return; e.preventDefault();
         const x = e.pageX - carousel.offsetLeft;
-        const walk = (x - startX) * 0.8;
-        if (Math.abs(walk) > 5) { dragged = true; carousel.scrollLeft = scrollLeft - walk; }
+        const walk = (x - startX);
+        if (Math.abs(walk) > 8) { dragged = true; carousel.scrollLeft = scrollLeft - walk; }
     });
     carousel.addEventListener('mouseup', () => {
+        clearTimeout(dragTimer);
         isDown = false;
         carousel.style.cursor = '';
         carousel.style.userSelect = '';
@@ -464,6 +466,7 @@ function addCarouselArrows(carousel) {
     });
     carousel.addEventListener('mouseleave', () => {
         if (!isDown) return;
+        clearTimeout(dragTimer);
         isDown = false;
         carousel.style.cursor = '';
         carousel.style.userSelect = '';
@@ -478,8 +481,8 @@ function addCarouselArrows(carousel) {
     carousel.addEventListener('touchmove', (e) => {
         const t = Array.from(e.changedTouches).find(tc => tc.identifier === touchId);
         if (!t) return;
-        const walk = (t.clientX - carousel.offsetLeft - startX) * 0.8;
-        if (Math.abs(walk) > 5) { dragged = true; carousel.scrollLeft = scrollLeft - walk; }
+        const walk = (t.clientX - carousel.offsetLeft - startX);
+        if (Math.abs(walk) > 8) { dragged = true; carousel.scrollLeft = scrollLeft - walk; }
     }, { passive: true });
     carousel.addEventListener('touchend', () => {
         touchId = null;
