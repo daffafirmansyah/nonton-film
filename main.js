@@ -828,9 +828,14 @@ async function doSearch(query, page=1) {
     if (!data) return;
 
     // On home page: hide sections, show search
-    ['trending','popularMovies','popularTv','topRated','nowPlaying','hero','indoMovies','indoSeries'].forEach(id => {
+    const homeSections = ['trending','popularMovies','popularTv','topRated','nowPlaying','hero','indoMovies','indoSeries'];
+    homeSections.forEach(id => {
         const sec = el(`#${id}`);
         if (sec) sec.classList.add('hidden');
+    });
+    // On movies/tv pages: hide filters and grid
+    document.querySelectorAll('.page-content, .filters, #movieGrid, #tvGrid, #moviePagination, #tvPagination, .page-title').forEach(s => {
+        if (s) s.classList.add('hidden');
     });
 
     let section = el('#searchResults');
@@ -847,9 +852,12 @@ async function doSearch(query, page=1) {
 }
 
 function hideSearch() {
-    ['trending','popularMovies','popularTv','topRated','nowPlaying','hero'].forEach(id => {
+    ['trending','popularMovies','popularTv','topRated','nowPlaying','hero','indoMovies','indoSeries'].forEach(id => {
         const sec = el(`#${id}`);
         if (sec) sec.classList.remove('hidden');
+    });
+    document.querySelectorAll('.page-content, .filters, #movieGrid, #tvGrid, #moviePagination, #tvPagination, .page-title').forEach(s => {
+        if (s) s.classList.remove('hidden');
     });
     el('#searchResults')?.classList.add('hidden');
 }
