@@ -1025,6 +1025,12 @@ function initNavDropdowns() {
             document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
         }
     });
+    // Close dropdown when clicking any link inside it
+    document.querySelectorAll('.dropdown-menu a').forEach(a => {
+        a.addEventListener('click', () => {
+            a.closest('.dropdown-menu').classList.remove('show');
+        });
+    });
     // Trending filter clicks
     document.querySelectorAll('.trending-filter').forEach(btn => {
         btn.onclick = () => loadTrending(btn.dataset.filter);
