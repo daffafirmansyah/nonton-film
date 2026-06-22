@@ -93,13 +93,13 @@ input{font-family:inherit;outline:none}
 @media(max-width:640px){.carousel-nav{display:none}}
 
 /* MOVIE GRID */
-.grid{display:flex;flex-wrap:wrap;gap:16px;padding:0 24px;max-width:var(--max-w);margin:0 auto;justify-content:center}
+.grid{display:flex;flex-wrap:wrap;gap:16px;padding:0 24px;max-width:var(--max-w);margin:0 auto}
 .grid .card{flex:0 0 calc(50% - 8px)}
 @media(min-width:480px){.grid .card{flex:0 0 calc(33.33% - 11px)}}
 @media(min-width:640px){.grid .card{flex:0 0 calc(25% - 12px)}}
 @media(min-width:768px){.grid .card{flex:0 0 calc(20% - 13px)}}
-@media(min-width:1024px){.grid .card{flex:0 0 calc(16.66% - 14px)}}
-@media(min-width:1280px){.grid .card{flex:0 0 calc(14.28% - 14px)}}
+@media(min-width:1024px){.grid .card{flex:0 0 calc(14.28% - 14px)}}
+@media(min-width:1280px){.grid .card{flex:0 0 calc(12.5% - 14px)}}
 
 /* === CARDS === */
 .carousel{display:flex;gap:14px;overflow-x:auto;padding:4px 0 16px}
