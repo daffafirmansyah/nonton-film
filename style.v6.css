@@ -114,6 +114,8 @@ input{font-family:inherit;outline:none}
 .card-meta{display:flex;align-items:center;gap:6px;font-size:.68rem;color:var(--text3);font-weight:300}
 .card-rating{color:#f5a623;font-weight:600}
 .card-badge{position:absolute;top:8px;right:8px;padding:3px 8px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:.6rem;font-weight:700;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.3);letter-spacing:.5px}
+.card-type{position:absolute;top:8px;left:8px;padding:2px 7px;border-radius:4px;background:rgba(0,0,0,.7);color:#fff;font-size:.58rem;font-weight:600;z-index:2;letter-spacing:.8px;border:1px solid rgba(255,255,255,.1)}
+.card-quality{position:absolute;bottom:48px;right:8px;padding:2px 7px;border-radius:4px;background:rgba(0,0,0,.75);color:#90d5ff;font-size:.55rem;font-weight:600;z-index:2;letter-spacing:.3px;border:1px solid rgba(255,255,255,.08)}
 
 /* === PAGE CONTENT === */
 .page-content{padding-top:calc(var(--nav-height) + 24px)}

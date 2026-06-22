@@ -119,12 +119,17 @@ function createCard(item, type) {
     const mediaType = type || item.media_type || 'movie';
     const title = displayTitle(item);
     const date = item.release_date || item.first_air_date;
+    const isTv = mediaType === 'tv';
     const div = document.createElement('div');
     div.className = 'card';
     const genreName = item.genre_ids?.[0] ? (type==='movie'?MOVIE_GENRES:TV_GENRES).find(g=>g.id===item.genre_ids[0])?.name : null;
+    const qualities = ['WEB-DL','BluRay','HDRip','CAM'];
+    const quality = qualities[Math.floor(Math.random() * qualities.length)];
     div.innerHTML = `
         <img class="card-poster" src="${posterUrl(item.poster_path)}" alt="${title}" loading="lazy" onerror="this.src='${NO_POSTER}'">
+        <span class="card-type">${isTv ? 'TV' : 'MOVIE'}</span>
         ${item.vote_average >= 8 ? '<span class="card-badge">Top</span>' : ''}
+        <span class="card-quality">${quality}</span>
         <div class="card-info">
             <div class="card-title" title="${title}">${title}</div>
             <div class="card-meta">
@@ -184,6 +189,7 @@ async function openDetail(id, type = 'movie') {
         <span>${year(date)}</span>
         ${runtime ? `<span>${runtime} min</span>` : ''}
         <span>${type === 'movie' ? 'Film' : 'Series'}</span>
+        ${detail.number_of_seasons ? `<span>${detail.number_of_seasons} Season</span>` : ''}
         ${genres ? `<span>${genres}</span>` : ''}
     `;
     el('#modalOverview').textContent = detail.overview || 'No description available.';
@@ -991,9 +997,10 @@ async function loadDetailPage(id, type) {
     document.getElementById('detailMeta').innerHTML = `
         <span class="detail-rating">★ ${rating(detail.vote_average)}</span>
         <span>${year(date)}</span>
-        ${runtime ? `<span>${runtime} min</span>` : ''}
         <span>${type === 'movie' ? 'Film' : 'Series'}</span>
-        ${genres ? `<span>${genres}</span>` : ''}
+        ${detail.number_of_seasons ? `<span>${detail.number_of_seasons} Season</span>` : ''}
+        ${detail.runtime ? `<span>${detail.runtime} min</span>` : detail.episode_run_time?.[0] ? `<span>${detail.episode_run_time[0]} min</span>` : ''}
+        ${detail.genres?.map(g => g.name).join(', ')}
     `;
     document.getElementById('detailOverview').textContent = detail.overview || 'No description available.';
 
