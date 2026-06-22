@@ -828,7 +828,7 @@ async function doSearch(query, page=1) {
     if (!data) return;
 
     // On home page: hide sections, show search
-    ['trending','popularMovies','popularTv','topRated','nowPlaying','hero'].forEach(id => {
+    ['trending','popularMovies','popularTv','topRated','nowPlaying','hero','indoMovies','indoSeries'].forEach(id => {
         const sec = el(`#${id}`);
         if (sec) sec.classList.add('hidden');
     });
