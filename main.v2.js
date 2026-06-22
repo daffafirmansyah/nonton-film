@@ -440,16 +440,10 @@ function addCarouselArrows(carousel) {
     if (carousel.dataset.arrows) return;
     carousel.dataset.arrows = '1';
     
-    // Scroll suppression — prevent card click when carousel was just scrolled
-    let scrolled = false;
-    carousel.addEventListener('scroll', () => {
-        scrolled = true;
-        clearTimeout(carousel._scrollTimer);
-        carousel._scrollTimer = setTimeout(() => scrolled = false, 300);
-    }, { passive: true });
-    carousel.addEventListener('click', (e) => {
-        if (scrolled) { e.stopPropagation(); e.preventDefault(); }
-    }, true);
+    // Disable native drag-to-scroll on click, but keep wheel + buttons
+    carousel.addEventListener('mousedown', () => { carousel.style.overflowX = 'hidden'; });
+    carousel.addEventListener('mouseup', () => { carousel.style.overflowX = 'auto'; });
+    carousel.addEventListener('mouseleave', () => { carousel.style.overflowX = 'auto'; });
     
     const wrap = carousel.parentElement;
     if (!wrap || wrap.classList.contains('carousel-wrap')) return;
