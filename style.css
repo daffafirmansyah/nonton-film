@@ -1,4 +1,4 @@
-/* ===== RESET & BASE ===== */
+/* RESET & BASE */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
@@ -16,7 +16,7 @@ img { max-width: 100%; display: block; }
 select { font-family: inherit; }
 .hidden { display: none !important; }
 
-/* ===== VARIABLES ===== */
+/* VARIABLES */
 :root {
     --bg: #0a0a0f;
     --bg2: #12121a;
@@ -38,13 +38,13 @@ select { font-family: inherit; }
     --nav-height: 64px;
 }
 
-/* ===== SCROLLBAR ===== */
+/* SCROLLBAR */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #555; }
 
-/* ===== NAVBAR ===== */
+/* NAVBAR */
 .navbar {
     position: fixed;
     top: 0; left: 0; right: 0; z-index: 100;
@@ -142,7 +142,7 @@ select { font-family: inherit; }
     border-radius: 1px;
 }
 
-/* ===== MOBILE MENU ===== */
+/* MOBILE MENU */
 .mobile-menu-btn {
     display: none;
     font-size: 1.5rem;
@@ -176,7 +176,7 @@ select { font-family: inherit; }
     color: #fff;
 }
 
-/* ===== HERO ===== */
+/* HERO */
 .hero {
     position: relative;
     height: 70vh;
@@ -255,7 +255,7 @@ select { font-family: inherit; }
     font-weight: 600;
 }
 
-/* ===== BUTTONS ===== */
+/* BUTTONS */
 .btn-watch {
     padding: 13px 28px;
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
@@ -288,7 +288,7 @@ select { font-family: inherit; }
     border-color: rgba(255,255,255,0.2);
 }
 
-/* ===== SECTIONS ===== */
+/* SECTIONS */
 .main-content {
     max-width: 1400px;
     margin: 0 auto;
@@ -315,7 +315,7 @@ select { font-family: inherit; }
 }
 .see-all:hover { opacity: 1; }
 
-/* ===== CARDS ===== */
+/* CARDS */
 .carousel {
     display: flex;
     gap: 12px;
@@ -383,7 +383,7 @@ select { font-family: inherit; }
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-/* ===== GRID ===== */
+/* GRID */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -394,7 +394,7 @@ select { font-family: inherit; }
     width: 100%;
 }
 
-/* ===== PAGINATION ===== */
+/* PAGINATION */
 .pagination {
     display: flex;
     justify-content: center;
@@ -423,7 +423,7 @@ select { font-family: inherit; }
     border-color: var(--accent);
 }
 
-/* ===== PAGE CONTENT ===== */
+/* PAGE CONTENT */
 .page-content {
     padding-top: calc(var(--nav-height) + 24px);
     min-height: 80vh;
@@ -435,7 +435,7 @@ select { font-family: inherit; }
     letter-spacing: -0.5px;
 }
 
-/* ===== FILTERS ===== */
+/* FILTERS */
 .filters {
     display: flex;
     gap: 12px;
@@ -467,7 +467,7 @@ select { font-family: inherit; }
     color: #fff;
 }
 
-/* ===== GENRE PAGE ===== */
+/* GENRE PAGE */
 .genre-toggle {
     display: flex;
     gap: 10px;
@@ -539,7 +539,7 @@ select { font-family: inherit; }
 }
 .genre-results-header h2 { font-size: 1.4rem; }
 
-/* ===== DETAIL MODAL ===== */
+/* DETAIL MODAL */
 .modal {
     position: fixed;
     inset: 0;
@@ -699,7 +699,7 @@ select { font-family: inherit; }
 .season-card .info strong { display: block; }
 .season-card .info small { color: var(--text3); }
 
-/* ===== PLAYER MODAL ===== */
+/* PLAYER MODAL */
 .player-modal {
     position: fixed;
     inset: 0;
@@ -779,7 +779,7 @@ select { font-family: inherit; }
 }
 .iframe-container iframe { width: 100%; height: 100%; }
 
-/* ===== EPISODE SELECTOR ===== */
+/* EPISODE SELECTOR */
 .episode-selector { margin-bottom: 8px; }
 .episode-selector select {
     padding: 8px 14px;
@@ -814,7 +814,7 @@ select { font-family: inherit; }
     border-color: var(--accent);
 }
 
-/* ===== FOOTER ===== */
+/* FOOTER */
 .footer {
     text-align: center;
     padding: 32px 24px;
@@ -825,7 +825,7 @@ select { font-family: inherit; }
 }
 .footer .disclaimer { margin-top: 6px; font-size: 0.72rem; opacity: 0.5; }
 
-/* ===== LOADING ===== */
+/* LOADING */
 .loading {
     text-align: center;
     padding: 60px 40px;
@@ -844,7 +844,7 @@ select { font-family: inherit; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ===== SKELETON LOADING ===== */
+/* SKELETON LOADING */
 .skeleton {
     background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
     background-size: 200% 100%;
@@ -856,7 +856,7 @@ select { font-family: inherit; }
     100% { background-position: -200% 0; }
 }
 
-/* ===== RESPONSIVE ===== */
+/* RESPONSIVE */
 @media (max-width: 768px) {
     .navbar { padding: 0 12px; }
     .nav-container { gap: 12px; }
@@ -891,7 +891,7 @@ select { font-family: inherit; }
     .grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
 }
 
-/* ===== ANIMATIONS ===== */
+/* ANIMATIONS */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: translateY(0); }

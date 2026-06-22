@@ -1,4 +1,4 @@
-/* ===== RESET & BASE ===== */
+/* RESET & BASE */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
@@ -32,13 +32,13 @@ input { font-family: inherit; outline: none; }
     --max-w: 1400px;
 }
 
-/* ===== SCROLLBAR ===== */
+/* SCROLLBAR */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
-/* ===== SKELETON LOADING ===== */
+/* SKELETON LOADING */
 .skeleton {
     background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-hover) 50%, var(--bg-card) 75%);
     background-size: 200% 100%;
@@ -47,10 +47,10 @@ input { font-family: inherit; outline: none; }
 }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-/* ===== UTILITY ===== */
+/* UTILITY */
 .hidden { display: none !important; }
 
-/* ===== NAVBAR ===== */
+/* NAVBAR */
 .navbar {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     background: rgba(10,10,15,0.85);
@@ -142,7 +142,7 @@ input { font-family: inherit; outline: none; }
     font-size: 0.9rem;
 }
 
-/* ===== HERO ===== */
+/* HERO */
 .hero {
     position: relative; width: 100%;
     height: 70vh; min-height: 400px; max-height: 600px;
@@ -206,7 +206,7 @@ input { font-family: inherit; outline: none; }
     .hero-desc { -webkit-line-clamp: 2; }
 }
 
-/* ===== SECTIONS ===== */
+/* SECTIONS */
 .section {
     max-width: var(--max-w); margin: 0 auto;
     padding: 12px 20px 28px;
@@ -226,11 +226,11 @@ input { font-family: inherit; outline: none; }
 }
 .section-link:hover { background: rgba(229,9,20,0.1); border-color: var(--accent); }
 
-/* ===== PAGE CONTENT (movies/tv/genre) ===== */
+/* PAGE CONTENT (movies/tv/genre) */
 .page-content { padding-top: calc(var(--nav-height) + 16px); }
 .page-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; }
 
-/* ===== CARDS ===== */
+/* CARDS */
 .carousel {
     display: flex; gap: 12px; overflow-x: auto;
     padding: 4px 0 8px; scroll-snap-type: x mandatory;
@@ -276,7 +276,7 @@ input { font-family: inherit; outline: none; }
 }
 .card-rating { color: #f5a623; font-weight: 600; }
 
-/* ===== GRID ===== */
+/* GRID */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -287,14 +287,14 @@ input { font-family: inherit; outline: none; }
 .grid .card { flex: none; }
 .grid .card:hover { transform: translateY(-4px); }
 
-/* ===== FOOTER ===== */
+/* FOOTER */
 .site-footer {
     border-top: 1px solid var(--border);
     padding: 24px 20px; margin-top: 40px;
     text-align: center; font-size: 0.82rem; color: var(--text3);
 }
 
-/* ===== GENRE PAGE ===== */
+/* GENRE PAGE */
 .genre-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -311,7 +311,7 @@ input { font-family: inherit; outline: none; }
 .genre-icon { font-size: 1.8rem; }
 .genre-card span { font-size: 0.85rem; font-weight: 600; }
 
-/* ===== FILTERS ===== */
+/* FILTERS */
 .filters {
     display: flex; gap: 10px; flex-wrap: wrap;
     margin-bottom: 20px; max-width: var(--max-w); margin-left: auto; margin-right: auto;
@@ -330,7 +330,7 @@ input { font-family: inherit; outline: none; }
 .filters select:hover { border-color: rgba(255,255,255,0.15); }
 .filters select:focus { border-color: var(--accent); }
 
-/* ===== PAGINATION ===== */
+/* PAGINATION */
 .pagination {
     display: flex; justify-content: center; gap: 6px;
     padding: 20px 0; flex-wrap: wrap;
@@ -344,7 +344,7 @@ input { font-family: inherit; outline: none; }
 .pagination button:hover { background: var(--bg-hover); color: var(--text); }
 .pagination button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-/* ===== DETAIL PAGE ===== */
+/* DETAIL PAGE */
 .detail-page { padding-top: var(--nav-height); }
 .detail-hero {
     width: 100%; height: 55vh; min-height: 350px;
@@ -406,7 +406,7 @@ input { font-family: inherit; outline: none; }
 }
 .back-btn:hover { background: var(--accent); }
 
-/* ===== SEASONS ===== */
+/* SEASONS */
 .seasons-list {
     display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;
 }
@@ -423,7 +423,7 @@ input { font-family: inherit; outline: none; }
 .season-card .info small { color: var(--text3); }
 .section-title-sm { font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; margin-top: 24px; }
 
-/* ===== PLAYER MODAL ===== */
+/* PLAYER MODAL */
 .player-modal {
     position: fixed; inset: 0; z-index: 300;
     display: flex; align-items: center; justify-content: center;
@@ -475,7 +475,7 @@ input { font-family: inherit; outline: none; }
 }
 .iframe-container iframe { width: 100%; height: 100%; }
 
-/* ===== EPISODE SELECTOR ===== */
+/* EPISODE SELECTOR */
 .episode-selector { display: flex; flex-direction: column; gap: 8px; }
 .episode-selector.hidden { display: none; }
 .episode-selector select {
@@ -496,7 +496,7 @@ input { font-family: inherit; outline: none; }
 .ep-btn:hover { background: var(--bg-hover); color: var(--text); }
 .ep-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-/* ===== DETAIL MODAL (on home page) ===== */
+/* DETAIL MODAL (on home page) */
 .modal {
     position: fixed; inset: 0; z-index: 200;
     background: rgba(0,0,0,0.9);
@@ -517,7 +517,7 @@ input { font-family: inherit; outline: none; }
 .modal-close:hover { transform: scale(1.1); }
 .seasons-section.hidden { display: none; }
 .loading.hidden { display: none; }
-/* ===== OLD MODAL (detail modal on list pages) ===== */
+/* OLD MODAL (detail modal on list pages) */
 .modal-overlay {
     position: fixed; inset: 0; z-index: 200;
     background: rgba(0,0,0,0.9);
@@ -549,7 +549,7 @@ input { font-family: inherit; outline: none; }
 }
 .cast-member p { font-size: 0.82rem; color: var(--text2); }
 
-/* ===== RESPONSIVE ===== */
+/* RESPONSIVE */
 @media (max-width: 768px) {
     .hero-section { height: 50vh; min-height: 280px; }
     .hero-content { padding: 20px 16px 32px; }
@@ -572,7 +572,7 @@ input { font-family: inherit; outline: none; }
     .filters select { min-width: 100px; font-size: 0.78rem; padding: 8px 30px 8px 10px; }
 }
 
-/* ===== ANIMATIONS ===== */
+/* ANIMATIONS */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: translateY(0); }

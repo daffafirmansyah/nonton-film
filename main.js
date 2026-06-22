@@ -1,4 +1,4 @@
-// ===== CONFIG =====
+// CONFIG
 const TMDB_KEY = '245f8c4922de78b5017c149fbfa89ab5';
 const TMDB = 'https://api.themoviedb.org/3';
 const IMG = 'https://image.tmdb.org/t/p';
@@ -10,7 +10,7 @@ const VIDSRV = 'https://vidsrcme.ru/embed';
 const VIDSRV2 = 'https://vidsrc.su/embed';
 const PROXY_URL = '';
 
-// ===== GENRES =====
+// GENRES
 const MOVIE_GENRES = [
     {id:28,name:"Action"},{id:12,name:"Adventure"},{id:16,name:"Animation"},{id:35,name:"Comedy"},
     {id:80,name:"Crime"},{id:99,name:"Documentary"},{id:18,name:"Drama"},{id:10751,name:"Family"},
@@ -26,7 +26,7 @@ const TV_GENRES = [
     {id:10768,name:"War & Politics"},{id:37,name:"Western"}
 ];
 
-// ===== NETWORKS (for TV filter) =====
+// NETWORKS (for TV filter)
 const NETWORKS = [
   {id:213,name:'Netflix'},{id:49,name:'HBO'},{id:453,name:'Hulu'},{id:1024,name:'Amazon Prime'},
   {id:335984,name:'Disney+'},{id:2552,name:'Apple TV+'},{id:4330,name:'Paramount+'},
@@ -39,7 +39,7 @@ const NETWORKS = [
   {id:1286,name:'Nickelodeon'},{id:1288,name:'Cartoon Network'}
 ];
 
-// ===== URL STATE =====
+// URL STATE
 function updateURL() {
     const params = new URLSearchParams();
     if (currentGenreId) params.set('genre', currentGenreId);
@@ -74,7 +74,7 @@ let currentYear = '';
 let currentCountry = '';
 let currentNetwork = '';
 
-// ===== UTILS =====
+// UTILS
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 const posterUrl = p => p ? `${IMG_POSTER}${p}` : NO_POSTER;
@@ -87,7 +87,7 @@ const displayTitle = item => {
     return item.original_language === 'id' ? (item.original_title || t) : t;
 };
 
-// ===== API =====
+// API
 async function tmdb(path, params = {}) {
     const url = new URL(`${TMDB}${path}`);
     url.searchParams.set('api_key', TMDB_KEY);
@@ -100,7 +100,7 @@ async function tmdb(path, params = {}) {
     } catch (e) { console.error('TMDB error:', e); return null; }
 }
 
-// ===== COUNTRIES =====
+// COUNTRIES
 async function loadCountries(selectEl) {
     const data = await tmdb('/configuration/countries');
     if (!data) return;
@@ -111,7 +111,7 @@ async function loadCountries(selectEl) {
     });
 }
 
-// ===== CARD =====
+// CARD
 function createCard(item, type) {
     const mediaType = type || item.media_type || 'movie';
     const title = displayTitle(item);
@@ -120,7 +120,7 @@ function createCard(item, type) {
     div.className = 'card';
     div.innerHTML = `
         <img class="card-poster" src="${posterUrl(item.poster_path)}" alt="${title}" loading="lazy" onerror="this.src='${NO_POSTER}'">
-        ${item.vote_average >= 8 ? '<span class="card-badge">⭐ Top</span>' : ''}
+        ${item.vote_average >= 8 ? '<span class="card-badge">Top</span>' : ''}
         <div class="card-info">
             <div class="card-title" title="${title}">${title}</div>
             <div class="card-meta">
@@ -135,7 +135,7 @@ function createCard(item, type) {
     return div;
 }
 
-// ===== DETAIL MODAL =====
+// DETAIL MODAL
 async function openDetail(id, type = 'movie') {
     const modal = $('#detailModal');
     if (!modal) return;
@@ -159,8 +159,8 @@ async function openDetail(id, type = 'movie') {
     $('#modalMeta').innerHTML = `
         <span class="rating">★ ${rating(detail.vote_average)}</span>
         <span>${year(date)}</span>
-        ${runtime ? `<span>⏱ ${runtime} min</span>` : ''}
-        <span>${type === 'movie' ? '🎬 Film' : '📺 Series'}</span>
+        ${runtime ? `<span>${runtime} min</span>` : ''}
+        <span>${type === 'movie' ? 'Film' : 'Series'}</span>
         ${genres ? `<span>${genres}</span>` : ''}
     `;
     $('#modalOverview').textContent = detail.overview || 'No description available.';
@@ -200,7 +200,7 @@ async function openDetail(id, type = 'movie') {
     if (sim) { sim.innerHTML = ''; similar?.results?.slice(0,10).forEach(i => sim.appendChild(createCard(i, type))); }
 }
 
-// ===== PLAYER =====
+// PLAYER
 function getPlayerUrl(id, type, season, episode) {
     let rawUrl;
     if (currentServer === 'vidsrc') {
@@ -288,7 +288,7 @@ function closeAllModals() {
     document.body.style.overflow = '';
 }
 
-// ===== PAGINATION =====
+// PAGINATION
 function renderPagination(containerId, total, current, callback) {
     const el = $(`#${containerId}`);
     if (!el) return;
@@ -319,7 +319,7 @@ function renderPagination(containerId, total, current, callback) {
     }
 }
 
-// ===== HOME PAGE =====
+// HOME PAGE
 async function loadHero() {
     const data = await tmdb('/trending/all/day');
     if (!data?.results?.length) return;
@@ -329,7 +329,7 @@ async function loadHero() {
     $('#hero').style.backgroundImage = `url(${backdropUrl(item.backdrop_path)})`;
     $('#heroTitle').textContent = displayTitle(item);
     $('#heroOverview').textContent = truncate(item.overview, 200);
-    $('#heroMeta').innerHTML = `<span class="rating">★ ${rating(item.vote_average)}</span><span>${year(item.release_date||item.first_air_date)}</span><span>${type==='movie'?'🎬 Film':'📺 Series'}</span>`;
+    $('#heroMeta').innerHTML = `<span class="rating">★ ${rating(item.vote_average)}</span><span>${year(item.release_date||item.first_air_date)}</span><span>${type==='movie'?'Film':'Series'}</span>`;
     $('#heroBtn').onclick = () => {
         window.location.href = `detail.html?id=${item.id}&type=${type}`;
     };
@@ -355,7 +355,7 @@ function initHomePage() {
     loadHomeCarousel('/discover/tv?with_origin_country=ID', 'indoSeriesCarousel', 'tv');
 }
 
-// ===== MOVIES PAGE =====
+// MOVIES PAGE
 async function loadMovies(page = 1) {
     const grid = $('#movieGrid');
     const loading = $('#loading');
@@ -426,7 +426,7 @@ function initMoviesPage() {
     }
 }
 
-// ===== TV PAGE =====
+// TV PAGE
 async function loadTvShows(page = 1) {
     const grid = $('#tvGrid');
     const loading = $('#loading');
@@ -506,7 +506,7 @@ function initTvPage() {
     }
 }
 
-// ===== GENRE PAGE =====
+// GENRE PAGE
 function initGenrePage() {
     const grid = $('#genreGrid');
     if (!grid) return;
@@ -576,7 +576,7 @@ async function loadGenreResults(type, genreId, genreName, page=1) {
     section.classList.remove('hidden');
     loading?.classList.remove('hidden');
     grid.innerHTML = '';
-    $('#genreResultsTitle').textContent = `${type==='movie'?'🎬':'📺'} ${genreName}`;
+    $('#genreResultsTitle').textContent = genreName;
 
     const yearSel = $('#yearFilter');
     const sortSel = $('#sortFilter');
@@ -612,10 +612,10 @@ function getGenreIcon(name) {
         'Action & Adventure':'💥','Kids':'🧒','News':'📰','Reality':'📹',
         'Sci-Fi & Fantasy':'🚀','Soap':'💋','Talk':'🗣️','War & Politics':'⚔️'
     };
-    return icons[name] || '🎬';
+    return icons[name] || '';
 }
 
-// ===== SEARCH =====
+// SEARCH
 async function doSearch(query, page=1) {
     const data = await tmdb('/search/multi', { query, page });
     if (!data) return;
@@ -647,7 +647,7 @@ function hideSearch() {
     $('#searchResults')?.classList.add('hidden');
 }
 
-// ===== GLOBAL EVENTS =====
+// GLOBAL EVENTS
 function initGlobalEvents() {
     // Search
     const searchInput = $('#searchInput');
@@ -679,7 +679,7 @@ function initGlobalEvents() {
     document.onkeydown = e => { if(e.key==='Escape') closeAllModals(); };
 }
 
-// ===== DETAIL PAGE (for detail.html) =====
+// DETAIL PAGE (for detail.html)
 async function loadDetailPage(id, type) {
     const loading = document.getElementById('detailLoading');
     const page = document.getElementById('detailPage');
@@ -711,8 +711,8 @@ async function loadDetailPage(id, type) {
     document.getElementById('detailMeta').innerHTML = `
         <span class="detail-rating">★ ${rating(detail.vote_average)}</span>
         <span>${year(date)}</span>
-        ${runtime ? `<span>⏱ ${runtime} min</span>` : ''}
-        <span>${type === 'movie' ? '🎬 Film' : '📺 Series'}</span>
+        ${runtime ? `<span>${runtime} min</span>` : ''}
+        <span>${type === 'movie' ? 'Film' : 'Series'}</span>
         ${genres ? `<span>${genres}</span>` : ''}
     `;
     document.getElementById('detailOverview').textContent = detail.overview || 'No description available.';
