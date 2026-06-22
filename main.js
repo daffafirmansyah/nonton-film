@@ -570,7 +570,9 @@ async function loadMovies(page = 1) {
     if (!data?.results) return;
     const data2 = data.total_pages > 1 ? await tmdb('/discover/movie', {...params, page: (currentPage - 1) * 2 + 2}) : {results:[]};
     if (loadId !== movieLoadId) return;
-    [...data.results, ...data2.results].slice(0,21).forEach(i => grid.appendChild(createCard(i, 'movie')));
+    [...data.results, ...data2.results]
+        .filter((item, i, arr) => arr.findIndex(x => x.id === item.id) === i)
+        .slice(0,21).forEach(i => grid.appendChild(createCard(i, 'movie')));
     fillGrid(grid);
     const totalPages = Math.ceil(Math.min(data.total_pages, 500) / 2);
     renderPagination('moviePagination', totalPages, page, p => {
@@ -648,7 +650,9 @@ async function loadTvShows(page = 1) {
     if (!data?.results) return;
     const data2 = data.total_pages > 1 ? await tmdb('/discover/tv', {...params, page: (currentPage - 1) * 2 + 2}) : {results:[]};
     if (loadId !== tvLoadId) return;
-    [...data.results, ...data2.results].slice(0,21).forEach(i => grid.appendChild(createCard(i, 'tv')));
+    [...data.results, ...data2.results]
+        .filter((item, i, arr) => arr.findIndex(x => x.id === item.id) === i)
+        .slice(0,21).forEach(i => grid.appendChild(createCard(i, 'tv')));
     fillGrid(grid);
     const totalPages = Math.ceil(Math.min(data.total_pages, 500) / 2);
     renderPagination('tvPagination', totalPages, page, p => {
