@@ -633,13 +633,6 @@ async function loadMovies(page = 1) {
     [...data.results, ...data2.results]
         .filter((item, i, arr) => arr.findIndex(x => x.id === item.id) === i)
         .slice(0,21).forEach(i => grid.appendChild(createCard(i, 'movie')));
-    // Update count badge on page title
-    const movieTitle = el('.page-title');
-    if (movieTitle && data.total_results) {
-        let c = movieTitle.querySelector('.count-badge');
-        if (!c) { c = document.createElement('span'); c.className = 'count-badge'; movieTitle.appendChild(c); }
-        c.textContent = data.total_results > 999 ? '999+' : data.total_results;
-    }
     const totalPages = Math.ceil(Math.min(data.total_pages, 500) / 2);
     renderPagination('moviePagination', totalPages, page, p => {
         currentPage = p;
