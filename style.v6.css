@@ -93,14 +93,10 @@ input{font-family:inherit;outline:none}
 @media(max-width:640px){.carousel-nav{display:none}}
 
 /* MOVIE GRID */
-.grid{display:flex;flex-wrap:wrap;gap:16px;padding:0 24px;max-width:var(--max-w);margin:0 auto}
-.grid .card{flex:0 0 calc(50% - 8px)}
-@media(min-width:480px){.grid .card{flex:0 0 calc(33.33% - 11px)}}
-@media(min-width:640px){.grid .card{flex:0 0 calc(25% - 12px)}}
-@media(min-width:768px){.grid .card{flex:0 0 calc(20% - 13px)}}
-@media(min-width:1024px){.grid .card{flex:0 0 calc(14.28% - 14px)}}
-@media(min-width:1400px){.grid .card{flex:0 0 calc(14.28% - 14px)}}
-/* Search grid - remove double padding from section */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;padding:0 24px;max-width:var(--max-w);margin:0 auto}
+@media(min-width:640px){.grid{grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px}}
+@media(min-width:1024px){.grid{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px}}
+/* Grid in section (search) - no double padding */
 .section .grid{padding:0}
 
 /* === CARDS === */
