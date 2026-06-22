@@ -49,7 +49,6 @@ input { font-family: inherit; outline: none; }
 
 /* UTILITY */
 .hidden { display: none !important; }
-body.menu-open { overflow: hidden; position: fixed; width: 100%; height: 100%; }
 
 /* NAVBAR */
 .navbar {
