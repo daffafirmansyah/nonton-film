@@ -829,8 +829,8 @@ async function doSearch(query, page=1) {
 
     // On home page: hide sections, show search
     ['trending','popularMovies','popularTv','topRated','nowPlaying','hero'].forEach(id => {
-        const el = el(`#${id}`);
-        if (el) el.classList.add('hidden');
+        const sec = el(`#${id}`);
+        if (sec) sec.classList.add('hidden');
     });
 
     let section = el('#searchResults');
@@ -848,8 +848,8 @@ async function doSearch(query, page=1) {
 
 function hideSearch() {
     ['trending','popularMovies','popularTv','topRated','nowPlaying','hero'].forEach(id => {
-        const el = el(`#${id}`);
-        if (el) el.classList.remove('hidden');
+        const sec = el(`#${id}`);
+        if (sec) sec.classList.remove('hidden');
     });
     el('#searchResults')?.classList.add('hidden');
 }
