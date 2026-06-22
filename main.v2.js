@@ -382,14 +382,43 @@ async function loadHero() {
     const next = el('#heroNext');
     if (prev) prev.onclick = () => goHero(heroIdx - 1);
     if (next) next.onclick = () => goHero(heroIdx + 1);
-    // Touch swipe
+    // Hero drag swipe (mouse + touch)
     const hero = el('#hero');
-    let touchX = 0;
+    let heroDragX = 0, heroDragStart = 0, heroDragged = false;
     if (hero) {
-        hero.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+        hero.addEventListener('mousedown', (e) => {
+            heroDragStart = e.pageX; heroDragged = false;
+            hero.style.cursor = 'grabbing';
+        });
+        hero.addEventListener('mousemove', (e) => {
+            if (!heroDragStart) return;
+            const dx = e.pageX - heroDragStart;
+            if (Math.abs(dx) > 20) heroDragged = true;
+        });
+        hero.addEventListener('mouseup', (e) => {
+            hero.style.cursor = '';
+            if (heroDragged) {
+                const dx = e.pageX - heroDragStart;
+                if (Math.abs(dx) > 50) goHero(heroIdx + (dx < 0 ? 1 : -1));
+            }
+            heroDragStart = 0; heroDragged = false;
+        });
+        hero.addEventListener('mouseleave', () => {
+            hero.style.cursor = '';
+            heroDragStart = 0;
+        });
+        hero.addEventListener('touchstart', (e) => {
+            heroDragStart = e.touches[0].clientX; heroDragged = false;
+        }, { passive: true });
+        hero.addEventListener('touchmove', (e) => {
+            const dx = e.touches[0].clientX - heroDragStart;
+            if (Math.abs(dx) > 20) heroDragged = true;
+        }, { passive: true });
         hero.addEventListener('touchend', (e) => {
-            const dx = e.changedTouches[0].clientX - touchX;
+            if (!heroDragged) return;
+            const dx = e.changedTouches[0].clientX - heroDragStart;
             if (Math.abs(dx) > 50) goHero(heroIdx + (dx < 0 ? 1 : -1));
+            heroDragStart = 0;
         }, { passive: true });
     }
     // Render first
@@ -421,7 +450,7 @@ function addCarouselArrows(carousel) {
     carousel.addEventListener('mousemove', (e) => {
         if (!isDown) return; e.preventDefault();
         const x = e.pageX - carousel.offsetLeft;
-        const walk = (x - startX) * 1.5;
+        const walk = (x - startX) * 0.8;
         if (Math.abs(walk) > 5) dragged = true;
         carousel.scrollLeft = scrollLeft - walk;
     });
@@ -451,7 +480,7 @@ function addCarouselArrows(carousel) {
     carousel.addEventListener('touchmove', (e) => {
         const t = Array.from(e.changedTouches).find(tc => tc.identifier === touchId);
         if (!t) return;
-        const walk = (t.clientX - carousel.offsetLeft - startX) * 1.5;
+        const walk = (t.clientX - carousel.offsetLeft - startX) * 0.8;
         if (Math.abs(walk) > 5) dragged = true;
         carousel.scrollLeft = scrollLeft - walk;
     }, { passive: true });
