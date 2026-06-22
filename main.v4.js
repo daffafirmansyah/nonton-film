@@ -840,6 +840,7 @@ async function loadGenreResults(type, genreId, genreName, page=1) {
     loading?.classList.remove('hidden');
     grid.innerHTML = '';
     el('#genreResultsTitle').textContent = genreName;
+    el('#genreGrid')?.classList.add('hidden');
 
     // Back to genre grid on back button click or tapping empty header
     const backBtn = el('#backToGenresBtn');
