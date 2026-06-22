@@ -940,6 +940,11 @@ async function doSearch(query, page=1) {
 function renderWatchlist() {
     const section = el('#watchlistSection');
     if (!section) return;
+    // Hide homepage sections
+    ['hero','trending','popularMovies','popularTv','topRated','nowPlaying','indoMovies','indoSeries','genrePills'].forEach(id => {
+        const sec = el(`#${id}`);
+        if (sec) sec.classList.add('hidden');
+    });
     section.classList.remove('hidden');
     const grid = el('#watchlistGrid');
     const empty = el('#watchlistEmpty');
