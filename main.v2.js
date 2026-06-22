@@ -440,57 +440,32 @@ function addCarouselArrows(carousel) {
     if (carousel.dataset.arrows) return;
     carousel.dataset.arrows = '1';
     
-    // Mouse drag scroll — prevent card click when dragging
-    let isDown = false, startX = 0, scrollLeft = 0, dragged = false, dragTimer = null;
+    // Mouse drag scroll — native scroll with click suppression
+    let isDown = false, startX = 0, scrollLeft = 0, dragged = false;
     carousel.addEventListener('mousedown', (e) => {
-        isDown = true; dragged = false; startX = e.pageX - carousel.offsetLeft; scrollLeft = carousel.scrollLeft;
-        carousel.style.cursor = 'grabbing';
-        carousel.style.userSelect = 'none';
-        dragTimer = setTimeout(() => { if (isDown) dragged = true; }, 120);
+        isDown = true; dragged = false; startX = e.pageX; scrollLeft = carousel.scrollLeft;
     });
     carousel.addEventListener('mousemove', (e) => {
-        if (!isDown) return; e.preventDefault();
-        const x = e.pageX - carousel.offsetLeft;
-        const walk = (x - startX);
-        if (Math.abs(walk) > 8) { dragged = true; carousel.scrollLeft = scrollLeft - walk; }
-    });
-    carousel.addEventListener('mouseup', () => {
-        clearTimeout(dragTimer);
-        isDown = false;
-        carousel.style.cursor = '';
-        carousel.style.userSelect = '';
-        if (dragged) {
-            document.body.style.pointerEvents = 'none';
-            setTimeout(() => document.body.style.pointerEvents = '', 10);
-        }
-    });
-    carousel.addEventListener('mouseleave', () => {
         if (!isDown) return;
-        clearTimeout(dragTimer);
-        isDown = false;
-        carousel.style.cursor = '';
-        carousel.style.userSelect = '';
+        const dx = e.pageX - startX;
+        if (Math.abs(dx) > 5) { dragged = true; carousel.scrollLeft = scrollLeft - dx; }
     });
-    // Also handle touch drag
-    let touchId = null;
+    carousel.addEventListener('mouseup', (e) => {
+        isDown = false;
+        if (dragged) { e.stopPropagation(); e.preventDefault(); }
+    });
+    carousel.addEventListener('mouseleave', () => { isDown = false; });
+    // Touch drag
     carousel.addEventListener('touchstart', (e) => {
-        touchId = e.changedTouches[0].identifier;
-        startX = e.changedTouches[0].clientX - carousel.offsetLeft; scrollLeft = carousel.scrollLeft;
-        dragged = false;
+        startX = e.touches[0].clientX; scrollLeft = carousel.scrollLeft; dragged = false;
     }, { passive: true });
     carousel.addEventListener('touchmove', (e) => {
-        const t = Array.from(e.changedTouches).find(tc => tc.identifier === touchId);
-        if (!t) return;
-        const walk = (t.clientX - carousel.offsetLeft - startX);
-        if (Math.abs(walk) > 8) { dragged = true; carousel.scrollLeft = scrollLeft - walk; }
+        const dx = e.touches[0].clientX - startX;
+        if (Math.abs(dx) > 5) { dragged = true; carousel.scrollLeft = scrollLeft - dx; }
     }, { passive: true });
-    carousel.addEventListener('touchend', () => {
-        touchId = null;
-        if (dragged) {
-            document.body.style.pointerEvents = 'none';
-            setTimeout(() => document.body.style.pointerEvents = '', 10);
-        }
-    }, { passive: true });
+    carousel.addEventListener('touchend', (e) => {
+        if (dragged) { e.preventDefault(); e.stopPropagation(); }
+    }, { passive: false });
     
     const wrap = carousel.parentElement;
     if (!wrap || wrap.classList.contains('carousel-wrap')) return;
