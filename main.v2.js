@@ -562,13 +562,14 @@ async function loadMovies(page = 1) {
     }
     if (currentCountry) params.with_origin_country = currentCountry;
 
-    const data = await tmdb('/discover/movie', params);
+    const data = await tmdb('/discover/movie', {...params, page: (currentPage - 1) * 2 + 1});
     loading?.classList.add('hidden');
     if (!data?.results) return;
-
-    data.results.forEach(i => grid.appendChild(createCard(i, 'movie')));
+    const data2 = data.total_pages > 1 ? await tmdb('/discover/movie', {...params, page: (currentPage - 1) * 2 + 2}) : {results:[]};
+    [...data.results, ...data2.results].slice(0,21).forEach(i => grid.appendChild(createCard(i, 'movie')));
     fillGrid(grid);
-    renderPagination('moviePagination', Math.min(data.total_pages, 500), page, p => {
+    const totalPages = Math.ceil(Math.min(data.total_pages, 500) / 2);
+    renderPagination('moviePagination', totalPages, page, p => {
         currentPage = p;
         loadMovies(p);
         window.scrollTo({top: 0, behavior: 'smooth'});
@@ -634,13 +635,14 @@ async function loadTvShows(page = 1) {
     if (currentCountry) params.with_origin_country = currentCountry;
     if (currentNetwork) params.with_networks = currentNetwork;
 
-    const data = await tmdb('/discover/tv', params);
+    const data = await tmdb('/discover/tv', {...params, page: (currentPage - 1) * 2 + 1});
     loading?.classList.add('hidden');
     if (!data?.results) return;
-
-    data.results.forEach(i => grid.appendChild(createCard(i, 'tv')));
+    const data2 = data.total_pages > 1 ? await tmdb('/discover/tv', {...params, page: (currentPage - 1) * 2 + 2}) : {results:[]};
+    [...data.results, ...data2.results].slice(0,21).forEach(i => grid.appendChild(createCard(i, 'tv')));
     fillGrid(grid);
-    renderPagination('tvPagination', Math.min(data.total_pages, 500), page, p => {
+    const totalPages = Math.ceil(Math.min(data.total_pages, 500) / 2);
+    renderPagination('tvPagination', totalPages, page, p => {
         currentPage = p;
         loadTvShows(p);
         window.scrollTo({top: 0, behavior: 'smooth'});
