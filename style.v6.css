@@ -194,6 +194,7 @@ input{font-family:inherit;outline:none}
 .nav-dropdown>a:hover{color:var(--text);background:var(--bg3)}
 .dropdown-menu{position:absolute;top:100%;left:0;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:6px;min-width:180px;opacity:0;visibility:hidden;transform:translateY(8px);transition:all .2s ease;z-index:200;box-shadow:0 12px 40px rgba(0,0,0,.4);max-height:300px;overflow-y:auto}
 .nav-dropdown:hover .dropdown-menu{opacity:1;visibility:visible;transform:translateY(4px)}
+@media(max-width:640px){.nav-dropdown .dropdown-menu{position:fixed;left:0;right:0;top:64px;width:100%;border-radius:0;max-height:60vh;display:none;opacity:1;visibility:visible;transform:none}}
 .dropdown-menu a{display:block;padding:8px 14px;border-radius:8px;font-size:.82rem;color:var(--text2);transition:var(--transition);white-space:nowrap}
 .dropdown-menu a:hover{background:var(--bg3);color:var(--text)}
 

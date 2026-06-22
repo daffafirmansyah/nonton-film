@@ -838,6 +838,19 @@ function initNavDropdowns() {
         for (let y = now; y >= 1950; y--) h += '<a href="movies.html?year='+y+'">'+y+'</a>';
         yearDD.innerHTML = h;
     }
+    // Dropdown toggle for touch
+    document.querySelectorAll('.nav-dropdown > a').forEach(a => {
+        a.onclick = (e) => {
+            if (window.innerWidth > 640) return; // Desktop: hover works
+            e.preventDefault();
+            const dd = a.parentElement.querySelector('.dropdown-menu');
+            if (dd) {
+                const open = dd.style.display === 'block';
+                document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = '');
+                dd.style.display = open ? '' : 'block';
+            }
+        };
+    });
     // Trending filter clicks
     document.querySelectorAll('.trending-filter').forEach(btn => {
         btn.onclick = () => loadTrending(btn.dataset.filter);
