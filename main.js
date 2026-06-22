@@ -118,6 +118,7 @@ function createCard(item, type) {
     const date = item.release_date || item.first_air_date;
     const div = document.createElement('div');
     div.className = 'card';
+    const genreName = item.genre_ids?.[0] ? (type==='movie'?MOVIE_GENRES:TV_GENRES).find(g=>g.id===item.genre_ids[0])?.name : null;
     div.innerHTML = `
         <img class="card-poster" src="${posterUrl(item.poster_path)}" alt="${title}" loading="lazy" onerror="this.src='${NO_POSTER}'">
         ${item.vote_average >= 8 ? '<span class="card-badge">Top</span>' : ''}
@@ -125,13 +126,11 @@ function createCard(item, type) {
             <div class="card-title" title="${title}">${title}</div>
             <div class="card-meta">
                 <span>${year(date)}</span>
-                <span class="card-rating">★ ${rating(item.vote_average)}</span>
+                ${item.vote_average ? `<span class="card-rating">★ ${rating(item.vote_average)}</span>` : ''}
             </div>
         </div>
     `;
-    div.onclick = () => {
-        window.location.href = `detail.html?id=${item.id}&type=${mediaType}`;
-    };
+    div.onclick = () => { window.location.href = `detail.html?id=${item.id}&type=${mediaType}`; };
     return div;
 }
 
@@ -326,10 +325,10 @@ async function loadHero() {
     const items = data.results.filter(i=>i.backdrop_path).slice(0,10);
     const item = items[Math.floor(Math.random()*items.length)];
     const type = item.media_type||'movie';
-    el('#hero').style.backgroundImage = `url(${backdropUrl(item.backdrop_path)})`;
+    el('#heroBg').style.backgroundImage = `url(${backdropUrl(item.backdrop_path)})`;
     el('#heroTitle').textContent = displayTitle(item);
     el('#heroOverview').textContent = truncate(item.overview, 200);
-    el('#heroMeta').innerHTML = `<span class="rating">★ ${rating(item.vote_average)}</span><span>${year(item.release_date||item.first_air_date)}</span><span>${type==='movie'?'Film':'Series'}</span>`;
+    el('#heroMeta').innerHTML = `<span class="rating-badge">★ ${rating(item.vote_average)}</span><span>${year(item.release_date||item.first_air_date)}</span><span>${type==='movie'?'Film':'Series'}</span>`;
     el('#heroBtn').onclick = () => {
         window.location.href = `detail.html?id=${item.id}&type=${type}`;
     };
