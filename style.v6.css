@@ -134,6 +134,18 @@ input{font-family:inherit;outline:none}
 .card-new{position:absolute;top:8px;left:52px;padding:2px 7px;border-radius:4px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:.58rem;font-weight:700;z-index:2;letter-spacing:.3px}
 .card-quality{position:absolute;bottom:48px;right:8px;padding:2px 7px;border-radius:4px;background:rgba(0,0,0,.75);color:#90d5ff;font-size:.55rem;font-weight:600;z-index:2;letter-spacing:.3px;border:1px solid rgba(255,255,255,.08)}
 
+/* WATCHLIST HEART */
+.card-heart{position:absolute;bottom:8px;right:8px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-size:.85rem;display:flex;align-items:center;justify-content:center;z-index:3;cursor:pointer;transition:all .3s ease;touch-action:manipulation;border:1px solid rgba(255,255,255,.08)}
+.card-heart:hover{transform:scale(1.15)}
+.card-heart.active{background:rgba(239,68,68,.8);border-color:rgba(239,68,68,.3);box-shadow:0 0 16px rgba(239,68,68,.3)}
+.card-heart.active::after{content:'\\2764'}
+.card-heart::after{content:'\\2661'}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);padding:12px 24px;border-radius:12px;background:rgba(17,17,24,.95);color:#fff;font-size:.85rem;font-weight:500;z-index:999;opacity:0;visibility:hidden;transition:all .35s cubic-bezier(.4,0,.2,1);box-shadow:0 8px 32px rgba(0,0,0,.5);border:1px solid var(--border);pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.toast .icon{margin-right:8px;font-size:1rem}
+
 /* === PAGE CONTENT === */
 .page-content{padding-top:calc(var(--nav-height) + 24px)}
 .page-title{font-family:'Righteous',sans-serif;font-size:1.4rem;font-weight:400;margin-bottom:24px;padding:0 24px;max-width:var(--max-w);margin-left:auto;margin-right:auto;letter-spacing:.5px}

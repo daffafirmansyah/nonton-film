@@ -142,7 +142,55 @@ function createCard(item, type) {
         </div>
     `;
     div.onclick = () => { window.location.href = `detail.html?id=${item.id}&type=${mediaType}`; };
+    // Watchlist heart
+    const heart = document.createElement('div');
+    heart.className = 'card-heart' + (isInWatchlist(item.id, mediaType) ? ' active' : '');
+    heart.onclick = (e) => {
+        e.stopPropagation();
+        toggleWatchlist(item, mediaType);
+        heart.classList.toggle('active');
+    };
+    div.appendChild(heart);
     return div;
+}
+
+// WATCHLIST
+function getWatchlist() {
+    try { return JSON.parse(localStorage.getItem('bermovie_watchlist') || '[]'); } catch { return []; }
+}
+function saveWatchlist(list) {
+    localStorage.setItem('bermovie_watchlist', JSON.stringify(list));
+}
+function isInWatchlist(id, type) {
+    return getWatchlist().some(i => i.id === id && i.type === type);
+}
+function toggleWatchlist(item, type) {
+    let list = getWatchlist();
+    const idx = list.findIndex(i => i.id === item.id && i.type === type);
+    if (idx > -1) {
+        list.splice(idx, 1);
+        showToast('Dihapus dari favorit');
+    } else {
+        list.push({
+            id: item.id, type: type || 'movie',
+            title: displayTitle(item),
+            poster: item.poster_path,
+            year: (item.release_date || item.first_air_date || '').substring(0,4),
+            rating: item.vote_average
+        });
+        showToast('Ditambahkan ke favorit');
+    }
+    saveWatchlist(list);
+}
+
+// TOAST
+function showToast(msg, icon) {
+    const t = el('#toast');
+    if (!t) return;
+    t.innerHTML = (icon||'') + msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), 2000);
 }
 
 // Fill empty grid spaces
@@ -554,6 +602,8 @@ function initHomePage() {
     // Indonesian content
     loadHomeCarousel('/discover/movie?with_origin_country=ID', 'indoMoviesCarousel', 'movie');
     loadHomeCarousel('/discover/tv?with_origin_country=ID', 'indoSeriesCarousel', 'tv');
+    // Check for watchlist
+    if (window.location.search.includes('watchlist')) renderWatchlist();
 }
 
 // MOVIES PAGE
@@ -886,6 +936,42 @@ async function doSearch(query, page=1) {
     renderPagination('searchPagination', Math.ceil(Math.min(data.total_pages, 20) / 2), page, p => doSearch(query, p));
 }
 
+// RENDER WATCHLIST
+function renderWatchlist() {
+    const section = el('#watchlistSection');
+    if (!section) return;
+    section.classList.remove('hidden');
+    const grid = el('#watchlistGrid');
+    const empty = el('#watchlistEmpty');
+    const list = getWatchlist();
+    if (list.length === 0) {
+        grid.innerHTML = '';
+        empty.style.display = '';
+        return;
+    }
+    empty.style.display = 'none';
+    grid.innerHTML = '';
+    list.forEach(item => {
+        // Create card from saved data (use TMDB image URL)
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `<img class="card-poster" src="https://image.tmdb.org/t/p/w500${item.poster}" alt="${item.title}" loading="lazy" onerror="this.src='${NO_POSTER}'">
+            <div class="card-info"><div class="card-title">${item.title}</div><div class="card-meta"><span>${item.year}</span><span class="card-rating">★ ${rating(item.rating)}</span></div></div>
+        `;
+        div.onclick = () => { window.location.href = `detail.html?id=${item.id}&type=${item.type}`; };
+        // Heart to remove
+        const heart = document.createElement('div');
+        heart.className = 'card-heart active';
+        heart.onclick = (e) => {
+            e.stopPropagation();
+            toggleWatchlist(item, item.type);
+            renderWatchlist();
+        };
+        div.appendChild(heart);
+        grid.appendChild(div);
+    });
+}
+
 function hideSearch() {
     ['trending','popularMovies','popularTv','topRated','nowPlaying','hero','indoMovies','indoSeries'].forEach(id => {
         const sec = el(`#${id}`);
@@ -974,10 +1060,31 @@ function initScrollEvents() {
     btn?.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
 }
 
+// KEYBOARD SHORTCUTS
+function initKeyboard() {
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            // Close all modals
+            document.querySelectorAll('.modal, .player-modal').forEach(m => {
+                if (!m.classList.contains('hidden')) {
+                    m.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            });
+            // Reset trailer buttons
+            const t = document.getElementById('detailTrailerBtn');
+            if (t) { t.textContent = 'Trailer'; t.onclick = null; }
+            const mt = document.getElementById('modalTrailerBtn');
+            if (mt) { mt.textContent = 'Trailer'; mt.onclick = null; }
+        }
+    });
+}
+
 // GLOBAL EVENTS
 function initGlobalEvents() {
     initNavDropdowns();
     initScrollEvents();
+    initKeyboard();
     // Search
     const searchInput = el('#searchInput');
     const searchBtn = el('#searchBtn');
