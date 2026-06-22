@@ -580,6 +580,13 @@ async function loadMovies(page = 1) {
     [...data.results, ...data2.results]
         .filter((item, i, arr) => arr.findIndex(x => x.id === item.id) === i)
         .slice(0,21).forEach(i => grid.appendChild(createCard(i, 'movie')));
+    // Update count badge on page title
+    const movieTitle = el('.page-title');
+    if (movieTitle && data.total_results) {
+        let c = movieTitle.querySelector('.count-badge');
+        if (!c) { c = document.createElement('span'); c.className = 'count-badge'; movieTitle.appendChild(c); }
+        c.textContent = data.total_results > 999 ? '999+' : data.total_results;
+    }
     const totalPages = Math.ceil(Math.min(data.total_pages, 500) / 2);
     renderPagination('moviePagination', totalPages, page, p => {
         currentPage = p;
@@ -849,18 +856,30 @@ async function doSearch(query, page=1) {
     }
     section.classList.remove('hidden');
     el('#searchTitle').textContent = `Hasil: "${query}" (${data.total_results})`;
+    // Update section title with count
+    const st = el('.page-title');
+    if (st && data.total_results > 0) {
+        let c = st.querySelector('.count-badge');
+        if (!c) { c = document.createElement('span'); c.className = 'count-badge'; st.appendChild(c); }
+        c.textContent = data.total_results > 999 ? '999+' : data.total_results;
+    }
     // Update URL so search persists on refresh
     const url = new URL(window.location);
     url.searchParams.set('q', query);
     window.history.replaceState(null, '', url);
     const grid = el('#searchGrid');
     grid.innerHTML = '';
-    // Fetch 21 items (7×3) from 2 TMDB pages
     const data2 = data.total_pages > 1 ? await tmdb('/search/multi', { query, page: page+1 }) : {results:[]};
-    [...data.results, ...data2.results]
+    const items = [...data.results, ...data2.results]
         .filter((item, i, arr) => arr.findIndex(x => x.id === item.id) === i)
         .filter(i => ['movie','tv'].includes(i.media_type))
-        .slice(0,21).forEach(i => grid.appendChild(createCard(i, i.media_type)));
+        .slice(0,21);
+    
+    if (items.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Film tidak ditemukan untuk "${query}"</p></div>';
+    } else {
+        items.forEach(i => grid.appendChild(createCard(i, i.media_type)));
+    }
     renderPagination('searchPagination', Math.ceil(Math.min(data.total_pages, 20) / 2), page, p => doSearch(query, p));
 }
 
