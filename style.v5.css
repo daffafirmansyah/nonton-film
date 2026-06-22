@@ -170,6 +170,7 @@ input{font-family:inherit;outline:none}
 .player-servers span{font-size:.72rem;color:var(--text3)}
 .server-btn{padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:500;background:rgba(255,255,255,.07);color:var(--text2);transition:var(--transition)}
 .server-btn.active{background:var(--accent);color:#fff}
+.player-servers.hidden{display:none!important}
 .iframe-container{flex:1;position:relative;background:#000}
 .iframe-container iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
 

@@ -183,8 +183,9 @@ async function openDetail(id, type = 'movie') {
             el('#playerModal').classList.remove('hidden');
             el('#playerTitle').textContent = 'Trailer: ' + title;
             el('#episodeSelector')?.classList.add('hidden');
-            // Hide server buttons, show single embed
+            document.querySelector('.player-servers')?.classList.add('hidden');
             el('#playerFrame').src = `https://www.youtube.com/embed/${tr.key}?autoplay=1&rel=0`;
+            el('#playerFrame').allow = 'autoplay; fullscreen';
             document.body.style.overflow = 'hidden';
         } else alert('Trailer tidak tersedia');
     };
@@ -295,6 +296,7 @@ function closeAllModals() {
     const f = el('#playerFrame');
     if (f) f.src = '';
     document.body.style.overflow = '';
+    document.querySelector('.player-servers')?.classList.remove('hidden');
 }
 
 // PAGINATION
@@ -798,7 +800,9 @@ async function loadDetailPage(id, type) {
             document.getElementById('playerModal').classList.remove('hidden');
             document.getElementById('playerTitle').textContent = 'Trailer: ' + title;
             document.getElementById('episodeSelector')?.classList.add('hidden');
+            document.querySelector('.player-servers')?.classList.add('hidden');
             document.getElementById('playerFrame').src = `https://www.youtube.com/embed/${tr.key}?autoplay=1&rel=0`;
+            document.getElementById('playerFrame').allow = 'autoplay; fullscreen';
             document.body.style.overflow = 'hidden';
         } else alert('Trailer tidak tersedia');
     };
