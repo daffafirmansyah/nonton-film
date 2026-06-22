@@ -99,7 +99,7 @@ input{font-family:inherit;outline:none}
 @media(min-width:640px){.grid .card{flex:0 0 calc(25% - 12px)}}
 @media(min-width:768px){.grid .card{flex:0 0 calc(20% - 13px)}}
 @media(min-width:1024px){.grid .card{flex:0 0 calc(14.28% - 14px)}}
-@media(min-width:1280px){.grid .card{flex:0 0 calc(12.5% - 14px)}}
+@media(min-width:1400px){.grid .card{flex:0 0 calc(14.28% - 14px)}}
 
 /* === CARDS === */
 .carousel{display:flex;gap:14px;overflow-x:auto;padding:4px 0 16px}
