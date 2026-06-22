@@ -179,8 +179,14 @@ async function openDetail(id, type = 'movie') {
     const trailerBtn = el('#modalTrailerBtn');
     if (trailerBtn) trailerBtn.onclick = () => {
         const tr = vids?.results?.find(v => v.type==='Trailer'&&v.site==='YouTube');
-        if(tr) window.open(`https://www.youtube.com/watch?v=${tr.key}`,'_blank');
-        else alert('Trailer tidak tersedia');
+        if(tr) {
+            el('#playerModal').classList.remove('hidden');
+            el('#playerTitle').textContent = title;
+            el('#episodeSelector')?.classList.add('hidden');
+            el('#playerFrame').src = `https://www.youtube.com/embed/${tr.key}?autoplay=1&rel=0`;
+            el('#playerFrame').allow = 'autoplay; fullscreen';
+            document.body.style.overflow = 'hidden';
+        } else alert('Trailer tidak tersedia');
     };
 
     const seasonsSection = el('#seasonsSection');
@@ -789,8 +795,14 @@ async function loadDetailPage(id, type) {
     document.getElementById('detailWatchBtn').onclick = () => openPlayer(id, type, title);
     document.getElementById('detailTrailerBtn').onclick = () => {
         const tr = videosData?.results?.find(v => v.type==='Trailer'&&v.site=='YouTube');
-        if(tr) window.open(`https://www.youtube.com/watch?v=${tr.key}`,'_blank');
-        else alert('Trailer tidak tersedia');
+        if(tr) {
+            document.getElementById('playerModal').classList.remove('hidden');
+            document.getElementById('playerTitle').textContent = title;
+            document.getElementById('episodeSelector')?.classList.add('hidden');
+            document.getElementById('playerFrame').src = `https://www.youtube.com/embed/${tr.key}?autoplay=1&rel=0`;
+            document.getElementById('playerFrame').allow = 'autoplay; fullscreen';
+            document.body.style.overflow = 'hidden';
+        } else alert('Trailer tidak tersedia');
     };
 
     // Seasons (TV)
