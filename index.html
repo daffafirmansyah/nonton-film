@@ -1,490 +1,236 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>BerMovie</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Righteous&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BerMovie - Nonton Film & Series</title>
+    <meta name="description" content="Nonton film dan series terbaru dengan subtitle Indonesia gratis.">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.v11.css?v=1">
+<link rel="stylesheet" href="futuristic.css?v=1">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0b0b12;--card:#13131e;--text:#ececf0;--dim:#6a6a7e;--accent:#f97316;--glow:rgba(249,115,22,.25);--rad:10px;--max-w:1440px}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;overflow-x:hidden}
-h1,h2,h3{font-family:'Righteous',cursive;letter-spacing:.5px}
-
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:0 20px;height:60px;display:flex;align-items:center;gap:24px;background:linear-gradient(180deg,rgba(11,11,18,.98),transparent)}
-nav .brand{font-family:'Righteous',cursive;font-size:1.2rem;color:var(--text)}
-nav .brand span{color:var(--accent)}
-nav .nav-links{display:flex;gap:4px;flex:1}
-nav .nav-links a{padding:6px 14px;border-radius:999px;font-size:.82rem;color:var(--dim);text-decoration:none;transition:all .25s;font-weight:400}
-nav .nav-links a:hover,nav .nav-links a.active{color:var(--text);background:rgba(255,255,255,.05)}
-nav .search-wrap{position:relative}
-nav .search-wrap input{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:7px 14px 7px 34px;color:var(--text);font-size:.82rem;width:200px;outline:none;transition:all .3s;font-family:'Poppins',sans-serif}
-nav .search-wrap input:focus{width:280px;border-color:var(--accent);background:rgba(255,255,255,.08)}
-nav .search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);opacity:.4;width:15px;height:15px}
-
-/* HERO */
-.hero{position:relative;height:70vh;min-height:420px;max-height:600px;overflow:hidden;margin-bottom:32px}
-.hero .backdrop{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(60px) brightness(.3);transform:scale(1.1);transition:background-image .5s}
-.hero .overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,11,18,.85)30%,transparent 70%),linear-gradient(0deg,rgba(11,11,18,1)0%,transparent 40%)}
-.hero .content{position:relative;z-index:2;height:100%;display:flex;align-items:flex-end;padding:0 32px 60px;max-width:var(--max-w);margin:0 auto;width:100%}
-.hero .poster{flex:0 0 160px;border-radius:10px;overflow:hidden;margin-right:28px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
-.hero .poster img{width:100%;display:block;aspect-ratio:2/3;object-fit:cover}
-.hero .info{flex:1;min-width:0}
-.hero .info .type{display:inline-block;font-size:.7rem;font-weight:600;padding:3px 12px;border-radius:999px;background:var(--accent);color:#fff;margin-bottom:10px;letter-spacing:1px;text-transform:uppercase}
-.hero .info h1{font-size:2rem;margin-bottom:6px;line-height:1.2}
-.hero .info .meta{font-size:.82rem;color:var(--dim);margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.hero .info .meta .star{color:#f5c518}
-.hero .info .genres{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.hero .info .genres span{font-size:.7rem;padding:2px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.08);color:var(--dim)}
-.hero .info .desc{font-size:.85rem;color:var(--dim);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:16px;max-width:560px}
-.hero .info .actions{display:flex;gap:10px}
-.hero .info .btn-play{padding:11px 28px;border-radius:999px;border:none;background:var(--accent);color:#fff;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:8px;font-family:'Poppins',sans-serif}
-.hero .info .btn-play:hover{box-shadow:0 0 30px var(--glow);transform:scale(1.03)}
-.hero .info .btn-trailer{padding:11px 24px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--text);font-size:.85rem;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:6px;font-family:'Poppins',sans-serif;backdrop-filter:blur(4px)}
-.hero .info .btn-trailer:hover{background:rgba(255,255,255,.08);border-color:var(--accent)}
-
-/* HERO NAV DOTS */
-.hero-dots{position:absolute;bottom:24px;right:32px;z-index:3;display:flex;gap:6px}
-.hero-dots button{width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,.2);cursor:pointer;transition:all .3s}
-.hero-dots button.active{width:24px;border-radius:4px;background:var(--accent)}
-
-/* CONTENT ROWS */
-.section{padding:0 24px 32px;max-width:var(--max-w);margin:0 auto}
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.section-header h2{font-size:1.15rem;position:relative;padding-left:14px}
-.section-header h2::before{content:'';position:absolute;left:0;top:2px;bottom:2px;width:3px;border-radius:2px;background:var(--accent)}
-.section-header a{font-size:.78rem;color:var(--dim);text-decoration:none;transition:color .25s}
-.section-header a:hover{color:var(--accent)}
-
-/* FILTER PILLS */
-.filter-bar{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-.filter-bar button{padding:5px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.06);background:transparent;color:var(--dim);font-size:.78rem;cursor:pointer;transition:all .25s;font-family:'Poppins',sans-serif}
-.filter-bar button:hover{color:var(--text);background:rgba(255,255,255,.04)}
-.filter-bar button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-
-/* CARD ROW (horizontal scroll) */
-.card-row{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
-.card-row::-webkit-scrollbar{display:none}
-.card-row .card{flex:0 0 auto;width:165px;border-radius:var(--rad);overflow:hidden;cursor:pointer;position:relative;background:var(--card);transition:transform .3s,box-shadow .3s;border:1px solid rgba(255,255,255,.04)}
-.card-row .card:hover{transform:scale(1.04);box-shadow:0 8px 30px rgba(0,0,0,.4);z-index:2}
-.card-row .card .poster{aspect-ratio:2/3;overflow:hidden}
-.card-row .card .poster img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
-.card-row .card:hover .poster img{transform:scale(1.06)}
-.card-row .card .info{padding:8px 8px 10px}
-.card-row .card .info .tt{font-size:.8rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card-row .card .info .yr{font-size:.7rem;color:var(--dim);margin-top:1px}
-.card-row .card .badge{position:absolute;top:6px;right:6px;font-size:.65rem;font-weight:600;padding:2px 8px;border-radius:4px;background:var(--accent);color:#fff;z-index:2}
-.card-row .card .rank{position:absolute;top:4px;left:4px;font-size:2.2rem;font-weight:700;color:var(--accent);text-shadow:0 2px 10px rgba(0,0,0,.5);z-index:2;line-height:1;font-family:'Righteous',cursive;width:40px;text-align:center}
-
-/* GRID PAGE (movies/tv listing) */
-.grid-page{padding:80px 24px 32px;max-width:var(--max-w);margin:0 auto}
-.grid-page .grid{display:flex;flex-wrap:wrap;gap:14px}
-.grid-page .grid .card{flex:0 0 calc(50% - 7px);border-radius:var(--rad);overflow:hidden;cursor:pointer;position:relative;background:var(--card);border:1px solid rgba(255,255,255,.04)}
-@media(min-width:480px){.grid-page .grid .card{flex:0 0 calc(33.33% - 10px)}}
-@media(min-width:640px){.grid-page .grid .card{flex:0 0 calc(25% - 11px)}}
-@media(min-width:768px){.grid-page .grid .card{flex:0 0 calc(20% - 12px)}}
-@media(min-width:1024px){.grid-page .grid .card{flex:0 0 calc(14.28% - 13px)}}
-.grid-page .grid .card .poster{aspect-ratio:2/3;overflow:hidden}
-.grid-page .grid .card .poster img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
-.grid-page .grid .card:hover .poster img{transform:scale(1.05)}
-.grid-page .grid .card .info{padding:10px}
-.grid-page .grid .card .info .tt{font-size:.82rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.grid-page .grid .card .info .yr{font-size:.72rem;color:var(--dim);margin-top:2px}
-
-/* PLAYER OVERLAY (full viewport takeover) */
-.player-overlay{position:fixed;inset:0;z-index:200;display:none;background:#000;flex-direction:column}
-.player-overlay.active{display:flex}
-.player-overlay .player-top{display:flex;align-items:center;padding:12px 20px;gap:12px;z-index:3;background:linear-gradient(180deg,rgba(0,0,0,.9),transparent)}
-.player-overlay .player-top button{width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,.08);color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .25s}
-.player-overlay .player-top button:hover{background:rgba(255,255,255,.15)}
-.player-overlay .player-top .pt-title{flex:1;font-size:.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.player-overlay .player-top .pt-title .pt-sub{font-size:.7rem;color:var(--dim);font-weight:400;margin-left:6px}
-.player-overlay .player-main{flex:1;position:relative;display:flex;align-items:center;justify-content:center;background:#000}
-.player-overlay .player-main iframe{width:100%;height:100%;border:none;max-width:1280px;max-height:720px}
-.player-overlay .player-bottom{display:flex;align-items:center;gap:10px;padding:12px 20px;background:linear-gradient(0deg,rgba(0,0,0,.9),transparent);z-index:3;overflow-x:auto;scrollbar-width:none}
-.player-overlay .player-bottom::-webkit-scrollbar{display:none}
-.player-overlay .player-bottom .server-label{font-size:.72rem;color:var(--dim);white-space:nowrap}
-.player-overlay .player-bottom .svr{padding:6px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--dim);font-size:.78rem;cursor:pointer;transition:all .25s;white-space:nowrap;font-family:'Poppins',sans-serif}
-.player-overlay .player-bottom .svr.active,.player-overlay .player-bottom .svr:hover{color:var(--text);border-color:var(--accent);background:rgba(249,115,22,.1)}
-
-/* EPISODE BOTTOM SHEET */
-.ep-sheet{position:fixed;bottom:0;left:0;right:0;z-index:210;background:#1a1a26;border-radius:16px 16px 0 0;max-height:50vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);padding:20px}
-.ep-sheet.active{transform:translateY(0)}
-.ep-sheet .handle{width:40px;height:4px;border-radius:2px;background:rgba(255,255,255,.12);margin:0 auto 16px}
-.ep-sheet h3{font-size:1rem;margin-bottom:12px}
-.ep-sheet .season-pills{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.ep-sheet .season-pills button{padding:5px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.06);background:transparent;color:var(--dim);font-size:.78rem;cursor:pointer;transition:all .25s;font-family:'Poppins',sans-serif}
-.ep-sheet .season-pills button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.ep-sheet .ep-list{display:flex;flex-direction:column;gap:6px}
-.ep-sheet .ep-list .ep{padding:10px 14px;border-radius:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .2s}
-.ep-sheet .ep-list .ep:hover{background:rgba(255,255,255,.04)}
-.ep-sheet .ep-list .ep .num{font-size:1.2rem;font-weight:700;color:var(--dim);width:36px;text-align:center;font-family:'Righteous',cursive}
-.ep-sheet .ep-list .ep .info{flex:1;min-width:0}
-.ep-sheet .ep-list .ep .info .t{font-size:.82rem;}
-.ep-sheet .ep-list .ep .info .s{font-size:.7rem;color:var(--dim)}
-.ep-sheet .ep-list .ep .check{color:var(--accent);font-size:.8rem}
-
-/* TRAILER INLINE (in player top area) */
-.trailer-inline{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:205;background:#000}
-.trailer-inline.active{display:block}
-.trailer-inline iframe{width:100%;height:100%;border:none}
-.trailer-inline .close-trailer{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.6);border:none;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:6}
-
-/* SCROLLBAR */
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.06);border-radius:2px}
-
-@media(max-width:768px){
-  nav{padding:0 12px;height:52px;gap:10px}
-  nav .nav-links{display:none}
-  nav .search-wrap input{width:140px}
-  .hero{height:50vh;min-height:320px}
-  .hero .content{padding:0 16px 40px}
-  .hero .poster{flex:0 0 100px;margin-right:16px}
-  .hero .info h1{font-size:1.3rem}
-  .hero .info .desc{display:none}
-  .section{padding:0 14px 24px}
-  .card-row .card{width:140px}
-  .player-overlay .player-top{padding:8px 12px}
-  .player-overlay .player-main iframe{max-width:100%}
-}
+.mobile-menu{position:fixed;top:64px;left:0;right:0;height:calc(100vh - 64px);height:calc(100dvh - 64px);background:#0c0c14!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;z-index:99;overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translateX(100%);transition:transform .3s ease}.mobile-menu.open{transform:translateX(0)}.mobile-menu a{display:block;padding:16px 20px;font-size:1rem;font-weight:600;color:#e8e8ef;touch-action:manipulation;border-bottom:1px solid rgba(255,255,255,.06)}.mobile-menu a:last-child{border-bottom:none}.mobile-menu a:active{background:rgba(255,255,255,.06)}.mobile-menu a.active{color:var(--accent)}
 </style>
 </head>
 <body>
+<div class="scroll-progress" id="scrollProgress"></div>
 
-<!-- NAV -->
-<nav>
-  <div class="brand">Ber<span>Movie</span></div>
-  <div class="nav-links">
-    <a href="/" class="active">Home</a>
-    <a href="/">Movies</a>
-    <a href="/">TV Series</a>
-    <a href="/">Genres</a>
-    <a href="/">Country</a>
-    <a href="/">Year</a>
-  </div>
-  <div class="search-wrap">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input id="searchInput" placeholder="Cari film..." autocomplete="off">
-  </div>
-</nav>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="./" class="logo">BerMovie</a>
+            <div class="nav-search">
+                <input type="text" id="searchInput" placeholder="Cari film atau series..." autocomplete="off">
+                <button id="searchBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+            </div>
+            <div class="nav-links">
+                <a href="./" class="active" data-nav="home">Home</a>
+                <a href="movies.html" data-nav="movies">Film</a>
+                <a href="tv.html" data-nav="tv">Series</a>
+                <div class="nav-dropdown">
+                    <span class="nav-dropdown-trigger" data-nav="genre">Genre ▾</span>
+                    <div class="dropdown-menu" id="genreDropdown"></div>
+                </div>
+                <div class="nav-dropdown">
+                    <span class="nav-dropdown-trigger">Country ▾</span>
+                    <div class="dropdown-menu" id="countryDropdown"></div>
+                </div>
+                <div class="nav-dropdown">
+                    <span class="nav-dropdown-trigger">Tahun ▾</span>
+                    <div class="dropdown-menu" id="yearDropdown"></div>
+                </div>
+                <a href="./?watchlist" class="nav-fav">Favorit</a>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" style="cursor:pointer;z-index:101;position:relative"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="pointer-events:none"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="mobile-search">
+                <input type="text" id="mobileSearchInput" placeholder="Cari film atau series..." autocomplete="off">
+                <button id="mobileSearchBtn" >Cari</button>
+            </div>
+            <a href="./" data-nav="home">Home</a>
+            <a href="movies.html" data-nav="movies">Film</a>
+            <a href="tv.html" data-nav="tv">Series</a>
+            <a href="genre.html" data-nav="genre">Genre</a>
+            <a href="leaderboard.html" data-nav="leaderboard">Peringkat</a>
+            <a href="movies.html" data-nav="tahun">Tahun</a>
+            <a href="movies.html" data-nav="country">Country</a>
+            <a href="./?watchlist" data-nav="watchlist">Favorit</a>
+        </div>
+    </nav>
 
-<!-- HERO -->
-<div class="hero" id="hero">
-  <div class="backdrop" id="heroBg"></div>
-  <div class="overlay"></div>
-  <div class="content">
-    <div class="poster" id="heroPoster"></div>
-    <div class="info">
-      <div class="type" id="heroType"></div>
-      <h1 id="heroTitle"></h1>
-      <div class="meta" id="heroMeta"></div>
-      <div class="genres" id="heroGenres"></div>
-      <div class="desc" id="heroDesc"></div>
-      <div class="actions">
-        <button class="btn-play" id="heroPlayBtn">▶ Tonton</button>
-        <button class="btn-trailer" id="heroTrailerBtn">▶ Trailer</button>
-      </div>
+    <!-- HERO CAROUSEL -->
+    <section class="hero" id="hero">
+        <div class="hero-slides" id="heroSlides">
+            <div class="hero-slide active" id="heroSlide0"></div>
+            <div class="hero-slide" id="heroSlide1"></div>
+            <div class="hero-slide" id="heroSlide2"></div>
+            <div class="hero-slide" id="heroSlide3"></div>
+            <div class="hero-slide" id="heroSlide4"></div>
+        </div>
+        <div class="hero-content" id="heroContent">
+            <div class="hero-badge" id="heroBadge">Trending</div>
+            <h1 class="hero-title" id="heroTitle">Loading...</h1>
+            <p class="hero-desc" id="heroOverview"></p>
+            <div class="hero-meta" id="heroMeta"></div>
+            <div class="hero-actions">
+                <button class="btn-watch" id="heroBtn">Tonton Sekarang</button>
+            </div>
+        </div>
+        <div class="hero-dots" id="heroDots"></div>
+        <button class="hero-arrow hero-arrow-left" id="heroPrev">‹</button>
+        <button class="hero-arrow hero-arrow-right" id="heroNext">›</button>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- TRENDING -->
+        <section class="section" id="trending">
+            <div class="section-header">
+                <h2 class="section-title">Trending Hari Ini</h2>
+            </div>
+            <div class="trending-filters">
+                <button class="trending-filter active" data-filter="all">All</button>
+                <button class="trending-filter" data-filter="movie">Movies</button>
+                <button class="trending-filter" data-filter="tv">TV Series</button>
+            </div>
+            <div class="trending-list" id="trendingList"></div>
+        </section>
+        
+        <!-- GENRE PILLS -->
+        <div class="genre-pills" id="genrePills"></div>
+
+        <!-- POPULAR MOVIES -->
+        <section class="section" id="popularMovies">
+            <div class="section-header">
+                <h2 class="section-title">Film Populer</h2>
+                <a href="movies.html" class="see-all">Lihat Semua →</a>
+            </div>
+            <div class="carousel" id="moviesCarousel"></div>
+        </section>
+
+        <!-- POPULAR TV -->
+        <section class="section" id="popularTv">
+            <div class="section-header">
+                <h2 class="section-title">Series Populer</h2>
+                <a href="tv.html" class="see-all">Lihat Semua →</a>
+            </div>
+            <div class="carousel" id="tvCarousel"></div>
+        </section>
+
+        <!-- TOP RATED -->
+        <section class="section" id="topRated">
+            <div class="section-header">
+                <h2 class="section-title">Rating Tertinggi</h2>
+            </div>
+            <div class="carousel" id="topRatedCarousel"></div>
+        </section>
+
+        <!-- NOW PLAYING -->
+        <section class="section" id="nowPlaying">
+            <div class="section-header">
+                <h2 class="section-title">Sedang Tayang</h2>
+            </div>
+            <div class="carousel" id="nowPlayingCarousel"></div>
+        </section>
+
+        <!-- INDONESIA MOVIES -->
+        <section class="section" id="indoMovies">
+            <div class="section-header">
+                <h2 class="section-title">Film Indonesia</h2>
+                <a href="movies.html?country=ID" class="see-all">Lihat Semua →</a>
+            </div>
+            <div class="carousel" id="indoMoviesCarousel"></div>
+        </section>
+
+        <!-- INDONESIA SERIES -->
+        <section class="section" id="indoSeries">
+            <div class="section-header">
+                <h2 class="section-title">Series Indonesia</h2>
+                <a href="tv.html?country=ID" class="see-all">Lihat Semua →</a>
+            </div>
+            <div class="carousel" id="indoSeriesCarousel"></div>
+        </section>
+
+        <!-- SEARCH RESULTS -->
+        <section class="section hidden" id="searchResults">
+            <h2 class="section-title" id="searchTitle">Hasil Pencarian</h2>
+            <div class="grid" id="searchGrid"></div>
+            <div class="pagination" id="searchPagination"></div>
+        </section>
+
+        <!-- WATCHLIST -->
+        <section class="section hidden" id="watchlistSection">
+            <div class="section-header">
+                <h2 class="section-title">Favorit</h2>
+            </div>
+            <div class="grid" id="watchlistGrid"></div>
+            <div class="empty-state" id="watchlistEmpty"><p>Belum ada film favorit</p></div>
+        </section>
+    </main>
+
+    <!-- DETAIL MODAL -->
+    <div class="modal hidden" id="detailModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-hero" id="modalHero"></div>
+            <div class="modal-body">
+                <h2 id="modalTitle"></h2>
+                <div class="modal-meta" id="modalMeta"></div>
+                <p class="modal-overview" id="modalOverview"></p>
+                <div class="modal-cast" id="modalCast"></div>
+                <div class="modal-actions">
+                    <button class="btn-watch" id="modalWatchBtn">Tonton</button>
+                    <button class="btn-secondary trailer-btn" id="modalTrailerBtn"><span class="t-il"></span><span class="t-txt">Trailer</span><span class="t-ir">▶</span></button>
+                </div>
+                <div class="seasons-section hidden" id="seasonsSection">
+                    <h3>Seasons</h3>
+                    <div class="seasons-list" id="seasonsList"></div>
+                </div>
+                <div class="similar-section">
+                    <h3>Rekomendasi</h3>
+                    <div class="carousel" id="similarCarousel"></div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="hero-dots" id="heroDots"></div>
-</div>
 
-<!-- TRENDING -->
-<div class="section">
-  <div class="section-header">
-    <h2>Trending</h2>
-    <a href="#">View All</a>
-  </div>
-  <div class="filter-bar" id="trendingFilter">
-    <button class="active" data-filter="all">All</button>
-    <button data-filter="movie">Movies</button>
-    <button data-filter="tv">TV Series</button>
-  </div>
-  <div class="card-row" id="trendingRow"></div>
-</div>
+    <!-- PLAYER MODAL -->
+    <div class="player-modal hidden" id="playerModal">
+        <div class="player-backdrop"></div>
+        <div class="player-content">
+            <div class="player-header">
+                <h3 id="playerTitle"></h3>
+                <div class="player-servers">
+                    <span>Server:</span>
+                    <button class="server-btn active" data-server="vidsrc">VidSrc</button>
+                    <button class="server-btn" data-server="vidsrc2">VidSrc.su</button>
+                    <button class="server-btn" data-server="2embed">2Embed</button>
+                </div>
+                <button class="player-close">&times;</button>
+            </div>
+            <div class="episode-selector hidden" id="episodeSelector">
+                <select id="seasonSelect"></select>
+                <div class="episodes-grid" id="episodesGrid"></div>
+            </div>
+            <div class="iframe-container">
+                <iframe id="playerFrame" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
 
-<!-- POPULAR -->
-<div class="section">
-  <div class="section-header">
-    <h2>Populer</h2>
-    <a href="#">View All</a>
-  </div>
-  <div class="card-row" id="popularRow"></div>
-</div>
+    <!-- FOOTER -->
+<button class="back-top" id="backTop">&uarr;</button>
+<div class="toast" id="toast"></div>
+    <footer class="site-footer">
+        <p>BerMovie — Streaming Film & Series Sub Indo</p>
+        <p class="disclaimer">Kami tidak menyimpan file video di server kami. Semua konten disediakan oleh pihak ketiga.</p>
+    </footer>
 
-<!-- PLAYER OVERLAY -->
-<div class="player-overlay" id="player">
-  <div class="player-top">
-    <button id="playerBack">←</button>
-    <div class="pt-title"><span id="playerTitle"></span><span class="pt-sub" id="playerSub"></span></div>
-    <button id="playerEpBtn" style="display:none">📋 Episode</button>
-  </div>
-  <div class="player-main">
-    <iframe id="playerFrame" allow="autoplay; fullscreen" allowfullscreen></iframe>
-  </div>
-  <div class="player-bottom" id="serverBar">
-    <span class="server-label">Server:</span>
-  </div>
-</div>
-
-<!-- EPISODE SHEET -->
-<div class="ep-sheet" id="epSheet">
-  <div class="handle"></div>
-  <h3>Episode</h3>
-  <div class="season-pills" id="seasonPills"></div>
-  <div class="ep-list" id="epList"></div>
-</div>
-
-<!-- TRAILER OVERLAY -->
-<div class="trailer-inline" id="trailerOverlay">
-  <iframe id="trailerFrame" allow="autoplay; fullscreen" allowfullscreen></iframe>
-  <button class="close-trailer" id="closeTrailer">✕</button>
-</div>
-
-<script>
-const KEY='245f8c4922de78b5017c149fbfa89ab5';
-const IMG='https://image.tmdb.org/t/p';
-const API='https://api.themoviedb.org/3';
-const $=s=>document.querySelector(s);
-const $$=s=>document.querySelectorAll(s);
-const tmdb=e=>fetch(`${API}${e}${e.includes('?')?'&':'?'}api_key=${KEY}&language=id-ID`).then(r=>r.json());
-
-let trending=[],popular=[],heroItems=[],heroIdx=0,currentMovie=null,servers=['vidsrcme','vidsrc'];
-let epCache={};
-
-// INIT
-async function init(){
-  await loadTrending();
-  await loadPopular();
-  initHero();
-  initEvents();
-}
-servers.forEach(s=>{
-  const b=document.createElement('button');
-  b.className='svr'+(s===servers[0]?' active':'');
-  b.textContent=s;
-  b.dataset.server=s;
-  $('#serverBar').appendChild(b);
-});
-
-async function loadTrending(){
-  const d=await tmdb('/trending/all/day');
-  trending=d.results||[];
-  heroItems=trending.slice(0,5);
-  renderCards(trending,'#trendingRow',true);
-  renderHeroDots();
-}
-
-async function loadPopular(){
-  const d=await tmdb('/movie/popular');
-  popular=d.results||[];
-  renderCards(popular,'#popularRow');
-}
-
-function renderCards(list,sel,showRank){
-  const row=$(sel);
-  row.innerHTML=list.map((x,i)=>{
-    const p=x.poster_path?`${IMG}/w342${x.poster_path}`:'';
-    const t=x.title||x.name||'';
-    const y=(x.release_date||x.first_air_date||'').slice(0,4);
-    return `<div class="card" data-id="${x.id}" data-tt="${x.title?'movie':'tv'}">
-      ${showRank?`<div class="rank">${i+1}</div>`:''}
-      <div class="poster">${p?`<img src="${p}" loading="lazy">`:'<div style="height:100%;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:.7rem">No Poster</div>'}</div>
-      <div class="info"><div class="tt">${t}</div><div class="yr">${y}</div></div>
-    </div>`;
-  }).join('');
-}
-
-function renderHeroDots(){
-  const c=$('#heroDots');
-  c.innerHTML=heroItems.map((_,i)=>`<button class="${i===0?'active':''}" data-idx="${i}"></button>`).join('');
-}
-
-function setHero(idx){
-  const x=heroItems[idx];
-  if(!x)return;
-  heroIdx=idx;
-  const t=x.title||x.name||'';
-  const y=(x.release_date||x.first_air_date||'').slice(0,4);
-  const bg=x.backdrop_path?`${IMG}/original${x.backdrop_path}`:'';
-  const poster=x.poster_path?`${IMG}/w185${x.poster_path}`:'';
-  $('#heroBg').style.backgroundImage=bg?`url(${bg})`:'none';
-  $('#heroPoster').innerHTML=poster?`<img src="${poster}">`:'';
-  $('#heroType').textContent=x.title?'MOVIE':'TV SERIES';
-  $('#heroTitle').textContent=t;
-  $('#heroMeta').innerHTML=`${y} · <span class="star">★</span> ${x.vote_average?.toFixed(1)||'?'}`;
-  $('#heroGenres').innerHTML=(x.genre_ids||[]).slice(0,3).map(g=>`<span>${genreName(g)}</span>`).join('');
-  $('#heroDesc').textContent=x.overview||'';
-  currentMovie=x;
-  $$('#heroDots button').forEach((b,i)=>b.classList.toggle('active',i===idx));
-}
-
-function genreName(id){
-  const map={28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',99:'Documentary',18:'Drama',10751:'Family',14:'Fantasy',36:'History',27:'Horror',10402:'Music',9648:'Mystery',10749:'Romance',878:'Sci-Fi',10770:'TV Movie',53:'Thriller',10752:'War',37:'Western'};
-  return map[id]||'';
-}
-
-function initHero(){
-  if(heroItems.length)setHero(0);
-}
-
-// OPEN PLAYER
-async function openPlayer(x){
-  if(!x)return;
-  const type=x.title?'movie':'tv';
-  const overlay=$('#player');
-  overlay.classList.add('active');
-  $('#playerTitle').textContent=x.title||x.name||'';
-  $('#playerSub').textContent=(x.release_date||x.first_air_date||'').slice(0,4);
-  document.body.style.overflow='hidden';
-
-  // TV episodes
-  if(type==='tv'){
-    $('#playerEpBtn').style.display='';
-    loadSeasons(x);
-  } else {
-    $('#playerEpBtn').style.display='none';
-  }
-
-  loadServer(servers[0],x,type,1,1);
-}
-
-function loadServer(srv,x,type,season,episode){
-  const id=x.id;
-  const maps={'vidsrcme':`https://vidsrcme.ru/embed/${type}?tmdb=${id}${type==='tv'?`&season=${season}&episode=${episode}`:''}`,
-              'vidsrc':`https://vidsrc.su/embed/${type}/${id}${type==='tv'?`/${season}/${episode}`:''}`};
-  $('#playerFrame').src=maps[srv]||maps['vidsrcme'];
-  $$('.svr').forEach(b=>b.classList.toggle('active',b.dataset.server===srv));
-}
-
-// SEASONS
-async function loadSeasons(x){
-  const d=await tmdb(`/tv/${x.id}`);
-  const seasons=(d.seasons||[]).filter(s=>s.season_number>0);
-  const pills=$('#seasonPills');
-  pills.innerHTML=seasons.map(s=>`<button class="${s===seasons[seasons.length-1]?'active':''}" data-s="${s.season_number}">S${s.season_number}</button>`).join('');
-  if(seasons.length)loadEpisodes(x,seasons[seasons.length-1].season_number);
-}
-
-async function loadEpisodes(x,sn){
-  if(epCache[`${x.id}-${sn}`]){renderEps(epCache[`${x.id}-${sn}`],sn);return;}
-  const d=await tmdb(`/tv/${x.id}/season/${sn}`);
-  const eps=d.episodes||[];
-  epCache[`${x.id}-${sn}`]=eps;
-  renderEps(eps,sn);
-}
-
-function renderEps(eps,sn){
-  const list=$('#epList');
-  list.innerHTML=eps.map((e,i)=>`<div class="ep" data-ep="${e.episode_number}" data-s="${sn}">
-    <div class="num">${e.episode_number}</div>
-    <div class="info"><div class="t">${e.name||`Episode ${e.episode_number}`}</div><div class="s">${e.runtime||''}m</div></div>
-    <div class="check">${i===0?'▶':''}</div>
-  </div>`).join('');
-  $$('#seasonPills button').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.s)===sn));
-}
-
-// EVENTS
-function initEvents(){
-  // Hero play
-  $('#heroPlayBtn').onclick=()=>openPlayer(currentMovie);
-  $('#heroTrailerBtn').onclick=()=>{
-    const x=currentMovie;if(!x)return;
-    const tt=x.title?'movie':'tv';
-    tmdb(`/${tt}/${x.id}/videos`).then(d=>{
-      const tr=(d.results||[]).find(v=>v.type==='Trailer'&&v.site==='YouTube');
-      if(tr){
-        $('#trailerOverlay').classList.add('active');
-        $('#trailerFrame').src=`https://www.youtube.com/embed/${tr.key}?autoplay=1&rel=0`;
-      }
-    });
-  };
-  $('#closeTrailer').onclick=()=>{
-    $('#trailerOverlay').classList.remove('active');
-    $('#trailerFrame').src='';
-  };
-
-  // Card clicks (delegated)
-  document.addEventListener('click',e=>{
-    const card=e.target.closest('.card-row .card,.grid-page .card');
-    if(!card)return;
-    const id=parseInt(card.dataset.id);
-    const tt=card.dataset.tt;
-    // Find in trending or popular
-    const x=[...trending,...popular].find(m=>m.id===id);
-    if(x)openPlayer(x);
-  });
-
-  // Hero dots
-  $('#heroDots').addEventListener('click',e=>{
-    const btn=e.target.closest('button');
-    if(btn&&btn.dataset.idx!==undefined)setHero(parseInt(btn.dataset.idx));
-  });
-
-  // Player back
-  $('#playerBack').onclick=()=>{
-    $('#player').classList.remove('active');
-    $('#playerFrame').src='';
-    document.body.style.overflow='';
-  };
-  $('#playerEpBtn').onclick=()=>$('#epSheet').classList.toggle('active');
-
-  // Server switch
-  $('#serverBar').addEventListener('click',e=>{
-    const btn=e.target.closest('.svr');
-    if(!btn)return;
-    const ep=document.querySelector('.ep.active');
-    const sn=parseInt(document.querySelector('#seasonPills .active')?.dataset.s||1);
-    const en=parseInt(ep?.dataset.ep||1);
-    loadServer(btn.dataset.server,currentMovie,currentMovie?.title?'movie':'tv',sn,en);
-  });
-
-  // Season switch
-  $('#seasonPills').addEventListener('click',e=>{
-    const btn=e.target.closest('button');
-    if(!btn)return;
-    loadEpisodes(currentMovie,parseInt(btn.dataset.s));
-  });
-
-  // Episode click
-  $('#epList').addEventListener('click',e=>{
-    const ep=e.target.closest('.ep');
-    if(!ep)return;
-    const en=parseInt(ep.dataset.ep);
-    const sn=parseInt(ep.dataset.s);
-    const activeSrv=document.querySelector('.svr.active');
-    loadServer(activeSrv?.dataset.server||servers[0],currentMovie,currentMovie?.title?'movie':'tv',sn,en);
-    setTimeout(()=>$('#epSheet').classList.remove('active'),300);
-  });
-
-  // Escape to close
-  document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'){
-      if($('#trailerOverlay').classList.contains('active')){$('#trailerOverlay').classList.remove('active');$('#trailerFrame').src='';return;}
-      if($('#epSheet').classList.contains('active')){$('#epSheet').classList.remove('active');return;}
-      if($('#player').classList.contains('active')){$('#playerBack').click();}
-    }
-  });
-
-  // Search
-  // Trending filter
-  $$('#trendingFilter button').forEach(b=>{
-    b.onclick=()=>{
-      $$('#trendingFilter button').forEach(x=>x.classList.remove('active'));
-      b.classList.add('active');
-      const f=b.dataset.filter;
-      const list=f==='all'?trending:trending.filter(x=>(x.title?'movie':'tv')===f);
-      renderCards(list,'#trendingRow',true);
-    };
-  });
-}
-
-// Init
-init();
-</script>
+    <script src="main.v13.js?v=1"></script>
 </body>
 </html>
