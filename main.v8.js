@@ -1127,9 +1127,14 @@ function initKeyboard() {
                     document.body.style.overflow = '';
                 }
             });
-            // Reset trailer buttons
-            const t = document.getElementById('detailTrailerBtn');
-            if (t) { t.textContent = 'Trailer'; t.onclick = null; }
+            // Reset trailer buttons - close if trailer is active
+            const hero = document.getElementById('detailHero');
+            if (hero && hero.classList.contains('trailer-active')) {
+                document.getElementById('detailTrailerBtn')?.click();
+            } else {
+                const t = document.getElementById('detailTrailerBtn');
+                if (t) { t.textContent = 'Trailer'; t.onclick = null; }
+            }
             const mt = document.getElementById('modalTrailerBtn');
             if (mt) { mt.textContent = 'Trailer'; mt.onclick = null; }
             // Show back button
@@ -1237,19 +1242,30 @@ async function loadDetailPage(id, type) {
     });
 
     document.getElementById('detailWatchBtn').onclick = () => openPlayer(id, type, title);
-    document.getElementById('detailTrailerBtn').onclick = () => {
+    const openTrailer = () => {
         const tr = videosData?.results?.find(v => v.type==='Trailer'&&v.site=='YouTube');
         if(tr) {
             const hero = document.getElementById('detailHero');
+            hero.dataset.bg = hero.style.backgroundImage;
             hero.innerHTML = `<iframe src="https://www.youtube.com/embed/${tr.key}?autoplay=1&rel=0&mute=1" allow="autoplay; fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:none;z-index:5"></iframe>`;
             hero.classList.add('trailer-active');
             document.getElementById('detailTrailerBtn').textContent = '◉ Tutup Trailer';
-            document.getElementById('detailTrailerBtn').onclick = () => location.reload();
+            document.getElementById('detailTrailerBtn').onclick = () => {
+                hero.innerHTML = '';
+                hero.style.backgroundImage = hero.dataset.bg || '';
+                hero.classList.remove('trailer-active');
+                document.getElementById('detailTrailerBtn').textContent = 'Trailer ▷';
+                document.getElementById('detailTrailerBtn').onclick = openTrailer;
+                // Show back button
+                const backBtn = document.getElementById('detailBackBtn');
+                if (backBtn) backBtn.style.display = '';
+            };
             // Hide back button
             const backBtn = document.getElementById('detailBackBtn');
             if (backBtn) backBtn.style.display = 'none';
         } else alert('Trailer tidak tersedia');
     };
+    document.getElementById('detailTrailerBtn').onclick = openTrailer;
 
     // Seasons (TV)
     const seasonsSection = document.getElementById('detailSeasons');
