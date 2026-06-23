@@ -110,7 +110,7 @@ async function tmdb(path, params = {}) {
 }
 
 // COUNTRIES
-async function loadCountries(selectEl) {
+async function loadCountries(selectEl, selectedValue) {
     const data = await tmdb('/configuration/countries');
     if (!data) return;
     selectEl.innerHTML = '<option value="">Semua Negara</option>';
@@ -118,6 +118,7 @@ async function loadCountries(selectEl) {
     data.forEach(c => {
         selectEl.innerHTML += `<option value="${c.iso_3166_1}">${c.native_name}</option>`;
     });
+    if (selectedValue) selectEl.value = selectedValue;
 }
 
 // CARD
@@ -792,9 +793,9 @@ function initMoviesPage() {
         sortSel.onchange = () => { currentSort = sortSel.value; currentPage=1; loadMovies(); updateURL(); };
     }
     if (countrySel) {
-        if (urlCountry) { countrySel.value = urlCountry; currentCountry = urlCountry; }
+        if (urlCountry) currentCountry = urlCountry;
         countrySel.onchange = () => { currentCountry = countrySel.value; currentPage=1; loadMovies(); updateURL(); };
-        loadCountries(countrySel);
+        loadCountries(countrySel, urlCountry).then(() => { if (urlCountry) currentCountry = countrySel.value; });
         loadMovies();
     } else {
         loadMovies();
@@ -879,9 +880,9 @@ function initTvPage() {
         networkSel.onchange = () => { currentNetwork = networkSel.value; currentPage=1; loadTvShows(); updateURL(); };
     }
     if (countrySel) {
-        if (urlCountry) { countrySel.value = urlCountry; currentCountry = urlCountry; }
+        if (urlCountry) currentCountry = urlCountry;
         countrySel.onchange = () => { currentCountry = countrySel.value; currentPage=1; loadTvShows(); updateURL(); };
-        loadCountries(countrySel);
+        loadCountries(countrySel, urlCountry).then(() => { if (urlCountry) currentCountry = countrySel.value; });
         loadTvShows();
     } else {
         loadTvShows();
