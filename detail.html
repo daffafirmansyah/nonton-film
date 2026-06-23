@@ -105,6 +105,14 @@
         .sub-item .sub-item-name { font-size: 0.85rem; color: var(--text2); }
         .sub-item .sub-item-dl { font-size: 0.72rem; color: var(--text3); }
         .sub-item .sub-item-load { font-size: 0.75rem; color: var(--accent); font-weight: 600; }
+        .sub-trigger {
+            background: rgba(255,255,255,0.06); color: var(--text2);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 6px 12px; border-radius: 8px;
+            font-size: 0.78rem; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .sub-trigger:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
     </style>
 </head>
 <body>
@@ -199,7 +207,7 @@
                         <button class="svr-btn" data-server="vidsrc">VidSrc</button>
                         <button class="svr-btn" data-server="vidlink">VidLink</button>
                         <button class="svr-btn active" data-server="vidcore">VidCore</button>
-                        <button class="svr-btn sub-trigger" id="subTriggerBtn">CC</button>
+                        <button class="sub-trigger" id="subTriggerBtn">CC</button>
                     </div>
                 </div>
                 <!-- Subtitle overlay -->
@@ -236,7 +244,7 @@
         </div>
     </div>
 
-    <script src="main.v16.js?v=1"></script>
+    <script src="main.v15.js?v=1"></script>
     <script>
         // Parse URL params
         const urlParams = new URLSearchParams(window.location.search);
