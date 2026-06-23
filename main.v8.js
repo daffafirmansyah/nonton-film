@@ -327,8 +327,9 @@ async function openPlayer(id, type, title, season=1, episode=1) {
             if(s.season_number===season) opt.selected=true;
             sel.appendChild(opt);
         });
-        sel.onchange = () => loadEpisodes(id, parseInt(sel.value), type);
-        loadEpisodes(id, season, type, episode);
+        sel.onchange = () => { loadEpisodes(id, parseInt(sel.value), type); };
+        // Fire-and-forget: don't block UI waiting for episode list
+        loadEpisodes(id, season, type, episode).catch(()=>{});
     } else if (epSelector) {
         epSelector.classList.add('hidden');
     }
