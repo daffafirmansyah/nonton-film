@@ -144,7 +144,7 @@ function createCard(item, type) {
         <span class="card-type">${isTv ? 'TV' : 'MOVIE'}</span>
         ${isNew ? '<span class="card-new">2026</span>' : ''}
         ${item.vote_average >= 8 ? '<span class="card-badge">Top</span>' : ''}
-        <span class="card-quality">${quality}</span>
+        <span class="card-quality q-${quality.toLowerCase()}">${quality}</span>
         <div class="card-info">
             <div class="card-title" title="${title}">${title}</div>
             <div class="card-meta">
