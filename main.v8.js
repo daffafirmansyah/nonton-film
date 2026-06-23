@@ -308,6 +308,11 @@ async function openPlayer(id, type, title, season=1, episode=1) {
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
     el('#playerTitle').textContent = title;
+    // Set iframe src ASAP before API calls
+    el('#playerFrame').src = getPlayerUrl(id, type, season, episode);
+    // Hide back button on detail page
+    const backBtn = document.getElementById('detailBackBtn');
+    if (backBtn) backBtn.style.display = 'none';
 
     const epSelector = el('#episodeSelector');
     if (type==='tv' && epSelector) {
@@ -327,8 +332,6 @@ async function openPlayer(id, type, title, season=1, episode=1) {
     } else if (epSelector) {
         epSelector.classList.add('hidden');
     }
-
-    el('#playerFrame').src = getPlayerUrl(id, type, season, episode);
 
     all('.server-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.server===currentServer);
@@ -372,6 +375,9 @@ function closeAllModals() {
     if (f) f.src = '';
     document.body.style.overflow = '';
     document.querySelector('.player-servers')?.classList.remove('hidden');
+    // Show back button on detail page
+    const backBtn = document.getElementById('detailBackBtn');
+    if (backBtn) backBtn.style.display = '';
 }
 
 // PAGINATION
@@ -1126,6 +1132,9 @@ function initKeyboard() {
             if (t) { t.textContent = 'Trailer'; t.onclick = null; }
             const mt = document.getElementById('modalTrailerBtn');
             if (mt) { mt.textContent = 'Trailer'; mt.onclick = null; }
+            // Show back button
+            const backBtn = document.getElementById('detailBackBtn');
+            if (backBtn) backBtn.style.display = '';
         }
     });
 }
@@ -1236,6 +1245,9 @@ async function loadDetailPage(id, type) {
             hero.classList.add('trailer-active');
             document.getElementById('detailTrailerBtn').textContent = '◉ Tutup Trailer';
             document.getElementById('detailTrailerBtn').onclick = () => location.reload();
+            // Hide back button
+            const backBtn = document.getElementById('detailBackBtn');
+            if (backBtn) backBtn.style.display = 'none';
         } else alert('Trailer tidak tersedia');
     };
 

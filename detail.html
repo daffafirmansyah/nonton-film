@@ -169,26 +169,6 @@
         const type = urlParams.get('type') || 'movie';
         if (id) loadDetailPage(parseInt(id), type);
         else document.getElementById('detailLoading').textContent = 'ID tidak ditemukan';
-
-        // Hide back button when player modal or trailer is open
-        const playerModal = document.getElementById('playerModal');
-        const detailHero = document.getElementById('detailHero');
-        const backBtn = document.getElementById('detailBackBtn');
-        if (backBtn) {
-            const updateBackBtn = () => {
-                const playerOpen = playerModal && !playerModal.classList.contains('hidden');
-                const trailerOpen = detailHero && detailHero.classList.contains('trailer-active');
-                backBtn.style.display = (playerOpen || trailerOpen) ? 'none' : '';
-            };
-            if (playerModal) {
-                const obs1 = new MutationObserver(updateBackBtn);
-                obs1.observe(playerModal, { attributes: true, attributeFilter: ['class'] });
-            }
-            if (detailHero) {
-                const obs2 = new MutationObserver(updateBackBtn);
-                obs2.observe(detailHero, { attributes: true, attributeFilter: ['class'] });
-            }
-        }
     </script>
 </body>
 </html>
