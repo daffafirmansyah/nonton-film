@@ -9,6 +9,13 @@ const NO_POSTER = 'https://placehold.co/200x300/1a1a2e/666?text=';
 const VIDSRV = 'https://vidsrcme.ru/embed';
 const VIDSRV2 = 'https://vidsrc.pm/embed';
 const VIDSRV3 = 'https://www.vidcore.org/embed';
+const PROXY = 'http://43.134.106.32:3457';
+
+// Subtitle state
+let subCues = [];
+let subIdx = 0;
+let currentImdbId = '';
+let currentTmdbId = 0;
 
 // GENRES
 const MOVIE_GENRES = [
@@ -394,6 +401,85 @@ async function loadEpisodes(id, season, type, activeEp=1) {
     });
 }
 
+// ========== SUBTITLE FUNCTIONS ==========
+async function searchAndShowSubs() {
+    const sheet = el('#subSheet');
+    const list = el('#subList');
+    const status = el('#subSearchStatus');
+    if (!sheet || !currentImdbId) { return; }
+    sheet.classList.remove('hidden');
+    list.innerHTML = '';
+    status.textContent = 'Mencari subtitle Indonesia...';
+    try {
+        const res = await fetch(`${PROXY}/api/subs/search?imdb_id=${currentImdbId}&lang=ind`);
+        const data = await res.json();
+        if (!data.count) {
+            status.textContent = 'Tidak ada subtitle Indonesia untuk film ini.';
+            return;
+        }
+        status.textContent = `${data.count} subtitle ditemukan`;
+        data.results.forEach(s => {
+            const item = document.createElement('div');
+            item.className = 'sub-item';
+            item.innerHTML = `
+                <div>
+                    <div class="sub-item-name">${s.file}</div>
+                    <div class="sub-item-dl">${s.downloads} unduhan</div>
+                </div>
+                <span class="sub-item-load">Muat</span>
+            `;
+            item.onclick = () => loadSubtitle(s.id, currentImdbId);
+            list.appendChild(item);
+        });
+    } catch(e) {
+        status.textContent = 'Gagal mencari subtitle. Cek koneksi ke proxy.';
+    }
+}
+
+async function loadSubtitle(subId) {
+    // Close sheet
+    el('#subSheet')?.classList.add('hidden');
+    el('#subSearchStatus').textContent = 'Memuat...';
+    try {
+        const res = await fetch(`${PROXY}/api/subs/cues?id=${subId}&imdb_id=${currentImdbId}&lang=ind`);
+        const data = await res.json();
+        if (!data.cues || !data.cues.length) {
+            el('#subSearchStatus').textContent = 'Gagal memuat subtitle.';
+            return;
+        }
+        subCues = data.cues;
+        subIdx = 0;
+        // Show overlay
+        const ov = el('#subOverlay');
+        if (ov) ov.classList.remove('hidden');
+        showSub(0);
+        el('#subTriggerBtn').textContent = 'CC ✓';
+    } catch(e) {
+        el('#subSearchStatus').textContent = 'Gagal memuat: ' + e.message;
+    }
+}
+
+function showSub(idx) {
+    const textEl = el('#subText');
+    const counter = el('#subCounter');
+    if (!textEl || !counter) return;
+    if (idx >= 0 && idx < subCues.length) {
+        textEl.textContent = subCues[idx].text;
+        counter.textContent = `${idx+1}/${subCues.length}`;
+    } else {
+        textEl.textContent = '';
+        counter.textContent = `${idx+1}/${subCues.length}`;
+    }
+}
+
+function closeSubs() {
+    subCues = [];
+    subIdx = 0;
+    el('#subOverlay')?.classList.add('hidden');
+    el('#subText').textContent = '';
+    el('#subTriggerBtn').textContent = 'CC';
+}
+
 function closeAllModals() {
     ['detailModal','playerModal'].forEach(id => {
         const m = el(`#${id}`);
@@ -404,6 +490,9 @@ function closeAllModals() {
     document.body.style.overflow = '';
     // Hide episode sheet
     el('#episodeSheet')?.classList.add('hidden');
+    // Close subtitle overlay + sheet
+    closeSubs();
+    el('#subSheet')?.classList.add('hidden');
     // Show back button on detail page
     const backBtn = document.getElementById('detailBackBtn');
     if (backBtn) backBtn.style.display = '';
@@ -435,6 +524,34 @@ el('#playerEpsBtn') && (el('#playerEpsBtn').onclick = () => {
 });
 el('#epSheetClose') && (el('#epSheetClose').onclick = () => {
     el('#episodeSheet')?.classList.add('hidden');
+});
+
+// Subtitle controls
+el('#subTriggerBtn') && (el('#subTriggerBtn').onclick = () => {
+    if (subCues.length) {
+        // Already loaded: toggle sheet or close
+        el('#subSheet')?.classList.toggle('hidden');
+        return;
+    }
+    searchAndShowSubs();
+});
+el('#subSheetClose') && (el('#subSheetClose').onclick = () => {
+    el('#subSheet')?.classList.add('hidden');
+});
+el('#subNextBtn') && (el('#subNextBtn').onclick = () => {
+    if (subIdx < subCues.length - 1) showSub(++subIdx);
+});
+el('#subPrevBtn') && (el('#subPrevBtn').onclick = () => {
+    if (subIdx > 0) showSub(--subIdx);
+});
+el('#subSyncBtn') && (el('#subSyncBtn').onclick = () => {
+    subIdx = 0;
+    showSub(0);
+});
+el('#subCloseBtn') && (el('#subCloseBtn').onclick = closeSubs);
+// Click subtitle text to advance
+el('#subText') && (el('#subText').onclick = () => {
+    if (subIdx < subCues.length - 1) showSub(++subIdx);
 });
 
 // PAGINATION
@@ -1284,6 +1401,10 @@ async function loadDetailPage(id, type) {
     const genres = detail.genres?.map(g => g.name).join(', ') || '';
 
     document.title = `${title} - BerMovie`;
+
+    // Store for subtitle search
+    currentImdbId = detail.imdb_id || '';
+    currentTmdbId = id;
 
     document.getElementById('detailHero').style.backgroundImage = `url(${backdropUrl(detail.backdrop_path)})`;
     document.getElementById('detailTitle').textContent = title;
