@@ -7,7 +7,7 @@ const IMG_BACKDROP = `${IMG}/original`;
 const IMG_CAST = `${IMG}/w185`;
 const NO_POSTER = 'https://placehold.co/200x300/1a1a2e/666?text=';
 const VIDSRV = 'https://vidsrcme.ru/embed';
-const VIDSRV2 = 'https://vidsrc.su/embed';
+const VIDSRV2 = 'https://vidsrc.pm/embed';
 const PROXY_URL = '';
 
 // GENRES
@@ -298,8 +298,8 @@ function getPlayerUrl(id, type, season, episode) {
         if (type === 'tv') rawUrl = `${VIDSRV2}/tv/${id}/${season}/${episode}`;
         else rawUrl = `${VIDSRV2}/movie/${id}`;
     } else {
-        if (type === 'tv') rawUrl = `https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`;
-        else rawUrl = `https://www.2embed.cc/embed/${id}`;
+        if (type === 'tv') rawUrl = `https://vidlink.pro/tv/${id}/${season}/${episode}`;
+        else rawUrl = `https://vidlink.pro/movie/${id}`;
     }
     // Jika proxy aktif, wrap URL
     return PROXY_URL ? PROXY_URL + encodeURIComponent(rawUrl) : rawUrl;
