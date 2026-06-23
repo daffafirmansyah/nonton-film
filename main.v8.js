@@ -1265,6 +1265,9 @@ async function loadDetailPage(id, type) {
                 hero.classList.remove('trailer-active');
                 document.getElementById('detailTrailerBtn').textContent = 'Trailer ▷';
                 document.getElementById('detailTrailerBtn').onclick = openTrailer;
+                // Show back button
+                const backBtn = document.getElementById('detailBackBtn');
+                if (backBtn) backBtn.style.display = '';
             };
             // Hide back button
             const backBtn = document.getElementById('detailBackBtn');
