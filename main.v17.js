@@ -9,7 +9,6 @@ const NO_POSTER = 'https://placehold.co/200x300/1a1a2e/666?text=';
 const VIDSRV = 'https://vidsrcme.ru/embed';
 const VIDSRV2 = 'https://vidsrc.pm/embed';
 const VIDSRV3 = 'https://www.vidcore.org/embed';
-const VIDSRV4 = 'https://databasegdriveplayer.co/player.php';
 
 // Subtitle state
 let subCues = [];
@@ -302,9 +301,6 @@ function getPlayerUrl(id, type, season, episode) {
     } else if (currentServer === 'vidlink') {
         if (type === 'tv') rawUrl = `https://vidlink.pro/tv/${id}/${season}/${episode}`;
         else rawUrl = `https://vidlink.pro/movie/${id}`;
-    } else if (currentServer === 'gdrive') {
-        if (type === 'tv') rawUrl = `${VIDSRV4}?type=series&tmdb=${id}&season=${season}&episode=${episode}`;
-        else rawUrl = `${VIDSRV4}?type=movie&tmdb=${id}`;
     } else {
         // VidCore (default)
         if (type === 'tv') rawUrl = `${VIDSRV3}/tv/${id}/${season}/${episode}`;
