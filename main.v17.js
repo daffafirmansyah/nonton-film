@@ -12,6 +12,7 @@ const VIDSRV4 = 'https://www.2embed.cc/embed';
 const VIDSRV5 = 'https://vixsrc.to/movie';
 const VIDSRV5_TV = 'https://vixsrc.to/tv';
 const APIPLAYER = 'https://apiplayer.ru/embed';
+const VIDSRV_VESY = 'https://streamsrcs.2embed.cc/vesy';
 
 // Subtitle state
 let subCues = [];
@@ -305,6 +306,9 @@ function getPlayerUrl(id, type, season, episode) {
     } else if (currentServer === '2embed') {
         if (type === 'tv') rawUrl = `${VIDSRV4}/${id}`;
         else rawUrl = `${VIDSRV4}/${id}`;
+    } else if (currentServer === 'vesy') {
+        if (type === 'tv') rawUrl = `${VIDSRV_VESY}?tmdb=${id}`;
+        else rawUrl = `${VIDSRV_VESY}?tmdb=${id}`;
     } else if (currentServer === 'vixsrc') {
         if (type === 'tv') rawUrl = `${VIDSRV5_TV}/${id}/${season}/${episode}`;
         else rawUrl = `${VIDSRV5}/${id}`;
