@@ -1243,7 +1243,7 @@ async function loadDetailPage(id, type) {
     // Pre-create trailer elements so YouTube starts loading immediately
     const trailerWrap = document.createElement('div');
     trailerWrap.id = 'trailerWrap';
-    trailerWrap.style.cssText = 'position:absolute;inset:0;z-index:5;display:none;will-change:transform';
+    trailerWrap.style.cssText = 'position:absolute;inset:0;z-index:5;display:block;visibility:hidden;will-change:transform';
     document.getElementById('detailHero').appendChild(trailerWrap);
     const tr = videosData?.results?.find(v => v.type==='Trailer'&&v.site=='YouTube');
     if (tr) {
@@ -1257,11 +1257,11 @@ async function loadDetailPage(id, type) {
     const openTrailer = () => {
         if (!tr) { alert('Trailer tidak tersedia'); return; }
         const hero = document.getElementById('detailHero');
-        trailerWrap.style.display = 'block';
+        trailerWrap.style.visibility = 'visible';
         hero.classList.add('trailer-active');
         document.getElementById('detailTrailerBtn').textContent = '◉ Tutup Trailer';
         document.getElementById('detailTrailerBtn').onclick = () => {
-            trailerWrap.style.display = 'none';
+            trailerWrap.style.visibility = 'hidden';
             hero.classList.remove('trailer-active');
             document.getElementById('detailTrailerBtn').textContent = 'Trailer ▷';
             document.getElementById('detailTrailerBtn').onclick = openTrailer;
