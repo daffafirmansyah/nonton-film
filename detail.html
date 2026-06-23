@@ -1,188 +1,187 @@
-1|<!DOCTYPE html>
-2|<html lang="id">
-3|<head>
-4|    <meta charset="UTF-8">
-5|    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-6|    <title>Detail - BerMovie</title>
-7|    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-8|    <link rel="preconnect" href="https://fonts.googleapis.com">
-9|    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-10|    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail - BerMovie</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
     <link rel="stylesheet" href="style.v12.css?v=6">
-11|<link rel="stylesheet" href="futuristic.css?v=1">
-12|<style>
-13|.mobile-menu{position:fixed;top:64px;left:0;right:0;height:calc(100vh - 64px);height:calc(100dvh - 64px);background:#0c0c14!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;z-index:99;overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translateX(100%);transition:transform .3s ease}.mobile-menu.open{transform:translateX(0)}.mobile-menu a{display:block;padding:16px 20px;font-size:1rem;font-weight:600;color:#e8e8ef;touch-action:manipulation;border-bottom:1px solid rgba(255,255,255,.06)}.mobile-menu a:last-child{border-bottom:none}.mobile-menu a:active{background:rgba(255,255,255,.06)}.mobile-menu a.active{color:var(--accent)}
-14|</style>
-15|    <style>
-16|        .detail-page { padding-top: var(--nav-height); }
-17|        .detail-hero {
-18|            width: 100%; height: 50vh; min-height: 350px;
-19|            background-size: cover; background-position: center 20%;
-20|            position: relative;
-21|        }
-22|        .detail-cast::-webkit-scrollbar { height: 2px; }
-23|        .detail-cast-item { flex: 0 0 70px; text-align: center; }
-24|        .detail-cast-item img {
-25|            width: 56px; height: 56px; border-radius: 50%; object-fit: cover;
-26|            margin-bottom: 6px; background: #1a1a2e;
-27|            border: 2px solid rgba(255,255,255,0.06);
-28|        }
-29|        .detail-cast-item p {
-30|            font-size: 0.7rem; color: var(--text3);
-31|            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-32|        }
-33|        .detail-loading {
-34|            padding-top: calc(var(--nav-height) + 80px);
-35|            text-align: center; color: var(--text3);
-36|        }
-37|        .back-btn {
-38|            position: absolute; top: 20px; left: 20px; z-index: 10;
-39|            width: 44px; height: 44px; border-radius: 50%;
-40|            background: rgba(0,0,0,0.6); color: white; font-size: 1.3rem;
-41|            display: flex; align-items: center; justify-content: center;
-42|            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
-43|            cursor: pointer; transition: all 0.2s;
-44|        }
-45|        .back-btn:hover { background: var(--accent); }
-46|        @media (max-width: 768px) {
-47|            .detail-hero { height: 35vh; min-height: 250px; }
-48|            .detail-body { padding: 0 12px 40px; margin-top: -40px; }
-49|            .back-btn { top: 12px; left: 12px; width: 36px; height: 36px; font-size: 1rem; }
-50|        }
-51|        .seasons-list {
-52|            display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;
-53|        }
-54|        .season-card {
-55|            display: flex; align-items: center; gap: 10px; padding: 10px 14px;
-56|            background: rgba(255,255,255,0.04); border-radius: 10px;
-57|            cursor: pointer; transition: all 0.2s;
-58|            border: 1px solid rgba(255,255,255,0.06);
-59|        }
-60|        .season-card:hover { border-color: var(--accent); background: rgba(255,255,255,0.08); }
-61|        .season-card img { width: 36px; height: 54px; border-radius: 4px; object-fit: cover; }
-62|        .season-card .info { font-size: 0.82rem; }
-63|        .season-card .info strong { display: block; }
-64|        .season-card .info small { color: var(--text3); }
-65|        .section-title-sm { font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; margin-top: 24px; }
-66|    </style>
-67|</head>
-68|<body>
-69|<div class="scroll-progress" id="scrollProgress"></div>
-70|
-71|    <nav class="navbar">
-72|        <div class="nav-container">
-73|            <a href="./" class="logo">BerMovie</a>
-74|            <div class="nav-search">
-75|                <input type="text" id="searchInput" placeholder="Cari film atau series..." autocomplete="off">
-76|                <button id="searchBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
-77|            </div>
-78|                        <div class="nav-links">
-79|                <a href="./">Home</a>
-80|                <a href="movies.html">Film</a>
-81|                <a href="tv.html">Series</a>
-82|                <div class="nav-dropdown">
-83|                    <span class="nav-dropdown-trigger">Genre ▾</span>
-84|                    <div class="dropdown-menu" id="genreDropdown"></div>
-85|                </div>
-86|                <div class="nav-dropdown">
-87|                    <span class="nav-dropdown-trigger">Country ▾</span>
-88|                    <div class="dropdown-menu" id="countryDropdown"></div>
-89|                </div>
-90|                <div class="nav-dropdown">
-91|                    <span class="nav-dropdown-trigger">Tahun ▾</span>
-92|                    <div class="dropdown-menu" id="yearDropdown"></div>
-93|                </div>
-94|                <a href="./?watchlist" class="nav-fav">Favorit</a>
-95|            </div>
-96|            <button class="mobile-menu-btn" id="mobileMenuBtn" style="cursor:pointer;z-index:101;position:relative"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="pointer-events:none"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
-97|        </div>
-98|        <!-- Mobile Menu -->
-99|        <div class="mobile-menu" id="mobileMenu">
-100|            <div class="mobile-search">
-101|                <input type="text" id="mobileSearchInput" placeholder="Cari film atau series..." autocomplete="off">
-102|                <button id="mobileSearchBtn" >Cari</button>
-103|            </div>
-104|            <a href="./" data-nav="home">Home</a>
-105|            <a href="movies.html" data-nav="movies">Film</a>
-106|            <a href="tv.html" data-nav="tv">Series</a>
-107|            <a href="genre.html" data-nav="genre">Genre</a>
-108|            <a href="leaderboard.html" data-nav="leaderboard">Peringkat</a>
-109|            <a href="movies.html" data-nav="tahun">Tahun</a>
-110|            <a href="movies.html" data-nav="country">Country</a>
-111|            <a href="./?watchlist" data-nav="watchlist">Favorit</a>
-112|        </div>
-113|    </nav>
-114|
-115|
-116|    <div class="detail-loading" id="detailLoading">Memuat...</div>
-117|
-118|    <div class="detail-page hidden" id="detailPage">
-119|        <div class="detail-hero" id="detailHero">
-120|            <button class="back-btn" id="detailBackBtn" onclick="history.back()">←</button>
-121|        </div>
-122|        <div class="detail-body">
-123|            <h1 id="detailTitle"></h1>
-124|            <div class="detail-meta" id="detailMeta"></div>
-125|            <p class="detail-overview" id="detailOverview"></p>
-126|            <div class="detail-actions">
-127|                <button class="btn-watch" id="detailWatchBtn">Tonton</button>
-128|                <button class="btn-secondary trailer-btn" id="detailTrailerBtn"><span class="t-il"></span><span class="t-txt">Trailer</span><span class="t-ir">▶</span></button>
-129|            </div>
-130|            <h3 class="section-title-sm">Pemain</h3>
-131|            <div class="detail-cast" id="detailCast"></div>
-132|            <div class="seasons-section hidden" id="detailSeasons">
-133|                <h3 class="section-title-sm">Seasons</h3>
-134|                <div class="seasons-list" id="detailSeasonsList"></div>
-135|            </div>
-136|            <h3 class="section-title-sm">Rekomendasi</h3>
-137|            <div class="carousel" id="detailSimilar"></div>
-138|        </div>
-139|    </div>
-140|
-141|    <!-- PLAYER MODAL -->
-142|    <div class="player-modal hidden" id="playerModal">
-143|        <div class="player-backdrop"></div>
-144|        <div class="player-content">
-145|            <div class="player-top">
-146|                <button class="player-back" id="playerBackBtn">&larr;</button>
-147|                <span class="player-title" id="playerTitle"></span>
-148|                <div class="player-top-right">
-149|                    <button class="player-eps-btn hidden" id="playerEpsBtn">&#9776;</button>
-150|                    <button class="player-close" id="playerCloseBtn">&times;</button>
-151|                </div>
-152|            </div>
-153|            <div class="iframe-container">
-154|                <iframe id="playerFrame" src="" frameborder="0" allowfullscreen></iframe>
-155|                <div class="player-controls" id="playerControls">
-156|                    <div class="player-servers" id="playerServers">
-157|                        <button class="svr-btn" data-server="vidsrc">VidSrc <small>720p</small></button>
-158|                        <button class="svr-btn" data-server="vidsrc2">VidSrc2 <small>1080p</small></button>
-159|                        <button class="svr-btn" data-server="vidlink">VidLink <small>720p</small></button>
-160|                        <button class="svr-btn active" data-server="vidcore">VidCore <small>1080p</small></button>
-161|                    </div>
-162|                </div>
-163|            </div>
-164|            <div class="episode-sheet hidden" id="episodeSheet">
-165|                <div class="ep-sheet-handle"></div>
-166|                <div class="ep-sheet-header">
-167|                    <h4>Episode</h4>
-168|                    <button class="ep-sheet-close" id="epSheetClose">&times;</button>
-169|                </div>
-170|                <select id="seasonSelect" class="ep-season-select"></select>
-171|                <div class="episodes-grid" id="episodesGrid"></div>
-172|            </div>
-173|        </div>
-174|    </div>
-175|
-176|    <script src="main.v17.js?v=1"></script>
-177|    <script>
-178|        // Parse URL params
-179|        const urlParams = new URLSearchParams(window.location.search);
-180|        const id = urlParams.get('id');
-181|        const type = urlParams.get('type') || 'movie';
-182|        if (id) loadDetailPage(parseInt(id), type);
-183|        else document.getElementById('detailLoading').textContent = 'ID tidak ditemukan';
-184|    </script>
-185|</body>
-186|</html>
-187|
+<link rel="stylesheet" href="futuristic.css?v=1">
+<style>
+.mobile-menu{position:fixed;top:64px;left:0;right:0;height:calc(100vh - 64px);height:calc(100dvh - 64px);background:#0c0c14!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;z-index:99;overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translateX(100%);transition:transform .3s ease}.mobile-menu.open{transform:translateX(0)}.mobile-menu a{display:block;padding:16px 20px;font-size:1rem;font-weight:600;color:#e8e8ef;touch-action:manipulation;border-bottom:1px solid rgba(255,255,255,.06)}.mobile-menu a:last-child{border-bottom:none}.mobile-menu a:active{background:rgba(255,255,255,.06)}.mobile-menu a.active{color:var(--accent)}
+</style>
+    <style>
+        .detail-page { padding-top: var(--nav-height); }
+        .detail-hero {
+            width: 100%; height: 50vh; min-height: 350px;
+            background-size: cover; background-position: center 20%;
+            position: relative;
+        }
+        .detail-cast::-webkit-scrollbar { height: 2px; }
+        .detail-cast-item { flex: 0 0 70px; text-align: center; }
+        .detail-cast-item img {
+            width: 56px; height: 56px; border-radius: 50%; object-fit: cover;
+            margin-bottom: 6px; background: #1a1a2e;
+            border: 2px solid rgba(255,255,255,0.06);
+        }
+        .detail-cast-item p {
+            font-size: 0.7rem; color: var(--text3);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .detail-loading {
+            padding-top: calc(var(--nav-height) + 80px);
+            text-align: center; color: var(--text3);
+        }
+        .back-btn {
+            position: absolute; top: 20px; left: 20px; z-index: 10;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(0,0,0,0.6); color: white; font-size: 1.3rem;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer; transition: all 0.2s;
+        }
+        .back-btn:hover { background: var(--accent); }
+        @media (max-width: 768px) {
+            .detail-hero { height: 35vh; min-height: 250px; }
+            .detail-body { padding: 0 12px 40px; margin-top: -40px; }
+            .back-btn { top: 12px; left: 12px; width: 36px; height: 36px; font-size: 1rem; }
+        }
+        .seasons-list {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;
+        }
+        .season-card {
+            display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+            background: rgba(255,255,255,0.04); border-radius: 10px;
+            cursor: pointer; transition: all 0.2s;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .season-card:hover { border-color: var(--accent); background: rgba(255,255,255,0.08); }
+        .season-card img { width: 36px; height: 54px; border-radius: 4px; object-fit: cover; }
+        .season-card .info { font-size: 0.82rem; }
+        .season-card .info strong { display: block; }
+        .season-card .info small { color: var(--text3); }
+        .section-title-sm { font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; margin-top: 24px; }
+    </style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="./" class="logo">BerMovie</a>
+            <div class="nav-search">
+                <input type="text" id="searchInput" placeholder="Cari film atau series..." autocomplete="off">
+                <button id="searchBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+            </div>
+                        <div class="nav-links">
+                <a href="./">Home</a>
+                <a href="movies.html">Film</a>
+                <a href="tv.html">Series</a>
+                <div class="nav-dropdown">
+                    <span class="nav-dropdown-trigger">Genre ▾</span>
+                    <div class="dropdown-menu" id="genreDropdown"></div>
+                </div>
+                <div class="nav-dropdown">
+                    <span class="nav-dropdown-trigger">Country ▾</span>
+                    <div class="dropdown-menu" id="countryDropdown"></div>
+                </div>
+                <div class="nav-dropdown">
+                    <span class="nav-dropdown-trigger">Tahun ▾</span>
+                    <div class="dropdown-menu" id="yearDropdown"></div>
+                </div>
+                <a href="./?watchlist" class="nav-fav">Favorit</a>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" style="cursor:pointer;z-index:101;position:relative"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="pointer-events:none"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="mobile-search">
+                <input type="text" id="mobileSearchInput" placeholder="Cari film atau series..." autocomplete="off">
+                <button id="mobileSearchBtn" >Cari</button>
+            </div>
+            <a href="./" data-nav="home">Home</a>
+            <a href="movies.html" data-nav="movies">Film</a>
+            <a href="tv.html" data-nav="tv">Series</a>
+            <a href="genre.html" data-nav="genre">Genre</a>
+            <a href="leaderboard.html" data-nav="leaderboard">Peringkat</a>
+            <a href="movies.html" data-nav="tahun">Tahun</a>
+            <a href="movies.html" data-nav="country">Country</a>
+            <a href="./?watchlist" data-nav="watchlist">Favorit</a>
+        </div>
+    </nav>
+
+
+    <div class="detail-loading" id="detailLoading">Memuat...</div>
+
+    <div class="detail-page hidden" id="detailPage">
+        <div class="detail-hero" id="detailHero">
+            <button class="back-btn" id="detailBackBtn" onclick="history.back()">←</button>
+        </div>
+        <div class="detail-body">
+            <h1 id="detailTitle"></h1>
+            <div class="detail-meta" id="detailMeta"></div>
+            <p class="detail-overview" id="detailOverview"></p>
+            <div class="detail-actions">
+                <button class="btn-watch" id="detailWatchBtn">Tonton</button>
+                <button class="btn-secondary trailer-btn" id="detailTrailerBtn"><span class="t-il"></span><span class="t-txt">Trailer</span><span class="t-ir">▶</span></button>
+            </div>
+            <h3 class="section-title-sm">Pemain</h3>
+            <div class="detail-cast" id="detailCast"></div>
+            <div class="seasons-section hidden" id="detailSeasons">
+                <h3 class="section-title-sm">Seasons</h3>
+                <div class="seasons-list" id="detailSeasonsList"></div>
+            </div>
+            <h3 class="section-title-sm">Rekomendasi</h3>
+            <div class="carousel" id="detailSimilar"></div>
+        </div>
+    </div>
+
+    <!-- PLAYER MODAL -->
+    <div class="player-modal hidden" id="playerModal">
+        <div class="player-backdrop"></div>
+        <div class="player-content">
+            <div class="player-top">
+                <button class="player-back" id="playerBackBtn">&larr;</button>
+                <span class="player-title" id="playerTitle"></span>
+                <div class="player-top-right">
+                    <button class="player-eps-btn hidden" id="playerEpsBtn">&#9776;</button>
+                    <button class="player-close" id="playerCloseBtn">&times;</button>
+                </div>
+            </div>
+            <div class="iframe-container">
+                <iframe id="playerFrame" src="" frameborder="0" allowfullscreen></iframe>
+                <div class="player-controls" id="playerControls">
+                    <div class="player-servers" id="playerServers">
+                        <button class="svr-btn" data-server="vidsrc">VidSrc <small>720p</small></button>
+                        <button class="svr-btn" data-server="vidsrc2">VidSrc2 <small>1080p</small></button>
+                        <button class="svr-btn" data-server="vidlink">VidLink <small>720p</small></button>
+                        <button class="svr-btn active" data-server="vidcore">VidCore <small>1080p</small></button>
+                    </div>
+                </div>
+            </div>
+            <div class="episode-sheet hidden" id="episodeSheet">
+                <div class="ep-sheet-handle"></div>
+                <div class="ep-sheet-header">
+                    <h4>Episode</h4>
+                    <button class="ep-sheet-close" id="epSheetClose">&times;</button>
+                </div>
+                <select id="seasonSelect" class="ep-season-select"></select>
+                <div class="episodes-grid" id="episodesGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.v17.js?v=1"></script>
+    <script>
+        // Parse URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        const type = urlParams.get('type') || 'movie';
+        if (id) loadDetailPage(parseInt(id), type);
+        else document.getElementById('detailLoading').textContent = 'ID tidak ditemukan';
+    </script>
+</body>
+</html>
