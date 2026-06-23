@@ -1,254 +1,253 @@
-1|<!DOCTYPE html>
-2|<html lang="id">
-3|<head>
-4|    <meta charset="UTF-8">
-5|    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-6|    <title>Peringkat - BerMovie</title>
-7|    <meta name="description" content="Peringkat film dan series terbaik.">
-8|    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-9|    <link rel="preconnect" href="https://fonts.googleapis.com">
-10|    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-11|    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peringkat - BerMovie</title>
+    <meta name="description" content="Peringkat film dan series terbaik.">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
     <link rel="stylesheet" href="style.v12.css?v=6">
-12|<link rel="stylesheet" href="futuristic.css?v=1">
-13|<style>
-14|.mobile-menu{position:fixed;top:64px;left:0;right:0;height:calc(100vh - 64px);height:calc(100dvh - 64px);background:#0c0c14!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;z-index:99;overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translateX(100%);transition:transform .3s ease}.mobile-menu.open{transform:translateX(0)}.mobile-menu a{display:block;padding:16px 20px;font-size:1rem;font-weight:600;color:#e8e8ef;touch-action:manipulation;border-bottom:1px solid rgba(255,255,255,.06)}.mobile-menu a:last-child{border-bottom:none}.mobile-menu a:active{background:rgba(255,255,255,.06)}.mobile-menu a.active{color:var(--accent)}
-15|</style>
-16|    <style>
-17|        .lb-page { padding-top: var(--nav-height); }
-18|        .lb-header {
-19|            max-width: var(--max-w); margin: 0 auto;
-20|            padding: 32px 20px 8px;
-21|        }
-22|        .lb-header h1 { font-size: 1.5rem; font-weight: 800; }
-23|        .lb-header p { color: var(--text3); font-size: 0.85rem; margin-top: 4px; }
-24|        .lb-tabs {
-25|            display: flex; gap: 6px; flex-wrap: wrap;
-26|            max-width: var(--max-w); margin: 0 auto;
-27|            padding: 16px 20px 8px;
-28|        }
-29|        .lb-tab {
-30|            padding: 8px 18px; border-radius: 20px;
-31|            font-size: 0.82rem; font-weight: 600;
-32|            background: var(--bg-card); border: 1px solid var(--border);
-33|            color: var(--text2); cursor: pointer; transition: var(--transition);
-34|        }
-35|        .lb-tab:hover { background: var(--bg-hover); color: var(--text); }
-36|        .lb-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-37|        .lb-section { display: none; }
-38|        .lb-section.active { display: block; }
-39|        .lb-list {
-40|            max-width: var(--max-w); margin: 0 auto;
-41|            padding: 8px 20px 40px;
-42|            display: flex; flex-direction: column; gap: 8px;
-43|        }
-44|        .lb-item {
-45|            display: flex; align-items: center; gap: 14px;
-46|            padding: 10px 14px;
-47|            background: var(--bg-card); border: 1px solid var(--border);
-48|            border-radius: var(--radius);
-49|            cursor: pointer; transition: var(--transition);
-50|        }
-51|        .lb-item:hover { background: var(--bg-hover); border-color: rgba(255,255,255,0.1); }
-52|        .lb-rank {
-53|            width: 32px; height: 32px; border-radius: 50%;
-54|            display: flex; align-items: center; justify-content: center;
-55|            font-size: 0.8rem; font-weight: 800; flex-shrink: 0;
-56|            background: var(--bg-elevated); color: var(--text3);
-57|        }
-58|        .lb-item:nth-child(1) .lb-rank { background: #f5a623; color: #000; }
-59|        .lb-item:nth-child(2) .lb-rank { background: #b0b0b8; color: #000; }
-60|        .lb-item:nth-child(3) .lb-rank { background: #cd7f32; color: #000; }
-61|        .lb-item:nth-child(n+4) .lb-rank { background: var(--bg-elevated); color: var(--text3); }
-62|        .lb-poster {
-63|            width: 40px; height: 60px; border-radius: 6px;
-64|            object-fit: cover; flex-shrink: 0;
-65|            background: var(--bg-elevated);
-66|        }
-67|        .lb-info { flex: 1; min-width: 0; }
-68|        .lb-info strong { display: block; font-size: 0.88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-69|        .lb-info small { color: var(--text3); font-size: 0.75rem; }
-70|        .lb-rating { font-size: 0.8rem; font-weight: 700; color: #f5a623; flex-shrink: 0; }
-71|        .lb-loading {
-72|            padding: 60px 20px; text-align: center; color: var(--text3);
-73|            max-width: var(--max-w); margin: 0 auto;
-74|        }
-75|    </style>
-76|</head>
-77|<body>
-78|<div class="scroll-progress" id="scrollProgress"></div>
-79|
-80|    <nav class="navbar">
-81|        <div class="nav-container">
-82|            <a href="./" class="logo">BerMovie</a>
-83|            <div class="nav-search">
-84|                <input type="text" id="searchInput" placeholder="Cari film atau series..." autocomplete="off">
-85|                <button id="searchBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
-86|            </div>
-87|                        <div class="nav-links">
-88|                <a href="./">Home</a>
-89|                <a href="movies.html">Film</a>
-90|                <a href="tv.html">Series</a>
-91|                <div class="nav-dropdown">
-92|                    <span class="nav-dropdown-trigger">Genre ▾</span>
-93|                    <div class="dropdown-menu" id="genreDropdown"></div>
-94|                </div>
-95|                <div class="nav-dropdown">
-96|                    <span class="nav-dropdown-trigger">Country ▾</span>
-97|                    <div class="dropdown-menu" id="countryDropdown"></div>
-98|                </div>
-99|                <div class="nav-dropdown">
-100|                    <span class="nav-dropdown-trigger">Tahun ▾</span>
-101|                    <div class="dropdown-menu" id="yearDropdown"></div>
-102|                </div>
-103|                <a href="./?watchlist" class="nav-fav">Favorit</a>
-104|            </div>
-105|            <button class="mobile-menu-btn" id="mobileMenuBtn" style="cursor:pointer;z-index:101;position:relative"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="pointer-events:none"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
-106|        </div>
-107|        <div class="mobile-menu" id="mobileMenu">
-108|            <a href="./">Home</a>
-109|            <a href="movies.html">Film</a>
-110|            <a href="tv.html">Series</a>
-111|            <a href="genre.html">Genre</a>
-112|            <a href="leaderboard.html" class="active">Peringkat</a>
-113|            <a href="movies.html" data-nav="tahun">Tahun</a>
-114|            <a href="movies.html" data-nav="country">Country</a>
-115|            <a href="./?watchlist" data-nav="watchlist">Favorit</a>
-116|        </div>
-117|    </nav>
-118|
-119|    <div class="lb-page">
-120|        <div class="lb-header">
-121|            <h1>Peringkat</h1>
-122|            <p>Film dan series terbaik berdasarkan rating dan popularitas</p>
-123|        </div>
-124|
-125|        <div class="lb-tabs" id="lbTabs">
-126|            <button class="lb-tab active" data-section="trending">Trending</button>
-127|            <button class="lb-tab" data-section="movieTop">Film Terbaik</button>
-128|            <button class="lb-tab" data-section="tvTop">Series Terbaik</button>
-129|            <button class="lb-tab" data-section="moviePop">Film Populer</button>
-130|            <button class="lb-tab" data-section="tvPop">Series Populer</button>
-131|        </div>
-132|
-133|        <div id="lbTrending" class="lb-section active"><div class="lb-list" id="trendingList"></div></div>
-134|        <div id="lbMovieTop" class="lb-section"><div class="lb-list" id="movieTopList"></div></div>
-135|        <div id="lbTvTop" class="lb-section"><div class="lb-list" id="tvTopList"></div></div>
-136|        <div id="lbMoviePop" class="lb-section"><div class="lb-list" id="moviePopList"></div></div>
-137|        <div id="lbTvPop" class="lb-section"><div class="lb-list" id="tvPopList"></div></div>
-138|
-139|        <div class="lb-loading hidden" id="lbLoading">Memuat...</div>
-140|    </div>
-141|
-142|    <!-- PLAYER MODAL -->
-143|    <div class="player-modal hidden" id="playerModal">
-144|        <div class="player-backdrop"></div>
-145|        <div class="player-content">
-146|            <div class="player-top">
-147|                <button class="player-back" id="playerBackBtn">&larr;</button>
-148|                <span class="player-title" id="playerTitle"></span>
-149|                <div class="player-top-right">
-150|                    <button class="player-eps-btn hidden" id="playerEpsBtn">&#9776;</button>
-151|                    <button class="player-close" id="playerCloseBtn">&times;</button>
-152|                </div>
-153|            </div>
-154|            <div class="iframe-container">
-155|                <iframe id="playerFrame" src="" frameborder="0" allowfullscreen></iframe>
-156|                <div class="player-controls" id="playerControls">
-157|                    <div class="player-servers" id="playerServers">
-158|                        <button class="svr-btn" data-server="vidsrc">VidSrc</button>
-159|                        <button class="svr-btn" data-server="vidsrc2">VidSrc.pm</button>
-160|                        <button class="svr-btn" data-server="vidlink">VidLink</button>
-161|                        <button class="svr-btn active" data-server="vidcore">VidCore</button>
-162|                    </div>
-163|                </div>
-164|            </div>
-165|            <div class="episode-sheet hidden" id="episodeSheet">
-166|                <div class="ep-sheet-handle"></div>
-167|                <div class="ep-sheet-header">
-168|                    <h4>Episode</h4>
-169|                    <button class="ep-sheet-close" id="epSheetClose">&times;</button>
-170|                </div>
-171|                <select id="seasonSelect" class="ep-season-select"></select>
-172|                <div class="episodes-grid" id="episodesGrid"></div>
-173|            </div>
-174|        </div>
-175|    </div>
-176|
-177|<button class="back-top" id="backTop">&uarr;</button>
-178|<div class="toast" id="toast"></div>
-179|    <footer class="site-footer">
-180|        <p>BerMovie — Streaming Film & Series Sub Indo</p>
-181|    </footer>
-182|
-183|    <script src="main.v17.js?v=1"></script>
-184|    <script>
-185|        // LEADERBOARD
-186|        const LB_LISTS = ['trendingList','movieTopList','tvTopList','moviePopList','tvPopList'];
-187|
-188|        async function loadLB() {
-189|            const loading = document.getElementById('lbLoading');
-190|            loading?.classList.remove('hidden');
-191|
-192|            const [trending, movieTop, tvTop, moviePop, tvPop] = await Promise.all([
-193|                tmdb('/trending/all/day'),
-194|                tmdb('/movie/top_rated'),
-195|                tmdb('/tv/top_rated'),
-196|                tmdb('/movie/popular'),
-197|                tmdb('/tv/popular')
-198|            ]);
-199|
-200|            loading?.classList.add('hidden');
-201|
-202|            renderLBList('trendingList', trending?.results?.slice(0, 20));
-203|            renderLBList('movieTopList', movieTop?.results?.slice(0, 20), 'movie');
-204|            renderLBList('tvTopList', tvTop?.results?.slice(0, 20), 'tv');
-205|            renderLBList('moviePopList', moviePop?.results?.slice(0, 20), 'movie');
-206|            renderLBList('tvPopList', tvPop?.results?.slice(0, 20), 'tv');
-207|        }
-208|
-209|        function renderLBList(containerId, items, forceType) {
-210|            const list = document.getElementById(containerId);
-211|            if (!list) return;
-212|            list.innerHTML = '';
-213|            if (!items) return;
-214|
-215|            items.forEach((item, i) => {
-216|                const type = forceType || item.media_type || 'movie';
-217|                const title = item.title || item.name || 'Untitled';
-218|                const date = item.release_date || item.first_air_date;
-219|                const div = document.createElement('div');
-220|                div.className = 'lb-item';
-221|                div.innerHTML = `
-222|                    <div class="lb-rank">${i + 1}</div>
-223|                    <img class="lb-poster" src="${posterUrl(item.poster_path)}" alt="" loading="lazy" onerror="this.src='${NO_POSTER}'">
-224|                    <div class="lb-info">
-225|                        <strong>${title}</strong>
-226|                        <small>${year(date)} · ${type === 'movie' ? 'Film' : 'Series'}</small>
-227|                    </div>
-228|                    <span class="lb-rating">★ ${rating(item.vote_average)}</span>
-229|                `;
-230|                div.onclick = () => window.location.href = `detail.html?id=${item.id}&type=${type}`;
-231|                list.appendChild(div);
-232|            });
-233|        }
-234|
-235|        // Tab switching
-236|        document.querySelectorAll('.lb-tab').forEach(tab => {
-237|            tab.onclick = () => {
-238|                document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
-239|                tab.classList.add('active');
-240|                document.querySelectorAll('.lb-section').forEach(s => s.classList.remove('active'));
-241|                const section = document.getElementById('lb' + tab.dataset.section.charAt(0).toUpperCase() + tab.dataset.section.slice(1));
-242|                if (section) section.classList.add('active');
-243|            };
-244|        });
-245|
-246|        document.addEventListener('DOMContentLoaded', () => {
-247|            initGlobalEvents();
-248|            loadLB();
-249|        });
-250|    </script>
-251|</body>
-252|</html>
-253|
+<link rel="stylesheet" href="futuristic.css?v=1">
+<style>
+.mobile-menu{position:fixed;top:64px;left:0;right:0;height:calc(100vh - 64px);height:calc(100dvh - 64px);background:#0c0c14!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;z-index:99;overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translateX(100%);transition:transform .3s ease}.mobile-menu.open{transform:translateX(0)}.mobile-menu a{display:block;padding:16px 20px;font-size:1rem;font-weight:600;color:#e8e8ef;touch-action:manipulation;border-bottom:1px solid rgba(255,255,255,.06)}.mobile-menu a:last-child{border-bottom:none}.mobile-menu a:active{background:rgba(255,255,255,.06)}.mobile-menu a.active{color:var(--accent)}
+</style>
+    <style>
+        .lb-page { padding-top: var(--nav-height); }
+        .lb-header {
+            max-width: var(--max-w); margin: 0 auto;
+            padding: 32px 20px 8px;
+        }
+        .lb-header h1 { font-size: 1.5rem; font-weight: 800; }
+        .lb-header p { color: var(--text3); font-size: 0.85rem; margin-top: 4px; }
+        .lb-tabs {
+            display: flex; gap: 6px; flex-wrap: wrap;
+            max-width: var(--max-w); margin: 0 auto;
+            padding: 16px 20px 8px;
+        }
+        .lb-tab {
+            padding: 8px 18px; border-radius: 20px;
+            font-size: 0.82rem; font-weight: 600;
+            background: var(--bg-card); border: 1px solid var(--border);
+            color: var(--text2); cursor: pointer; transition: var(--transition);
+        }
+        .lb-tab:hover { background: var(--bg-hover); color: var(--text); }
+        .lb-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .lb-section { display: none; }
+        .lb-section.active { display: block; }
+        .lb-list {
+            max-width: var(--max-w); margin: 0 auto;
+            padding: 8px 20px 40px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .lb-item {
+            display: flex; align-items: center; gap: 14px;
+            padding: 10px 14px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer; transition: var(--transition);
+        }
+        .lb-item:hover { background: var(--bg-hover); border-color: rgba(255,255,255,0.1); }
+        .lb-rank {
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: 800; flex-shrink: 0;
+            background: var(--bg-elevated); color: var(--text3);
+        }
+        .lb-item:nth-child(1) .lb-rank { background: #f5a623; color: #000; }
+        .lb-item:nth-child(2) .lb-rank { background: #b0b0b8; color: #000; }
+        .lb-item:nth-child(3) .lb-rank { background: #cd7f32; color: #000; }
+        .lb-item:nth-child(n+4) .lb-rank { background: var(--bg-elevated); color: var(--text3); }
+        .lb-poster {
+            width: 40px; height: 60px; border-radius: 6px;
+            object-fit: cover; flex-shrink: 0;
+            background: var(--bg-elevated);
+        }
+        .lb-info { flex: 1; min-width: 0; }
+        .lb-info strong { display: block; font-size: 0.88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .lb-info small { color: var(--text3); font-size: 0.75rem; }
+        .lb-rating { font-size: 0.8rem; font-weight: 700; color: #f5a623; flex-shrink: 0; }
+        .lb-loading {
+            padding: 60px 20px; text-align: center; color: var(--text3);
+            max-width: var(--max-w); margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="./" class="logo">BerMovie</a>
+            <div class="nav-search">
+                <input type="text" id="searchInput" placeholder="Cari film atau series..." autocomplete="off">
+                <button id="searchBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+            </div>
+                        <div class="nav-links">
+                <a href="./">Home</a>
+                <a href="movies.html">Film</a>
+                <a href="tv.html">Series</a>
+                <div class="nav-dropdown">
+                    <span class="nav-dropdown-trigger">Genre ▾</span>
+                    <div class="dropdown-menu" id="genreDropdown"></div>
+                </div>
+                <div class="nav-dropdown">
+                    <span class="nav-dropdown-trigger">Country ▾</span>
+                    <div class="dropdown-menu" id="countryDropdown"></div>
+                </div>
+                <div class="nav-dropdown">
+                    <span class="nav-dropdown-trigger">Tahun ▾</span>
+                    <div class="dropdown-menu" id="yearDropdown"></div>
+                </div>
+                <a href="./?watchlist" class="nav-fav">Favorit</a>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" style="cursor:pointer;z-index:101;position:relative"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="pointer-events:none"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="./">Home</a>
+            <a href="movies.html">Film</a>
+            <a href="tv.html">Series</a>
+            <a href="genre.html">Genre</a>
+            <a href="leaderboard.html" class="active">Peringkat</a>
+            <a href="movies.html" data-nav="tahun">Tahun</a>
+            <a href="movies.html" data-nav="country">Country</a>
+            <a href="./?watchlist" data-nav="watchlist">Favorit</a>
+        </div>
+    </nav>
+
+    <div class="lb-page">
+        <div class="lb-header">
+            <h1>Peringkat</h1>
+            <p>Film dan series terbaik berdasarkan rating dan popularitas</p>
+        </div>
+
+        <div class="lb-tabs" id="lbTabs">
+            <button class="lb-tab active" data-section="trending">Trending</button>
+            <button class="lb-tab" data-section="movieTop">Film Terbaik</button>
+            <button class="lb-tab" data-section="tvTop">Series Terbaik</button>
+            <button class="lb-tab" data-section="moviePop">Film Populer</button>
+            <button class="lb-tab" data-section="tvPop">Series Populer</button>
+        </div>
+
+        <div id="lbTrending" class="lb-section active"><div class="lb-list" id="trendingList"></div></div>
+        <div id="lbMovieTop" class="lb-section"><div class="lb-list" id="movieTopList"></div></div>
+        <div id="lbTvTop" class="lb-section"><div class="lb-list" id="tvTopList"></div></div>
+        <div id="lbMoviePop" class="lb-section"><div class="lb-list" id="moviePopList"></div></div>
+        <div id="lbTvPop" class="lb-section"><div class="lb-list" id="tvPopList"></div></div>
+
+        <div class="lb-loading hidden" id="lbLoading">Memuat...</div>
+    </div>
+
+    <!-- PLAYER MODAL -->
+    <div class="player-modal hidden" id="playerModal">
+        <div class="player-backdrop"></div>
+        <div class="player-content">
+            <div class="player-top">
+                <button class="player-back" id="playerBackBtn">&larr;</button>
+                <span class="player-title" id="playerTitle"></span>
+                <div class="player-top-right">
+                    <button class="player-eps-btn hidden" id="playerEpsBtn">&#9776;</button>
+                    <button class="player-close" id="playerCloseBtn">&times;</button>
+                </div>
+            </div>
+            <div class="iframe-container">
+                <iframe id="playerFrame" src="" frameborder="0" allowfullscreen></iframe>
+                <div class="player-controls" id="playerControls">
+                    <div class="player-servers" id="playerServers">
+                        <button class="svr-btn" data-server="vidsrc">VidSrc</button>
+                        <button class="svr-btn" data-server="vidsrc2">VidSrc.pm</button>
+                        <button class="svr-btn" data-server="vidlink">VidLink</button>
+                        <button class="svr-btn active" data-server="vidcore">VidCore</button>
+                    </div>
+                </div>
+            </div>
+            <div class="episode-sheet hidden" id="episodeSheet">
+                <div class="ep-sheet-handle"></div>
+                <div class="ep-sheet-header">
+                    <h4>Episode</h4>
+                    <button class="ep-sheet-close" id="epSheetClose">&times;</button>
+                </div>
+                <select id="seasonSelect" class="ep-season-select"></select>
+                <div class="episodes-grid" id="episodesGrid"></div>
+            </div>
+        </div>
+    </div>
+
+<button class="back-top" id="backTop">&uarr;</button>
+<div class="toast" id="toast"></div>
+    <footer class="site-footer">
+        <p>BerMovie — Streaming Film & Series Sub Indo</p>
+    </footer>
+
+    <script src="main.v17.js?v=1"></script>
+    <script>
+        // LEADERBOARD
+        const LB_LISTS = ['trendingList','movieTopList','tvTopList','moviePopList','tvPopList'];
+
+        async function loadLB() {
+            const loading = document.getElementById('lbLoading');
+            loading?.classList.remove('hidden');
+
+            const [trending, movieTop, tvTop, moviePop, tvPop] = await Promise.all([
+                tmdb('/trending/all/day'),
+                tmdb('/movie/top_rated'),
+                tmdb('/tv/top_rated'),
+                tmdb('/movie/popular'),
+                tmdb('/tv/popular')
+            ]);
+
+            loading?.classList.add('hidden');
+
+            renderLBList('trendingList', trending?.results?.slice(0, 20));
+            renderLBList('movieTopList', movieTop?.results?.slice(0, 20), 'movie');
+            renderLBList('tvTopList', tvTop?.results?.slice(0, 20), 'tv');
+            renderLBList('moviePopList', moviePop?.results?.slice(0, 20), 'movie');
+            renderLBList('tvPopList', tvPop?.results?.slice(0, 20), 'tv');
+        }
+
+        function renderLBList(containerId, items, forceType) {
+            const list = document.getElementById(containerId);
+            if (!list) return;
+            list.innerHTML = '';
+            if (!items) return;
+
+            items.forEach((item, i) => {
+                const type = forceType || item.media_type || 'movie';
+                const title = item.title || item.name || 'Untitled';
+                const date = item.release_date || item.first_air_date;
+                const div = document.createElement('div');
+                div.className = 'lb-item';
+                div.innerHTML = `
+                    <div class="lb-rank">${i + 1}</div>
+                    <img class="lb-poster" src="${posterUrl(item.poster_path)}" alt="" loading="lazy" onerror="this.src='${NO_POSTER}'">
+                    <div class="lb-info">
+                        <strong>${title}</strong>
+                        <small>${year(date)} · ${type === 'movie' ? 'Film' : 'Series'}</small>
+                    </div>
+                    <span class="lb-rating">★ ${rating(item.vote_average)}</span>
+                `;
+                div.onclick = () => window.location.href = `detail.html?id=${item.id}&type=${type}`;
+                list.appendChild(div);
+            });
+        }
+
+        // Tab switching
+        document.querySelectorAll('.lb-tab').forEach(tab => {
+            tab.onclick = () => {
+                document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.lb-section').forEach(s => s.classList.remove('active'));
+                const section = document.getElementById('lb' + tab.dataset.section.charAt(0).toUpperCase() + tab.dataset.section.slice(1));
+                if (section) section.classList.add('active');
+            };
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initGlobalEvents();
+            loadLB();
+        });
+    </script>
+</body>
+</html>
