@@ -130,28 +130,10 @@ function createCard(item, type) {
     const div = document.createElement('div');
     div.className = 'card';
     const genreName = item.genre_ids?.[0] ? (type==='movie'?MOVIE_GENRES:TV_GENRES).find(g=>g.id===item.genre_ids[0])?.name : null;
-    // Quality badge — determined from real data
-    const relDate = item.release_date || item.first_air_date;
-    let quality = '';
-    if (relDate) {
-        const relYear = parseInt(relDate.split('-')[0]);
-        const nowYear = new Date().getFullYear();
-        const age = nowYear - relYear;
-        if (age <= 0 && item.vote_average >= 6) quality = 'WEB-DL';
-        else if (age <= 0) quality = 'CAM';
-        else if (age <= 2) quality = 'WEB-DL';
-        else quality = 'BluRay';
-    } else {
-        quality = 'WEB-DL';
-    }
-    const yearNum = parseInt(date?.substring(0,4));
-    const isNew = yearNum === new Date().getFullYear();
     div.innerHTML = `
         <img class="card-poster" src="${posterUrl(item.poster_path)}" alt="${title}" loading="lazy" onerror="this.src='${NO_POSTER}'">
         <span class="card-type">${isTv ? 'TV' : 'MOVIE'}</span>
-        ${isNew ? '<span class="card-new">2026</span>' : ''}
         ${item.vote_average >= 8 ? '<span class="card-badge">Top</span>' : ''}
-        <span class="card-quality q-${quality.toLowerCase()}">${quality}</span>
         <div class="card-info">
             <div class="card-title" title="${title}">${title}</div>
             <div class="card-meta">
