@@ -8,7 +8,7 @@ const IMG_CAST = `${IMG}/w185`;
 const NO_POSTER = 'https://placehold.co/200x300/1a1a2e/666?text=';
 const VIDSRV = 'https://vidsrcme.ru/embed';
 const VIDSRV2 = 'https://vidsrc.pm/embed';
-const PROXY_URL = '';
+const VIDSRV3 = 'https://www.vidcore.org/embed';
 
 // GENRES
 const MOVIE_GENRES = [
@@ -64,7 +64,7 @@ function getURLParams() {
         page: parseInt(p.get('page') || '1')
     };
 }
-let currentServer = '2embed';
+let currentServer = 'vidcore';
 let currentPage = 1;
 let currentMediaType = 'movie';
 let currentGenreId = null;
@@ -309,12 +309,14 @@ function getPlayerUrl(id, type, season, episode) {
     } else if (currentServer === 'vidsrc2') {
         if (type === 'tv') rawUrl = `${VIDSRV2}/tv/${id}/${season}/${episode}`;
         else rawUrl = `${VIDSRV2}/movie/${id}`;
-    } else {
+    } else if (currentServer === 'vidlink') {
         if (type === 'tv') rawUrl = `https://vidlink.pro/tv/${id}/${season}/${episode}`;
         else rawUrl = `https://vidlink.pro/movie/${id}`;
+    } else {
+        if (type === 'tv') rawUrl = `${VIDSRV3}/tv/${id}/${season}/${episode}`;
+        else rawUrl = `${VIDSRV3}/movie/${id}`;
     }
-    // Jika proxy aktif, wrap URL
-    return PROXY_URL ? PROXY_URL + encodeURIComponent(rawUrl) : rawUrl;
+    return rawUrl;
 }
 
 async function openPlayer(id, type, title, season=1, episode=1) {
