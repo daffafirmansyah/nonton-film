@@ -1308,17 +1308,55 @@ function initGlobalEvents() {
             document.body.style.overflow = open ? 'hidden' : '';
         }
         menuBtn.onclick = (e) => { e.stopPropagation(); toggleMenu(); };
-        mobileMenu.querySelectorAll('a').forEach(a => {
-            a.onclick = (e) => {
-                toggleMenu(false);
-                const dataNav = a.getAttribute('data-nav');
-                if (dataNav === 'country' || dataNav === 'tahun') {
+        // Country/Tahun inline expandable lists in mobile menu
+        const mobExpandData = {
+            country: {label:'Country', items:[
+                ['','Semua'],['ID','Indonesia'],['US','Amerika'],['JP','Jepang'],['KR','Korea'],['CN','China'],
+                ['IN','India'],['GB','Inggris'],['FR','Perancis'],['DE','Jerman'],['TH','Thailand'],
+                ['MY','Malaysia'],['SG','Singapura'],['PH','Filipina'],['HK','Hong Kong'],['AU','Australia'],
+                ['CA','Kanada'],['BR','Brazil'],['MX','Meksiko'],['RU','Rusia'],['ES','Spanyol'],['IT','Italia'],
+                ['NL','Belanda'],['SE','Swedia'],['TR','Turki'],['AE','UEA'],['SA','Arab Saudi'],['ID','Indonesia']
+            ]},
+            tahun: {label:'Tahun', items: (function(){let a=[['','Semua']];for(let y=new Date().getFullYear();y>=1970;y--)a.push([y+'',y+'']);return a;})()}
+        };
+        mobileMenu.querySelectorAll('a[data-nav]').forEach(a => {
+            const nav = a.getAttribute('data-nav');
+            if (mobExpandData[nav]) {
+                a.onclick = (e) => {
                     e.preventDefault();
-                    const target = dataNav === 'country' ? '#countryFilter' : '#yearFilter';
-                    const sel = document.querySelector(target);
-                    if (sel) { setTimeout(() => { sel.scrollIntoView({behavior:'smooth', block:'center'}); sel.focus(); }, 350); }
-                }
-            };
+                    e.stopPropagation();
+                    // Toggle inline list
+                    let sub = a.nextElementSibling;
+                    if (sub && sub.classList.contains('mob-sub-list')) {
+                        sub.remove();
+                        a.style.color = '';
+                        return;
+                    }
+                    // Close any other open sub-lists
+                    mobileMenu.querySelectorAll('.mob-sub-list').forEach(s => s.remove());
+                    mobileMenu.querySelectorAll('a[data-nav]').forEach(x => x.style.color = '');
+                    a.style.color = 'var(--accent)';
+                    sub = document.createElement('div');
+                    sub.className = 'mob-sub-list';
+                    sub.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:8px 20px;background:rgba(255,255,255,.03);max-height:40vh;overflow-y:auto;';
+                    const basePage = nav === 'country' ? 'movies.html?country=' : 'movies.html?year=';
+                    mobExpandData[nav].items.forEach(([val,label]) => {
+                        const btn = document.createElement('a');
+                        btn.textContent = label;
+                        btn.href = val ? basePage+val : 'movies.html';
+                        btn.style.cssText = 'padding:10px 8px;text-align:center;font-size:.82rem;border-radius:6px;color:#e8e8ef;background:rgba(255,255,255,.04);border-bottom:none;';
+                        btn.onmouseenter = () => btn.style.background = 'var(--accent)';
+                        btn.onmouseleave = () => btn.style.background = 'rgba(255,255,255,.04)';
+                        sub.appendChild(btn);
+                    });
+                    a.after(sub);
+                };
+            }
+        });
+        mobileMenu.querySelectorAll('a').forEach(a => {
+            if (!a.getAttribute('data-nav')) {
+                a.onclick = () => toggleMenu(false);
+            }
         });
     }
 
