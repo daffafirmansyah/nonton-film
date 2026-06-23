@@ -1286,8 +1286,10 @@ function initGlobalEvents() {
     document.querySelectorAll('.nav-links a[href], .mobile-menu a[href]').forEach(a => {
         a.classList.remove('active');
         const href = a.getAttribute('href') || '';
+        const dataNav = a.getAttribute('data-nav');
         if (href === './' && (curPage === 'index.html' || curPage === '') && !hasWatchlist) a.classList.add('active');
         else if (href && href.includes('watchlist') && hasWatchlist) a.classList.add('active');
+        else if (dataNav === 'country' || dataNav === 'tahun') {} // handled below
         else if (href && href !== './' && href !== '#' && !href.includes('?') && href === curPage) a.classList.add('active');
     });
     // Search
@@ -1306,7 +1308,18 @@ function initGlobalEvents() {
             document.body.style.overflow = open ? 'hidden' : '';
         }
         menuBtn.onclick = (e) => { e.stopPropagation(); toggleMenu(); };
-        mobileMenu.querySelectorAll('a').forEach(a => { a.onclick = () => toggleMenu(false); });
+        mobileMenu.querySelectorAll('a').forEach(a => {
+            a.onclick = (e) => {
+                toggleMenu(false);
+                const dataNav = a.getAttribute('data-nav');
+                if (dataNav === 'country' || dataNav === 'tahun') {
+                    e.preventDefault();
+                    const target = dataNav === 'country' ? '#countryFilter' : '#yearFilter';
+                    const sel = document.querySelector(target);
+                    if (sel) { setTimeout(() => { sel.scrollIntoView({behavior:'smooth', block:'center'}); sel.focus(); }, 350); }
+                }
+            };
+        });
     }
 
     // Mobile search
