@@ -125,16 +125,27 @@
             <h1 id="detailTitle"></h1>
             <div class="detail-meta" id="detailMeta"></div>
             <p class="detail-overview" id="detailOverview"></p>
+            
             <div class="detail-actions">
-                <button class="btn-watch" id="detailWatchBtn">Tonton</button>
+                <button class="btn-watch" id="detailWatchBtn">▶ Tonton</button>
                 <button class="btn-secondary trailer-btn" id="detailTrailerBtn"><span class="t-il"></span><span class="t-txt">Trailer</span><span class="t-ir">▶</span></button>
+                <button class="btn-watchlist" id="detailWatchlistBtn">+ Watchlist</button>
             </div>
+
+            <!-- Trailer Embed (hidden by default) -->
+            <div class="trailer-section hidden" id="trailerSection">
+                <h3 class="section-title-sm">Trailer</h3>
+                <div class="trailer-embed" id="trailerEmbed"></div>
+            </div>
+
             <h3 class="section-title-sm">Pemain</h3>
             <div class="detail-cast" id="detailCast"></div>
+            
             <div class="seasons-section hidden" id="detailSeasons">
                 <h3 class="section-title-sm">Seasons</h3>
                 <div class="seasons-list" id="detailSeasonsList"></div>
             </div>
+            
             <h3 class="section-title-sm">Rekomendasi</h3>
             <div class="carousel" id="detailSimilar"></div>
         </div>
