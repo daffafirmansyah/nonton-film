@@ -345,7 +345,10 @@ input{font-family:inherit;outline:none}
   .navbar,.navbar.scrolled{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(10,10,15,.98)!important}
   .mobile-menu{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
   .hero{contain:layout style paint}
-  .scroll-row{-webkit-overflow-scrolling:touch;contain:layout style}
-  .card{contain:layout style paint}
+  .scroll-row{-webkit-overflow-scrolling:touch;contain:layout style;content-visibility:auto;contain-intrinsic-size:0 260px}
+  .card{contain:layout style paint;content-visibility:auto}
   .section h2{contain:layout style}
+  section.fade-in{content-visibility:auto;contain-intrinsic-size:0 300px}
+  .card-info{contain:layout style}
+  .card-poster{contain:layout style paint}
 }
