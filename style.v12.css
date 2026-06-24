@@ -129,7 +129,7 @@ input{font-family:inherit;outline:none}
 .carousel{display:flex;gap:14px;overflow-x:auto;padding:4px 0 16px}
 .carousel::-webkit-scrollbar{height:2px}
 .carousel::-webkit-scrollbar-thumb{background:rgba(255,255,255,.06);border-radius:3px}
-.card{border-radius:16px;overflow:hidden;background:rgba(255,255,255,.03);cursor:pointer;position:relative;border:1px solid rgba(255,255,255,.06);transition:all .35s cubic-bezier(.22,1,.36,1)}
+.card{flex:0 0 165px;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.03);cursor:pointer;position:relative;border:1px solid rgba(255,255,255,.06);transition:all .35s cubic-bezier(.22,1,.36,1)}
 @media(min-width:640px){.card{}}
 @media(min-width:1024px){.card{}}
 .card:hover{transform:translateY(-12px) scale(1.04);border-color:rgba(249,115,22,.4);box-shadow:0 8px 32px rgba(249,115,22,.2),0 20px 60px rgba(0,0,0,.3)}
