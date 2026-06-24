@@ -138,7 +138,6 @@ function createCard(item, type) {
     div.innerHTML = `
         <img class="card-poster" src="${posterUrl(item.poster_path)}" alt="${title}" loading="lazy" onerror="this.src='${NO_POSTER}'">
         <span class="card-type">${isTv ? 'TV' : 'MOVIE'}</span>
-        <span class="card-quality q-hd">HD</span>
         ${item.vote_average >= 8 ? '<span class="card-badge">Top</span>' : ''}
         <div class="card-info">
             <div class="card-title" title="${title}">${title}</div>
