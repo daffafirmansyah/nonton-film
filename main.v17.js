@@ -1235,6 +1235,7 @@ function initScrollEvents() {
                 const max = document.documentElement.scrollHeight - window.innerHeight;
                 if (prog) prog.style.width = `${(scroll / max) * 100}%`;
                 if (btn) btn.classList.toggle('show', scroll > 300);
+                document.querySelector('.navbar')?.classList.toggle('scrolled', scroll > 50);
                 ticking = false;
             });
             ticking = true;
