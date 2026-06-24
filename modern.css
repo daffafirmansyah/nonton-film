@@ -106,6 +106,55 @@
 }
 
 /* --- DETAIL PAGE: Premium --- */
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 24px;
+  margin-bottom: 32px;
+}
+.detail-actions .btn-watch {
+  padding: 14px 34px;
+  font-size: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.detail-actions .btn-secondary {
+  padding: 14px 28px;
+  font-size: 1rem;
+  background: rgba(255,255,255,.06);
+  border-color: rgba(255,255,255,.1);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(4px);
+  width: auto;
+}
+.trailer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  min-width: unset;
+}
+.trailer-btn .t-il, .trailer-btn .t-ir {
+  width: 20px;
+  text-align: center;
+  font-size: .85rem;
+  opacity: 1;
+  transition: opacity .2s;
+}
+.trailer-btn .t-il {
+  opacity: 0;
+}
+.trailer-btn .t-txt {
+  flex: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+.detail-actions .btn-watchlist {
+  padding: 14px 24px;
+  font-size: .95rem;
+}
 .detail-hero::after {
   background: linear-gradient(to top, var(--bg) 0%, rgba(10,10,15,.5) 45%, transparent 100%);
   height: 300px;
