@@ -51,8 +51,8 @@ input{font-family:inherit;outline:none}
 .hidden{display:none!important}
 
 /* === NAVBAR === */
-.navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,.82);backdrop-filter:blur(40px) saturate(1.8);-webkit-backdrop-filter:blur(40px) saturate(1.8);border-bottom:1px solid rgba(255,255,255,.06);height:var(--nav-height);transition:background .3s ease,box-shadow .3s ease}
-.navbar.scrolled{background:rgba(10,10,15,.95);box-shadow:0 4px 30px rgba(0,0,0,.4)}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,.92);border-bottom:1px solid rgba(255,255,255,.06);height:var(--nav-height);transition:background .3s ease,box-shadow .3s ease}
+.navbar.scrolled{background:rgba(10,10,15,.95);box-shadow:0 4px 30px rgba(0,0,0,.4);backdrop-filter:none;-webkit-backdrop-filter:none}
 .navbar::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(249,115,22,.35),transparent);opacity:.5}
 .nav-container{max-width:var(--max-w);margin:0 auto;display:flex;align-items:center;height:100%;padding:0 20px;gap:20px}
 .logo{font-family:'Righteous',sans-serif;font-size:1.4rem;background:linear-gradient(135deg,#f97316 0%,#fb923c 50%,#fbbf24 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap;flex-shrink:0;letter-spacing:.5px}
@@ -134,7 +134,7 @@ input{font-family:inherit;outline:none}
 .card{flex:0 0 165px;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.03);cursor:pointer;position:relative;border:1px solid rgba(255,255,255,.06);transition:all .35s cubic-bezier(.22,1,.36,1)}
 @media(min-width:640px){.card{}}
 @media(min-width:1024px){.card{}}
-.card:hover{transform:translateY(-12px) scale(1.04);border-color:rgba(249,115,22,.4);box-shadow:0 8px 32px rgba(249,115,22,.2),0 20px 60px rgba(0,0,0,.3)}
+.card:hover{transform:scale(1.05);z-index:10;box-shadow:0 8px 32px rgba(0,0,0,.6)}
 .card-poster{width:100%;aspect-ratio:2/3;object-fit:cover;background:rgba(255,255,255,.04);transition:transform .6s cubic-bezier(.22,1,.36,1)}
 .card:hover .card-poster{transform:scale(1.08)}
 .card-info{position:absolute;bottom:0;left:0;right:0;padding:48px 14px 14px;background:linear-gradient(to top,rgba(10,10,15,.97) 20%,rgba(10,10,15,.6) 50%,transparent 100%)}
