@@ -1377,8 +1377,12 @@ function initGlobalEvents() {
             }
         });
         mobileMenu.querySelectorAll('a').forEach(a => {
-            if (!a.getAttribute('data-nav')) {
+            // Close menu on click for all links except tahun/country expandable
+            const nav = a.getAttribute('data-nav');
+            if (nav !== 'tahun' && nav !== 'country') {
                 a.onclick = () => toggleMenu(false);
+            } else {
+                a.onclick = (e) => { e.preventDefault(); };
             }
         });
     }
