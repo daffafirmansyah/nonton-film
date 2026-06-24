@@ -1304,10 +1304,14 @@ function initGlobalEvents() {
     const mobileMenu = el('#mobileMenu');
     if (menuBtn && mobileMenu) {
         function toggleMenu(force) {
+            const overlay = document.getElementById('mobileOverlay');
             const open = force !== undefined ? force : !mobileMenu.classList.contains('open');
             mobileMenu.classList.toggle('open', open);
+            if (overlay) overlay.classList.toggle('open', open);
             document.body.style.overflow = open ? 'hidden' : '';
         }
+        // Close menu when clicking overlay
+        document.getElementById('mobileOverlay')?.addEventListener('click', () => toggleMenu(false));
         menuBtn.onclick = (e) => { e.stopPropagation(); toggleMenu(); };
         // Country/Tahun inline expandable lists in mobile menu
         const mobExpandData = {
