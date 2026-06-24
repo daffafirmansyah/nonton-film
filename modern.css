@@ -354,6 +354,19 @@
   transform: translateY(-3px);
 }
 
+/* --- MOBILE: Kill ALL blue tap-highlight --- */
+@media(hover:none) and (pointer:coarse){
+  *{-webkit-tap-highlight-color:rgba(0,0,0,0)!important}
+  *:active{-webkit-tap-highlight-color:rgba(0,0,0,0)!important}
+  *:focus{-webkit-tap-highlight-color:rgba(0,0,0,0)!outline:none}
+  *:hover{-webkit-tap-highlight-color:rgba(0,0,0,0)!important}
+  div:active,span:active,label:active,input:active,select:active,textarea:active{
+    -webkit-tap-highlight-color:rgba(0,0,0,0)!important;
+    transition:none!important;
+    transform:none!important
+  }
+}
+
 /* --- NAVBAR: Enhanced --- */
 .navbar {
   border-bottom: 1px solid rgba(255,255,255,.04);
