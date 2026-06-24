@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="modern.css?v=3">
 <link rel="stylesheet" href="futuristic.css?v=1">
 <style>
-.mobile-menu{position:fixed;top:64px;left:0;right:0;height:calc(100vh - 64px);height:calc(100dvh - 64px);background:#0c0c14!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;z-index:99;overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translateX(100%);transition:transform .3s ease}.mobile-menu.open{transform:translateX(0)}.mobile-menu a{display:block;padding:16px 20px;font-size:1rem;font-weight:600;color:#e8e8ef;touch-action:manipulation;border-bottom:1px solid rgba(255,255,255,.06);-webkit-tap-highlight-color:transparent}.mobile-menu a:last-child{border-bottom:none}.mobile-menu a:active{background:transparent}.mobile-menu a.active{color:var(--accent)}
+
 </style>
 </head>
 <body>
@@ -46,14 +46,18 @@
             <button class="mobile-menu-btn" id="mobileMenuBtn" style="cursor:pointer;z-index:101;position:relative"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="pointer-events:none"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
         </div>
         <div class="mobile-menu" id="mobileMenu">
-            <a href="./">Home</a>
-            <a href="movies.html">Film</a>
-            <a href="tv.html">Series</a>
-            <a href="genre.html" class="active">Genre</a>
-            <a href="leaderboard.html">Peringkat</a>
-            <a href="movies.html" data-nav="tahun">Tahun</a>
-            <a href="movies.html" data-nav="country">Country</a>
-            <a href="./?watchlist" data-nav="watchlist">Favorit</a>
+            <div class="mobile-search">
+                <input type="text" id="mobileSearchInput" placeholder="Cari film atau series..." autocomplete="off">
+                <button id="mobileSearchBtn">Cari</button>
+            </div>
+            <a href="./" data-nav="home"><span class="mm-icon">⌂</span> Home</a>
+            <a href="movies.html" data-nav="movies"><span class="mm-icon">▶</span> Film</a>
+            <a href="tv.html" data-nav="tv"><span class="mm-icon">📺</span> Series</a>
+            <a href="genre.html" data-nav="genre" class="active"><span class="mm-icon">🎭</span> Genre</a>
+            <a href="leaderboard.html" data-nav="leaderboard"><span class="mm-icon">🏆</span> Peringkat</a>
+            <a href="movies.html" data-nav="tahun"><span class="mm-icon">📅</span> Tahun</a>
+            <a href="movies.html" data-nav="country"><span class="mm-icon">🌍</span> Country</a>
+            <a href="./?watchlist" data-nav="watchlist"><span class="mm-icon">♥</span> Favorit</a>
         </div>
     </nav>
 
