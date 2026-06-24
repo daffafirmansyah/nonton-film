@@ -1450,47 +1450,47 @@ async function loadDetailPage(id, type) {
     });
 
     document.getElementById('detailWatchBtn').onclick = () => openPlayer(id, type, title);
-    // Pre-create trailer elements so YouTube starts loading immediately
-    const trailerWrap = document.createElement('div');
-    trailerWrap.id = 'trailerWrap';
-    trailerWrap.style.cssText = 'position:fixed;top:-9999px;left:-9999px;z-index:5;display:block;visibility:hidden;will-change:transform';
-    document.body.appendChild(trailerWrap); // off-screen initially
-    const tr = videosData?.results?.find(v => v.type==='Trailer'&&v.site=='YouTube');
-    if (tr) {
-        const iframe = document.createElement('iframe');
-        iframe.src = `https://www.youtube.com/embed/${tr.key}?autoplay=1&rel=0&mute=1`;
-        iframe.setAttribute('allow', 'autoplay; fullscreen');
-        iframe.setAttribute('allowfullscreen', 'true');
-        iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none';
-        trailerWrap.appendChild(iframe);
+    // Watchlist button
+    const wlBtn = document.getElementById('detailWatchlistBtn');
+    if (wlBtn) {
+        const wl = getWatchlist();
+        if (wl.some(w => w.id === id)) wlBtn.classList.add('active'), wlBtn.textContent = '✓ Watchlist';
+        wlBtn.onclick = () => {
+            const wl2 = getWatchlist();
+            if (wl2.some(w => w.id === id)) {
+                setWatchlist(wl2.filter(w => w.id !== id));
+                wlBtn.classList.remove('active');
+                wlBtn.textContent = '+ Watchlist';
+            } else {
+                wl2.push({ id, type, title, poster_path, vote_average });
+                setWatchlist(wl2);
+                wlBtn.classList.add('active');
+                wlBtn.textContent = '✓ Watchlist';
+            }
+        };
     }
+    // Inline trailer embed
+    const tr = videosData?.results?.find(v => v.type==='Trailer'&&v.site=='YouTube');
+    const trailerSection = document.getElementById('trailerSection');
+    const trailerEmbed = document.getElementById('trailerEmbed');
     const openTrailer = () => {
         if (!tr) { alert('Trailer tidak tersedia'); return; }
-        const hero = document.getElementById('detailHero');
-        trailerWrap.style.cssText = 'position:absolute;inset:0;z-index:5;display:block;visibility:visible;will-change:transform';
-        hero.appendChild(trailerWrap);
-        hero.classList.add('trailer-active');
+        if (!trailerEmbed.querySelector('iframe')) {
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube.com/embed/${tr.key}?autoplay=0&rel=0`;
+            iframe.setAttribute('allow', 'autoplay; fullscreen');
+            iframe.setAttribute('allowfullscreen', 'true');
+            trailerEmbed.appendChild(iframe);
+        }
+        trailerSection.classList.remove('hidden');
+        trailerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         const dtb = document.getElementById('detailTrailerBtn');
-        dtb.querySelector('.t-il').textContent = '◉';
-        dtb.querySelector('.t-il').style.opacity = '1';
         dtb.querySelector('.t-txt').textContent = 'Tutup Trailer';
-        dtb.querySelector('.t-ir').style.opacity = '0';
         dtb.onclick = () => {
-            trailerWrap.style.cssText = 'position:fixed;top:-9999px;left:-9999px;z-index:5;display:block;visibility:hidden;will-change:transform';
-            document.body.appendChild(trailerWrap); // remove from hero DOM
-            hero.classList.remove('trailer-active');
-            dtb.querySelector('.t-il').textContent = '';
-            dtb.querySelector('.t-il').style.opacity = '0';
+            trailerSection.classList.add('hidden');
             dtb.querySelector('.t-txt').textContent = 'Trailer';
-            dtb.querySelector('.t-ir').style.opacity = '1';
             dtb.onclick = openTrailer;
-            // Show back button
-            const backBtn = document.getElementById('detailBackBtn');
-            if (backBtn) backBtn.style.display = '';
         };
-        // Hide back button
-        const backBtn = document.getElementById('detailBackBtn');
-        if (backBtn) backBtn.style.display = 'none';
     };
     if (tr) document.getElementById('detailTrailerBtn').onclick = openTrailer;
 
