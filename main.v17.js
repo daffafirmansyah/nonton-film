@@ -1365,7 +1365,11 @@ function initGlobalEvents() {
             document.body.style.overflow = open ? 'hidden' : '';
         }
         menuBtn.onclick = (e) => { e.stopPropagation(); toggleMenu(); };
-        // Mobile expandable dropdowns for Tahun and Country
+        // Mobile expandable dropdowns - init once
+        let _mobInited = false;
+        function initMobDropdowns() {
+            if (_mobInited) return;
+            _mobInited = true;
         function makeExpandable(link, html) {
             if (!link) return;
             link.removeAttribute('href');
@@ -1434,6 +1438,8 @@ function initGlobalEvents() {
                 a.onclick = () => toggleMenu(false);
             }
         });
+        }
+        initMobDropdowns();
     }
 
     // Mobile search
