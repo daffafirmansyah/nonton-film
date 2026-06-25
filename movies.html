@@ -8,11 +8,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
-    <link rel="stylesheet" href="style.v12.css?v=9">
-    <link rel="stylesheet" href="modern.css?v=3">
-
+    <link rel="stylesheet" href="style.v12.css?v=6">
+<link rel="stylesheet" href="futuristic.css?v=1">
 <style>
-
+.mobile-menu{position:fixed;top:64px;left:0;right:0;height:calc(100vh - 64px);height:calc(100dvh - 64px);background:#0c0c14!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;z-index:99;overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translateX(100%);transition:transform .3s ease}.mobile-menu.open{transform:translateX(0)}.mobile-menu a{display:block;padding:16px 20px;font-size:1rem;font-weight:600;color:#e8e8ef;touch-action:manipulation;border-bottom:1px solid rgba(255,255,255,.06)}.mobile-menu a:last-child{border-bottom:none}.mobile-menu a:active{background:rgba(255,255,255,.06)}.mobile-menu a.active{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -46,18 +45,14 @@
             <button class="mobile-menu-btn" id="mobileMenuBtn" style="cursor:pointer;z-index:101;position:relative"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="pointer-events:none"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
         </div>
         <div class="mobile-menu" id="mobileMenu">
-            <div class="mobile-search">
-                <input type="text" id="mobileSearchInput" placeholder="Cari film atau series..." autocomplete="off">
-                <button id="mobileSearchBtn">Cari</button>
-            </div>
-            <a href="./" data-nav="home"><span class="mm-icon">⌂</span> Home</a>
-            <a href="movies.html" data-nav="movies" class="active"><span class="mm-icon">▶</span> Film</a>
-            <a href="tv.html" data-nav="tv"><span class="mm-icon">📺</span> Series</a>
-            <a href="genre.html" data-nav="genre"><span class="mm-icon">🎭</span> Genre</a>
-            <a href="leaderboard.html" data-nav="leaderboard"><span class="mm-icon">🏆</span> Peringkat</a>
-            <a href="movies.html" data-nav="tahun"><span class="mm-icon">📅</span> Tahun</a>
-            <a href="movies.html" data-nav="country"><span class="mm-icon">🌍</span> Country</a>
-            <a href="./?watchlist" data-nav="watchlist"><span class="mm-icon">♥</span> Favorit</a>
+            <a href="./">Home</a>
+            <a href="movies.html" class="active">Film</a>
+            <a href="tv.html">Series</a>
+            <a href="genre.html">Genre</a>
+            <a href="leaderboard.html">Peringkat</a>
+            <a href="movies.html" data-nav="tahun">Tahun</a>
+            <a href="movies.html" data-nav="country">Country</a>
+            <a href="./?watchlist" data-nav="watchlist">Favorit</a>
         </div>
     </nav>
 
@@ -123,11 +118,13 @@
                 <iframe id="playerFrame" src="" frameborder="0" allowfullscreen></iframe>
                 <div class="player-controls" id="playerControls">
                     <div class="player-servers" id="playerServers">
-                        <button class="svr-btn active" data-server="apiplayer">ApiPlayer <small>Sub Indo</small></button>
+                        <button class="svr-btn active" data-server="vidlink">VidLink</button>
+                        <button class="svr-btn" data-server="apiplayer">ApiPlayer <small>Sub Indo</small></button>
                         <button class="svr-btn" data-server="2embed">2Embed <small>1080p</small></button>
                         <button class="svr-btn" data-server="vesy">Vesy</button>
                         <button class="svr-btn" data-server="vixsrc">VixSrc</button>
-
+                        <button class="svr-btn" data-server="vidsrc2">VidSrc2 <small>1080p</small></button>
+                        <button class="svr-btn" data-server="vidsrc">VidSrc <small>720p</small></button>
                     </div>
                 </div>
             </div>
@@ -153,6 +150,6 @@
         <p>BerMovie — Streaming Film & Series Sub Indo</p>
     </footer>
 
-    <script src="main.v17.js?v=4"></script>
+    <script src="main.v17.js?v=1"></script>
 </body>
 </html>
