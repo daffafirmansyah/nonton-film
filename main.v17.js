@@ -1306,52 +1306,8 @@ function initGlobalEvents() {
             document.body.style.overflow = open ? 'hidden' : '';
         }
         menuBtn.onclick = (e) => { e.stopPropagation(); toggleMenu(); };
-        // Mobile expandable grids for Tahun and Country
-        const mobTahun = mobileMenu.querySelector('[data-nav="tahun"]');
-        const mobCountry = mobileMenu.querySelector('[data-nav="country"]');
-        function makeExpandable(el, html) {
-            if (!el) return;
-            el.removeAttribute('href');
-            el.style.cursor = 'pointer';
-            let grid = el.nextElementSibling;
-            if (!grid || !grid.classList.contains('mob-sub-grid')) {
-                grid = document.createElement('div');
-                grid.className = 'mob-sub-grid';
-                grid.style.cssText = 'display:none;padding:0 20px 12px;max-height:60vh;overflow-y:auto';
-                el.after(grid);
-            }
-            grid.innerHTML = html;
-            el.onclick = (e) => {
-                e.stopPropagation();
-                const isOpen = grid.style.display !== 'none';
-                document.querySelectorAll('.mob-sub-grid').forEach(g => g.style.display = 'none');
-                if (!isOpen) grid.style.display = 'grid';
-            };
-            grid.querySelectorAll('a').forEach(a => {
-                a.onclick = () => { toggleMenu(false); };
-            });
-        }
-        // Tahun grid
-        if (mobTahun) {
-            const now = new Date().getFullYear();
-            let yh = '';
-            for (let y = now; y >= 1980; y--) yh += `<a href="movies.html?year=${y}">${y}</a>`;
-            makeExpandable(mobTahun, yh);
-        }
-        // Country grid
-        if (mobCountry) {
-            const countries = ['ID','US','GB','JP','KR','IN','FR','DE','CN','HK','MY','SG','TH','PH','AU','CA','MX','BR','RU','ES','IT','NL','SE','NO','DK','FI','TR','AE','SA'];
-            const names = {'ID':'Indonesia','US':'Amerika Serikat','GB':'Inggris','JP':'Jepang','KR':'Korea','IN':'India','FR':'Perancis','DE':'Jerman','CN':'China','HK':'Hong Kong','MY':'Malaysia','SG':'Singapura','TH':'Thailand','PH':'Filipina','AU':'Australia','CA':'Kanada','MX':'Meksiko','BR':'Brazil','RU':'Rusia','ES':'Spanyol','IT':'Italia','NL':'Belanda','SE':'Swedia','NO':'Norwegia','DK':'Denmark','FI':'Finlandia','TR':'Turki','AE':'UEA','SA':'Arab Saudi'};
-            let ch = '';
-            countries.forEach(c => { ch += `<a href="movies.html?country=${c}">${names[c]||c}</a>`; });
-            makeExpandable(mobCountry, ch);
-        }
-        // Close on non-expandable links only
-        mobileMenu.querySelectorAll('a[data-nav]').forEach(a => {
-            if (a.getAttribute('data-nav') !== 'tahun' && a.getAttribute('data-nav') !== 'country') {
-                a.onclick = () => toggleMenu(false);
-            }
-        });
+        // Close menu on link click
+        mobileMenu.querySelectorAll('a').forEach(a => { a.onclick = () => toggleMenu(false); });
     }
 
     // Mobile search
