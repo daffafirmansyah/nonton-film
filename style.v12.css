@@ -67,12 +67,12 @@ input{font-family:inherit;outline:none}
 .mobile-menu-btn{display:none;width:38px;height:38px;align-items:center;justify-content:center;border-radius:10px;color:#fff;margin-left:auto;background:rgba(255,255,255,.06);-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:var(--transition)}
 .mobile-menu-btn:active{transform:scale(.9);background:rgba(255,255,255,.1)}
 @media(max-width:639px){.mobile-menu-btn{display:flex}}
-.mobile-menu{position:fixed;top:var(--nav-height);left:0;width:75vw;max-width:320px;height:calc(100vh - var(--nav-height));height:calc(100dvh - var(--nav-height));background:rgba(10,10,15,.98)!important;z-index:99;overflow-y:auto;transform:translateX(-110%);transition:transform .35s cubic-bezier(.4,0,.2,1);box-shadow:none;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.mobile-menu.open{transform:translateX(0);box-shadow:4px 0 40px rgba(0,0,0,.5)}
-.mobile-menu a{display:block;padding:16px 24px;font-size:.95rem;font-weight:500;color:#f1f1f6;border-bottom:1px solid rgba(255,255,255,.04);letter-spacing:.2px}
-.mobile-menu a:last-child{border-bottom:none}
-.mobile-menu a:active{background:rgba(255,255,255,.04)}
-.mobile-menu a.active{color:var(--accent);font-weight:600}
+
+
+
+
+
+
 .mobile-search{display:flex;gap:8px;padding:16px 24px 12px}
 .mobile-search input{flex:1;height:44px;padding:0 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:.9rem}
 .mobile-search button{padding:10px 18px;border-radius:10px;background:var(--accent);color:#fff;font-weight:600;font-size:.84rem;white-space:nowrap;touch-action:manipulation}
@@ -308,3 +308,48 @@ to{transform:translateY(0)}}
 .hero-meta .rating-badge{background:var(--accent);color:#fff;border-color:transparent;box-shadow:0 2px 12px rgba(249,115,22,.3)}
 .hero-meta span{padding:3px 12px;border-radius:999px;font-size:.78rem;font-weight:500;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.06);letter-spacing:.3px}
 .hero-rating-s{color:#f5a623;font-weight:600}
+
+
+/* === MOBILE MENU (clean, no oscillation) === */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10,10,15,.98);
+  z-index: 99;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform .3s ease;
+  -webkit-transform: translateX(100%);
+  -webkit-transition: -webkit-transform .3s ease;
+}
+.mobile-menu.open {
+  transform: translateX(0);
+  -webkit-transform: translateX(0);
+}
+.mobile-menu a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 24px;
+  font-size: .95rem;
+  font-weight: 500;
+  color: #f1f1f6;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  letter-spacing: .2px;
+  text-decoration: none;
+}
+.mobile-menu a:last-child {
+  border-bottom: none;
+}
+.mobile-menu a:active {
+  background: rgba(255,255,255,.04);
+}
+.mobile-menu a.active {
+  color: var(--accent);
+  font-weight: 600;
+  border-left: 3px solid var(--accent);
+  background: rgba(249,115,22,.08);
+}
