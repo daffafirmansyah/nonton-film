@@ -1363,8 +1363,75 @@ function initGlobalEvents() {
             document.body.style.overflow = open ? 'hidden' : '';
         }
         menuBtn.onclick = (e) => { e.stopPropagation(); toggleMenu(); };
-        // Close menu on link click
-        mobileMenu.querySelectorAll('a').forEach(a => { a.onclick = () => toggleMenu(false); });
+        // Mobile expandable dropdowns for Tahun and Country
+        function makeExpandable(link, html) {
+            if (!link) return;
+            link.removeAttribute('href');
+            link.style.cursor = 'pointer';
+            // Add arrow indicator
+            const arrow = document.createElement('span');
+            arrow.textContent = '▾';
+            arrow.style.cssText = 'margin-left:auto;font-size:.7rem;opacity:.5;transition:transform .2s';
+            link.appendChild(arrow);
+            // Create sub-grid
+            const grid = document.createElement('div');
+            grid.className = 'mob-sub-grid';
+            grid.innerHTML = html;
+            link.after(grid);
+            link.onclick = (e) => {
+                e.stopPropagation();
+                const isOpen = grid.classList.toggle('show');
+                arrow.style.transform = isOpen ? 'rotate(180deg)' : '';
+            };
+            grid.querySelectorAll('a').forEach(a => { a.onclick = () => toggleMenu(false); });
+        }
+        // Tahun expandable
+        const mobTahun = mobileMenu.querySelector('[data-nav="tahun"]');
+        if (mobTahun) {
+            const now = new Date().getFullYear();
+            let yh = '';
+            for (let y = now; y >= 1980; y--) yh += `<a href="movies.html?year=${y}">${y}</a>`;
+            makeExpandable(mobTahun, yh);
+        }
+        // Country expandable
+        const mobCountry = mobileMenu.querySelector('[data-nav="country"]');
+        if (mobCountry) {
+            const cc = ['ID','US','GB','JP','KR','IN','FR','DE','CN','HK','MY','SG','TH','PH','AU','CA','MX','BR','RU','ES','IT','NL','SE','NO','DK','FI','TR','AE','SA'];
+            const nm = {'ID':'Indonesia','US':'Amerika','GB':'Inggris','JP':'Jepang','KR':'Korea','IN':'India','FR':'Perancis','DE':'Jerman','CN':'China','HK':'Hong Kong','MY':'Malaysia','SG':'Singapura','TH':'Thailand','PH':'Filipina','AU':'Australia','CA':'Kanada','MX':'Meksiko','BR':'Brazil','RU':'Rusia','ES':'Spanyol','IT':'Italia','NL':'Belanda','SE':'Swedia','NO':'Norwegia','DK':'Denmark','FI':'Finlandia','TR':'Turki','AE':'UEA','SA':'Arab Saudi'};
+            let ch = '';
+            cc.forEach(c => { ch += `<a href="movies.html?country=${c}">${nm[c]||c}</a>`; });
+            makeExpandable(mobCountry, ch);
+        }
+        // Genre expandable
+        const mobGenre = mobileMenu.querySelector('[data-nav="genre"]');
+        if (mobGenre) {
+            mobGenre.removeAttribute('href');
+            mobGenre.style.cursor = 'pointer';
+            const arrow = document.createElement('span');
+            arrow.textContent = '▾';
+            arrow.style.cssText = 'margin-left:auto;font-size:.7rem;opacity:.5;transition:transform .2s';
+            mobGenre.appendChild(arrow);
+            const grid = document.createElement('div');
+            grid.className = 'mob-sub-grid';
+            let gh = '';
+            const genres = ['Action','Comedy','Drama','Horror','Sci-Fi','Romance','Crime','Thriller','Animation','Documentary'];
+            genres.forEach(g => { const gObj = MOVIE_GENRES.find(x=>x.name===g); if(gObj) gh += `<a href="movies.html?genre=${gObj.id}">${g}</a>`; });
+            grid.innerHTML = gh;
+            mobGenre.after(grid);
+            mobGenre.onclick = (e) => {
+                e.stopPropagation();
+                const isOpen = grid.classList.toggle('show');
+                arrow.style.transform = isOpen ? 'rotate(180deg)' : '';
+            };
+            grid.querySelectorAll('a').forEach(a => { a.onclick = () => toggleMenu(false); });
+        }
+        // Close menu on non-expandable links
+        mobileMenu.querySelectorAll('a[data-nav]').forEach(a => {
+            const nav = a.getAttribute('data-nav');
+            if (nav !== 'tahun' && nav !== 'country' && nav !== 'genre') {
+                a.onclick = () => toggleMenu(false);
+            }
+        });
     }
 
     // Mobile search
