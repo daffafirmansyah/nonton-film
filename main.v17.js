@@ -1328,7 +1328,7 @@ function initGlobalEvents() {
         if (!document.querySelector('#mob-sub-css')) {
             const css = document.createElement('style');
             css.id = 'mob-sub-css';
-            css.textContent = `.mob-sub-list{padding:0 20px;overflow:hidden;transition:max-height .35s ease,opacity .25s ease}.mob-sub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 0 16px;max-height:50vh;overflow-y:auto;-webkit-overflow-scrolling:touch}.mob-sub-grid a{display:flex;align-items:center;justify-content:center;padding:10px 6px;border-radius:10px;font-size:.8rem;font-weight:500;color:var(--text2);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.04);text-decoration:none;transition:all .15s ease;min-height:42px}.mob-sub-grid a:active{transform:scale(.95);background:rgba(249,115,22,.15);border-color:rgba(249,115,22,.3);color:var(--accent)}.mob-sub-grid a.mob-active{background:rgba(249,115,22,.12);border-color:rgba(249,115,22,.25);color:var(--accent);font-weight:600}.mob-sub-label{font-size:.7rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;padding:8px 0 2px}`;
+            css.textContent = `.mob-sub-list{padding:0 20px;overflow:hidden}.mob-sub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 0 16px;max-height:50vh;overflow-y:auto;-webkit-overflow-scrolling:touch}.mob-sub-grid a{display:flex;align-items:center;justify-content:center;padding:10px 6px;border-radius:10px;font-size:.8rem;font-weight:500;color:var(--text2);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.04);text-decoration:none;min-height:42px}.mob-sub-grid a:active{transform:scale(.95);background:rgba(249,115,22,.15);border-color:rgba(249,115,22,.3);color:var(--accent)}.mob-sub-grid a.mob-active{background:rgba(249,115,22,.12);border-color:rgba(249,115,22,.25);color:var(--accent);font-weight:600}.mob-sub-label{font-size:.7rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;padding:8px 0 2px}`;
             document.head.appendChild(css);
         }
         mobileMenu.querySelectorAll('a[data-nav]').forEach(a => {
@@ -1336,7 +1336,7 @@ function initGlobalEvents() {
             if (mobExpandData[nav] && !a.dataset.mobInit) {
                 a.dataset.mobInit = '1';
                 a.style.cssText += 'display:flex;align-items:center;justify-content:space-between;';
-                a.innerHTML += '<span class="mob-arrow" style="font-size:.7rem;color:var(--text3);transition:transform .2s">▾</span>';
+                a.innerHTML += '<span class="mob-arrow" style="font-size:.7rem;color:var(--text3)">▾</span>';
                 a.onclick = (e) => {
                     e.preventDefault();
                     e.stopPropagation();
