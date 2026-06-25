@@ -74,7 +74,7 @@ function getURLParams() {
         page: parseInt(p.get('page') || '1')
     };
 }
-let currentServer = 'vesy';
+let currentServer = 'vidlink';
 let currentPage = 1;
 let currentMediaType = 'movie';
 let currentGenreId = null;
@@ -134,15 +134,15 @@ function createCard(item, type) {
     const div = document.createElement('div');
     div.className = 'card';
     const genreName = item.genre_ids?.[0] ? (type==='movie'?MOVIE_GENRES:TV_GENRES).find(g=>g.id===item.genre_ids[0])?.name : null;
-    const releaseYear = year(date);
     div.innerHTML = `
         <img class="card-poster" src="${posterUrl(item.poster_path)}" alt="${title}" loading="lazy" onerror="this.src='${NO_POSTER}'">
         <span class="card-type">${isTv ? 'TV' : 'MOVIE'}</span>
+        <span class="card-quality q-hd">1080p</span>
         ${item.vote_average >= 8 ? '<span class="card-badge">Top</span>' : ''}
         <div class="card-info">
             <div class="card-title" title="${title}">${title}</div>
             <div class="card-meta">
-                <span>${releaseYear}</span>
+                <span>${year(date)}</span>
                 ${item.vote_average ? `<span class="card-rating">★ ${rating(item.vote_average)}</span>` : ''}
             </div>
         </div>
@@ -664,7 +664,7 @@ async function loadTrending(filter) {
     let items = data.results.filter(i=>i.poster_path);
     if (filter === 'movie') items = items.filter(i=>i.media_type==='movie');
     else if (filter === 'tv') items = items.filter(i=>i.media_type==='tv');
-    items = items.slice(0,8);
+    items = items.slice(0,10);
     list.innerHTML = '';
     items.forEach((item, i) => {
         const t = displayTitle(item);
@@ -764,7 +764,7 @@ async function loadMovies(page = 1) {
     if (loadId !== movieLoadId) return;
     [...data.results, ...data2.results]
         .filter((item, i, arr) => arr.findIndex(x => x.id === item.id) === i)
-        .slice(0,12).forEach(i => grid.appendChild(createCard(i, 'movie')));
+        .slice(0,21).forEach(i => grid.appendChild(createCard(i, 'movie')));
     const totalPages = Math.ceil(Math.min(data.total_pages, 500) / 2);
     renderPagination('moviePagination', totalPages, page, p => {
         currentPage = p;
@@ -843,7 +843,7 @@ async function loadTvShows(page = 1) {
     if (loadId !== tvLoadId) return;
     [...data.results, ...data2.results]
         .filter((item, i, arr) => arr.findIndex(x => x.id === item.id) === i)
-        .slice(0,12).forEach(i => grid.appendChild(createCard(i, 'tv')));
+        .slice(0,21).forEach(i => grid.appendChild(createCard(i, 'tv')));
     const totalPages = Math.ceil(Math.min(data.total_pages, 500) / 2);
     renderPagination('tvPagination', totalPages, page, p => {
         currentPage = p;
@@ -1091,7 +1091,7 @@ async function doSearch(query, page=1) {
     const items = [...data.results, ...data2.results]
         .filter((item, i, arr) => arr.findIndex(x => x.id === item.id) === i)
         .filter(i => ['movie','tv'].includes(i.media_type))
-        .slice(0,12);
+        .slice(0,21);
     
     if (items.length === 0) {
         grid.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Film tidak ditemukan untuk "${query}"</p></div>';
@@ -1235,7 +1235,6 @@ function initScrollEvents() {
                 const max = document.documentElement.scrollHeight - window.innerHeight;
                 if (prog) prog.style.width = `${(scroll / max) * 100}%`;
                 if (btn) btn.classList.toggle('show', scroll > 300);
-                document.querySelector('.navbar')?.classList.toggle('scrolled', scroll > 50);
                 ticking = false;
             });
             ticking = true;
@@ -1287,10 +1286,8 @@ function initGlobalEvents() {
     document.querySelectorAll('.nav-links a[href], .mobile-menu a[href]').forEach(a => {
         a.classList.remove('active');
         const href = a.getAttribute('href') || '';
-        const dataNav = a.getAttribute('data-nav');
         if (href === './' && (curPage === 'index.html' || curPage === '') && !hasWatchlist) a.classList.add('active');
         else if (href && href.includes('watchlist') && hasWatchlist) a.classList.add('active');
-        else if (dataNav === 'country' || dataNav === 'tahun') {} // handled below
         else if (href && href !== './' && href !== '#' && !href.includes('?') && href === curPage) a.classList.add('active');
     });
     // Search
@@ -1304,90 +1301,12 @@ function initGlobalEvents() {
     const mobileMenu = el('#mobileMenu');
     if (menuBtn && mobileMenu) {
         function toggleMenu(force) {
-            const overlay = document.getElementById('mobileOverlay');
             const open = force !== undefined ? force : !mobileMenu.classList.contains('open');
             mobileMenu.classList.toggle('open', open);
-            if (overlay) overlay.classList.toggle('open', open);
             document.body.style.overflow = open ? 'hidden' : '';
         }
-        // Close menu when clicking overlay
-        document.getElementById('mobileOverlay')?.addEventListener('click', () => toggleMenu(false));
         menuBtn.onclick = (e) => { e.stopPropagation(); toggleMenu(); };
-        // Country/Tahun inline expandable lists in mobile menu
-        const mobExpandData = {
-            country: {label:'Country', items:[
-                ['','Semua Negara'],['ID','🇮🇩 Indonesia'],['US','🇺🇸 Amerika'],['JP','🇯🇵 Jepang'],['KR','🇰🇷 Korea'],['CN','🇨🇳 China'],
-                ['IN','🇮🇳 India'],['GB','🇬🇧 Inggris'],['FR','🇫🇷 Perancis'],['DE','🇩🇪 Jerman'],['TH','🇹🇭 Thailand'],
-                ['MY','🇲🇾 Malaysia'],['SG','🇸🇬 Singapura'],['PH','🇵🇭 Filpina'],['HK','🇭🇰 Hong Kong'],['AU','🇦🇺 Australia'],
-                ['CA','🇨🇦 Kanada'],['BR','🇧🇷 Brazil'],['MX','🇲🇽 Meksiko'],['RU','🇷🇺 Rusia'],['ES','🇪🇸 Spanyol'],['IT','🇮🇹 Italia'],
-                ['NL','🇳🇱 Belanda'],['SE','🇸🇪 Swedia'],['TR','🇹🇷 Turki'],['AE','🇦🇪 UEA'],['SA','🇸🇦 Arab Saudi']
-            ]},
-            tahun: {label:'Tahun', items: (function(){let a=[['','Semua Tahun']];for(let y=new Date().getFullYear();y>=1970;y--)a.push([y+'',y+'']);return a;})()}
-        };
-        // Inject sub-list CSS once
-        if (!document.querySelector('#mob-sub-css')) {
-            const css = document.createElement('style');
-            css.id = 'mob-sub-css';
-            css.textContent = `.mob-sub-list{padding:0 20px;overflow:hidden}.mob-sub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 0 16px;max-height:50vh;overflow-y:auto;-webkit-overflow-scrolling:touch}.mob-sub-grid a{display:flex;align-items:center;justify-content:center;padding:10px 6px;border-radius:10px;font-size:.8rem;font-weight:500;color:var(--text2);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.04);text-decoration:none;min-height:42px}.mob-sub-grid a:active{transform:scale(.95);background:rgba(249,115,22,.15);border-color:rgba(249,115,22,.3);color:var(--accent)}.mob-sub-grid a.mob-active{background:rgba(249,115,22,.12);border-color:rgba(249,115,22,.25);color:var(--accent);font-weight:600}.mob-sub-label{font-size:.7rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;padding:8px 0 2px}`;
-            document.head.appendChild(css);
-        }
-        mobileMenu.querySelectorAll('a[data-nav]').forEach(a => {
-            const nav = a.getAttribute('data-nav');
-            if (mobExpandData[nav] && !a.dataset.mobInit) {
-                a.dataset.mobInit = '1';
-                a.style.cssText += 'display:flex;align-items:center;justify-content:space-between;';
-                a.innerHTML += '<span class="mob-arrow" style="font-size:.7rem;color:var(--text3)">▾</span>';
-                a.onclick = (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const arrow = a.querySelector('span');
-                    // Toggle inline list
-                    let sub = a.nextElementSibling;
-                    if (sub && sub.classList.contains('mob-sub-list')) {
-                        sub.style.maxHeight = '0';
-                        sub.style.opacity = '0';
-                        if (arrow) arrow.style.transform = '';
-                        a.style.color = '';
-                        setTimeout(() => sub.remove(), 300);
-                        return;
-                    }
-                    // Close any other open sub-lists
-                    mobileMenu.querySelectorAll('.mob-sub-list').forEach(s => { s.style.maxHeight='0'; s.style.opacity='0'; setTimeout(()=>s.remove(),300); });
-                    mobileMenu.querySelectorAll('a[data-nav]').forEach(x => { x.style.color = ''; const sp=x.querySelector('span'); if(sp) sp.style.transform=''; });
-                    a.style.color = 'var(--accent)';
-                    if (arrow) arrow.style.transform = 'rotate(180deg)';
-                    sub = document.createElement('div');
-                    sub.className = 'mob-sub-list';
-                    sub.style.maxHeight = '0';
-                    sub.style.opacity = '0';
-                    const label = document.createElement('div');
-                    label.className = 'mob-sub-label';
-                    label.textContent = mobExpandData[nav].label;
-                    const grid = document.createElement('div');
-                    grid.className = 'mob-sub-grid';
-                    const basePage = nav === 'country' ? 'movies.html?country=' : 'movies.html?year=';
-                    mobExpandData[nav].items.forEach(([val,label]) => {
-                        const btn = document.createElement('a');
-                        btn.textContent = label;
-                        btn.href = val ? basePage+val : 'movies.html';
-                        grid.appendChild(btn);
-                    });
-                    sub.appendChild(label);
-                    sub.appendChild(grid);
-                    a.after(sub);
-                    // Trigger animation
-                    requestAnimationFrame(() => { sub.style.maxHeight = '70vh'; sub.style.opacity = '1'; });
-                };
-            }
-        });
-        mobileMenu.querySelectorAll('a').forEach(a => {
-            // Close menu on click for all links except tahun/country expandable
-            const nav = a.getAttribute('data-nav');
-            if (nav !== 'tahun' && nav !== 'country') {
-                a.onclick = () => toggleMenu(false);
-            }
-            // tahun/country onclick already set by expand logic above — don't override
-        });
+        mobileMenu.querySelectorAll('a').forEach(a => { a.onclick = () => toggleMenu(false); });
     }
 
     // Mobile search
@@ -1458,47 +1377,47 @@ async function loadDetailPage(id, type) {
     });
 
     document.getElementById('detailWatchBtn').onclick = () => openPlayer(id, type, title);
-    // Watchlist button
-    const wlBtn = document.getElementById('detailWatchlistBtn');
-    if (wlBtn) {
-        const wl = getWatchlist();
-        if (wl.some(w => w.id === id)) wlBtn.classList.add('active'), wlBtn.textContent = '✓ Watchlist';
-        wlBtn.onclick = () => {
-            const wl2 = getWatchlist();
-            if (wl2.some(w => w.id === id)) {
-                setWatchlist(wl2.filter(w => w.id !== id));
-                wlBtn.classList.remove('active');
-                wlBtn.textContent = '+ Watchlist';
-            } else {
-                wl2.push({ id, type, title, poster_path, vote_average });
-                setWatchlist(wl2);
-                wlBtn.classList.add('active');
-                wlBtn.textContent = '✓ Watchlist';
-            }
-        };
-    }
-    // Inline trailer embed
+    // Pre-create trailer elements so YouTube starts loading immediately
+    const trailerWrap = document.createElement('div');
+    trailerWrap.id = 'trailerWrap';
+    trailerWrap.style.cssText = 'position:fixed;top:-9999px;left:-9999px;z-index:5;display:block;visibility:hidden;will-change:transform';
+    document.body.appendChild(trailerWrap); // off-screen initially
     const tr = videosData?.results?.find(v => v.type==='Trailer'&&v.site=='YouTube');
-    const trailerSection = document.getElementById('trailerSection');
-    const trailerEmbed = document.getElementById('trailerEmbed');
+    if (tr) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${tr.key}?autoplay=1&rel=0&mute=1`;
+        iframe.setAttribute('allow', 'autoplay; fullscreen');
+        iframe.setAttribute('allowfullscreen', 'true');
+        iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none';
+        trailerWrap.appendChild(iframe);
+    }
     const openTrailer = () => {
         if (!tr) { alert('Trailer tidak tersedia'); return; }
-        if (!trailerEmbed.querySelector('iframe')) {
-            const iframe = document.createElement('iframe');
-            iframe.src = `https://www.youtube.com/embed/${tr.key}?autoplay=0&rel=0`;
-            iframe.setAttribute('allow', 'autoplay; fullscreen');
-            iframe.setAttribute('allowfullscreen', 'true');
-            trailerEmbed.appendChild(iframe);
-        }
-        trailerSection.classList.remove('hidden');
-        trailerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const hero = document.getElementById('detailHero');
+        trailerWrap.style.cssText = 'position:absolute;inset:0;z-index:5;display:block;visibility:visible;will-change:transform';
+        hero.appendChild(trailerWrap);
+        hero.classList.add('trailer-active');
         const dtb = document.getElementById('detailTrailerBtn');
+        dtb.querySelector('.t-il').textContent = '◉';
+        dtb.querySelector('.t-il').style.opacity = '1';
         dtb.querySelector('.t-txt').textContent = 'Tutup Trailer';
+        dtb.querySelector('.t-ir').style.opacity = '0';
         dtb.onclick = () => {
-            trailerSection.classList.add('hidden');
+            trailerWrap.style.cssText = 'position:fixed;top:-9999px;left:-9999px;z-index:5;display:block;visibility:hidden;will-change:transform';
+            document.body.appendChild(trailerWrap); // remove from hero DOM
+            hero.classList.remove('trailer-active');
+            dtb.querySelector('.t-il').textContent = '';
+            dtb.querySelector('.t-il').style.opacity = '0';
             dtb.querySelector('.t-txt').textContent = 'Trailer';
+            dtb.querySelector('.t-ir').style.opacity = '1';
             dtb.onclick = openTrailer;
+            // Show back button
+            const backBtn = document.getElementById('detailBackBtn');
+            if (backBtn) backBtn.style.display = '';
         };
+        // Hide back button
+        const backBtn = document.getElementById('detailBackBtn');
+        if (backBtn) backBtn.style.display = 'none';
     };
     if (tr) document.getElementById('detailTrailerBtn').onclick = openTrailer;
 
@@ -1529,7 +1448,45 @@ async function loadDetailPage(id, type) {
     });
 }
 
+// === FUTURISTIC JS ENHANCEMENTS ===
+
+// 1. Navbar compact on scroll
+window.addEventListener('scroll', () => {
+    const nav = document.querySelector('.navbar');
+    if (!nav) return;
+    nav.classList.toggle('compact', window.scrollY > 80);
+}, { passive: true });
+
+// 2. Card 3D tilt
+document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.setProperty('--mx', `${(e.clientX - rect.left) / rect.width * 100}%`);
+        card.style.setProperty('--my', `${(e.clientY - rect.top) / rect.height * 100}%`);
+        card.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-6px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg) translateY(0px)';
+    });
+});
+
+// 3. Scroll animations (IntersectionObserver)
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
 function observeScroll() {
+    document.querySelectorAll('.section, .genre-grid, .trending-list, .grid, .genre-card, .trending-card').forEach(el => {
+        el.classList.add('fade-in');
+        observer.observe(el);
+    });
 }
 
 // Run observer after initial load
