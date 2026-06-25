@@ -310,7 +310,7 @@ to{transform:translateY(0)}}
 .hero-rating-s{color:#f5a623;font-weight:600}
 
 
-/* === MOBILE MENU (clean, no oscillation) === */
+/* === MOBILE MENU (smooth, no lag) === */
 .mobile-menu {
   position: fixed;
   top: 0;
@@ -321,9 +321,12 @@ to{transform:translateY(0)}}
   z-index: 99;
   overflow-y: auto;
   transform: translateX(100%);
-  transition: transform .3s ease;
+  transition: transform .25s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
   -webkit-transform: translateX(100%);
-  -webkit-transition: -webkit-transform .3s ease;
+  -webkit-transition: -webkit-transform .25s cubic-bezier(.4,0,.2,1);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 .mobile-menu.open {
   transform: translateX(0);
