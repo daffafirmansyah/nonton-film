@@ -74,7 +74,7 @@ function getURLParams() {
         page: parseInt(p.get('page') || '1')
     };
 }
-let currentServer = 'vesy';
+let currentServer = (() => { try { return localStorage.getItem('bermovie_server') || 'vesy'; } catch { return 'vesy'; } })();
 let currentPage = 1;
 let currentMediaType = 'movie';
 let currentGenreId = null;
@@ -97,19 +97,42 @@ const displayTitle = item => {
     return item.original_language === 'id' ? (item.original_title || t) : t;
 };
 
-// API
+// API CACHE (sessionStorage, 15min TTL)
+const _apiCache = new Map();
+const CACHE_TTL = 15 * 60 * 1000;
+
 async function tmdb(path, params = {}) {
     const url = new URL(`${TMDB}${path}`);
     url.searchParams.set('api_key', TMDB_KEY);
     url.searchParams.set('language', 'en-US');
     Object.entries(params).forEach(([k, v]) => { if(v) url.searchParams.set(k, v); });
+    const key = url.toString();
+
+    // Memory cache
+    if (_apiCache.has(key)) {
+        const c = _apiCache.get(key);
+        if (Date.now() - c.t < CACHE_TTL) return c.d;
+    }
+    // SessionStorage cache
+    try {
+        const raw = sessionStorage.getItem('bc_' + key);
+        if (raw) {
+            const c = JSON.parse(raw);
+            if (Date.now() - c.t < CACHE_TTL) { _apiCache.set(key, c); return c.d; }
+        }
+    } catch {}
+
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 8000);
     try {
         const res = await fetch(url, { signal: controller.signal });
         clearTimeout(timer);
         if (!res.ok) throw new Error(res.status);
-        return await res.json();
+        const data = await res.json();
+        const entry = { d: data, t: Date.now() };
+        _apiCache.set(key, entry);
+        try { sessionStorage.setItem('bc_' + key, JSON.stringify(entry)); } catch {}
+        return data;
     } catch (e) { console.error('TMDB error:', e); return null; }
 }
 
@@ -583,6 +606,14 @@ async function loadHero() {
     const data = await tmdb('/trending/all/day');
     if (!data?.results?.length) return;
     heroItems = data.results.filter(i=>i.backdrop_path).slice(0,5);
+    // Preload first hero image
+    if (heroItems[0]?.backdrop_path) {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = backdropUrl(heroItems[0].backdrop_path);
+        document.head.appendChild(link);
+    }
     // Create dots
     const dots = el('#heroDots');
     if (dots) {
@@ -725,6 +756,14 @@ function addCarouselArrows(carousel) {
 }
 
 function initHomePage() {
+    // Show skeleton loaders
+    showSkeleton(el('#trendingList'), 10);
+    showSkeleton(el('#moviesCarousel'), 10);
+    showSkeleton(el('#tvCarousel'), 10);
+    showSkeleton(el('#topRatedCarousel'), 10);
+    showSkeleton(el('#nowPlayingCarousel'), 10);
+    showSkeleton(el('#indoMoviesCarousel'), 10);
+    showSkeleton(el('#indoSeriesCarousel'), 10);
     loadHero();
     loadTrending('all');
     loadHomeCarousel('/movie/popular', 'moviesCarousel', 'movie');
@@ -746,7 +785,7 @@ async function loadMovies(page = 1) {
     if (!grid) return;
     const loadId = ++movieLoadId;
     loading?.classList.remove('hidden');
-    grid.innerHTML = '';
+    showSkeleton(grid, 21);
 
     const params = { page, sort_by: currentSort };
     if (currentGenreId) params.with_genres = currentGenreId;
@@ -771,6 +810,24 @@ async function loadMovies(page = 1) {
         loadMovies(p);
         window.scrollTo({top: 0, behavior: 'smooth'});
     });
+}
+
+// INFINITE SCROLL
+function initInfiniteScroll(gridId, loadFn) {
+    const grid = el(gridId);
+    if (!grid) return;
+    const sentinel = document.createElement('div');
+    sentinel.className = 'scroll-sentinel';
+    sentinel.style.cssText = 'height:1px;width:100%';
+    grid.parentElement.appendChild(sentinel);
+    let loading = false;
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !loading) {
+            loading = true;
+            loadFn().then(() => { loading = false; });
+        }
+    }, { rootMargin: '400px' });
+    observer.observe(sentinel);
 }
 
 function initMoviesPage() {
@@ -824,7 +881,7 @@ async function loadTvShows(page = 1) {
     if (!grid) return;
     const loadId = ++tvLoadId;
     loading?.classList.remove('hidden');
-    grid.innerHTML = '';
+    showSkeleton(grid, 21);
 
     const params = { page, sort_by: currentSort };
     if (currentGenreId) params.with_genres = currentGenreId;
@@ -1294,7 +1351,7 @@ function initGlobalEvents() {
     const searchInput = el('#searchInput');
     const searchBtn = el('#searchBtn');
     if (searchBtn) searchBtn.onclick = () => { const q=searchInput?.value.trim(); if(q) doSearch(q); };
-    if (searchInput) searchInput.onkeydown = e => { if(e.key==='Enter'){const q=searchInput.value.trim();if(q)doSearch(q);} };
+    if (searchInput) { searchInput.onkeydown = e => { if(e.key==='Enter'){const q=searchInput.value.trim();if(q)doSearch(q);} }; searchInput.oninput = () => debounceSearch(searchInput.value.trim()); }
 
     // Mobile menu
     const menuBtn = el('#mobileMenuBtn');
@@ -1315,7 +1372,7 @@ function initGlobalEvents() {
     const mobSearchInput = el('#mobileSearchInput');
     const doMobSearch = () => { const q = mobSearchInput?.value.trim(); if (q) { mobileMenu?.classList.remove('open'); doSearch(q); } };
     if (mobSearchBtn) mobSearchBtn.onclick = doMobSearch;
-    if (mobSearchInput) mobSearchInput.onkeydown = e => { if (e.key === 'Enter') doMobSearch(); };
+    if (mobSearchInput) { mobSearchInput.onkeydown = e => { if (e.key === 'Enter') doMobSearch(); }; mobSearchInput.oninput = () => debounceSearch(mobSearchInput.value.trim()); }
 
     // Close modals
     document.querySelectorAll('.modal-close, .modal-backdrop').forEach(el => {
@@ -1538,6 +1595,7 @@ document.addEventListener('DOMContentLoaded', initDetailHeroReveal);
 
 document.addEventListener('DOMContentLoaded', () => {
     initGlobalEvents();
+    initAutocomplete();
 
     const path = window.location.pathname;
 
