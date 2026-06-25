@@ -1,12 +1,10 @@
-/* === MODERN UI UPGRADES v3 === */
-/* Loaded after style.v12.css — significant visual improvements */
+/* === MODERN UI v4 — NUCLEAR CLEANUP === */
+/* Premium look, ZERO backdrop-filter, ZERO infinite animation, specific transitions only */
 
-/* --- CARDS: Premium Glass + Glow --- */
+/* --- CARDS: Premium Glass (no backdrop-filter) --- */
 .card {
-  transition: all .4s cubic-bezier(.4,0,.2,1);
+  transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s;
   background: linear-gradient(165deg, rgba(17,17,24,.97), rgba(22,22,35,.8));
-  backdrop-filter: blur(12px) saturate(1.1);
-  -webkit-backdrop-filter: blur(12px) saturate(1.1);
   box-shadow: 0 8px 32px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.03);
   border: 1px solid rgba(255,255,255,.04);
   border-radius: 18px;
@@ -17,10 +15,7 @@
   border-color: rgba(249,115,22,.4);
   transform: translateY(-12px) scale(1.05);
 }
-.card-poster {
-}
 .card:hover .card-poster {
-  transition: transform .6s cubic-bezier(.4,0,.2,1);
   transform: scale(1.12);
 }
 .card-info {
@@ -41,13 +36,11 @@
   box-shadow: 0 0 24px rgba(249,115,22,.4);
 }
 
-/* --- HERO: Cinematic --- */
-.hero-slide::after,
-.hero-bg::after {
+/* --- HERO: Cinematic (no backdrop-filter, no infinite anim) --- */
+.hero-slide::after {
   background: linear-gradient(to top, var(--bg) 0%, rgba(10,10,15,.4) 45%, transparent 60%);
 }
-.hero-slide::before,
-.hero-bg::before {
+.hero-slide::before {
   background: linear-gradient(90deg, rgba(10,10,15,.95) 0, rgba(10,10,15,.5) 35%, transparent 60%);
 }
 .hero-title {
@@ -66,7 +59,6 @@
 }
 .hero-meta span {
   background: rgba(255,255,255,.08);
-  backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,.06);
 }
 .hero-meta .rating-badge {
@@ -77,25 +69,11 @@
   position: relative;
   overflow: hidden;
 }
-.btn-watch::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  transition: left .6s ease;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
-}
-.btn-watch:hover::before {
-  left: 100%;
-}
 .btn-watch:hover {
   box-shadow: 0 8px 40px rgba(249,115,22,.5);
 }
 .btn-secondary {
-  transition: all .3s cubic-bezier(.4,0,.2,1);
-  backdrop-filter: blur(8px);
+  transition: background .25s, border-color .25s, box-shadow .25s;
   background: rgba(255,255,255,.06) !important;
   border: 1px solid rgba(255,255,255,.1) !important;
 }
@@ -105,7 +83,7 @@
   box-shadow: 0 0 30px rgba(249,115,22,.2);
 }
 
-/* --- DETAIL PAGE: Premium --- */
+/* --- DETAIL PAGE --- */
 .detail-actions {
   display: flex;
   flex-wrap: wrap;
@@ -116,18 +94,10 @@
 .detail-actions .btn-watch {
   padding: 14px 34px;
   font-size: 1rem;
-  position: relative;
-  overflow: hidden;
 }
 .detail-actions .btn-secondary {
   padding: 14px 28px;
   font-size: 1rem;
-  background: rgba(255,255,255,.06);
-  border-color: rgba(255,255,255,.1);
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(4px);
-  width: auto;
 }
 .trailer-btn {
   display: flex;
@@ -150,10 +120,6 @@
   text-align: center;
   white-space: nowrap;
 }
-.detail-actions .btn-watchlist {
-  padding: 14px 24px;
-  font-size: .95rem;
-}
 .detail-hero::after {
   background: linear-gradient(to top, var(--bg) 0%, rgba(10,10,15,.5) 45%, transparent 100%);
   height: 300px;
@@ -171,21 +137,13 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  font-size: clamp(1.8rem,5vw,3rem);
-  letter-spacing: 1px;
-}
-.detail-meta {
-  gap: 10px;
 }
 .detail-meta span {
-  transition: all .25s ease;
+  transition: background .25s, border-color .25s;
   background: rgba(255,255,255,.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,.06);
   font-size: .82rem;
   padding: 5px 16px;
-  font-weight: 400;
   border-radius: 999px;
 }
 .detail-meta span:hover {
@@ -204,30 +162,16 @@
   color: rgba(200,200,215,.85);
   line-height: 1.95;
   font-size: .95rem;
-  letter-spacing: .2px;
   font-weight: 300;
 }
-.detail-actions {
-  margin-top: 28px;
-}
-.detail-actions .btn-watch {
-  padding: 16px 40px;
-  font-size: 1.05rem;
-}
-.detail-actions .btn-secondary {
-  padding: 16px 34px;
-  font-size: 1rem;
-}
 
-/* --- CAST: Enhanced --- */
+/* --- CAST --- */
 .detail-cast {
   gap: 16px;
   padding-bottom: 16px;
-  mask-image: linear-gradient(90deg, #000 90%, transparent 100%);
-  -webkit-mask-image: linear-gradient(90deg, #000 90%, transparent 100%);
 }
 .detail-cast-item img {
-  transition: all .35s cubic-bezier(.4,0,.2,1);
+  transition: transform .35s, box-shadow .35s;
   width: 60px;
   height: 60px;
   border: 2px solid rgba(255,255,255,.08);
@@ -245,30 +189,21 @@
 }
 .detail-cast-item:hover span {
   color: var(--text);
-  text-shadow: 0 0 10px rgba(249,115,22,.1);
 }
 
-/* --- SECTIONS: Premium Spacing --- */
+/* --- SECTIONS --- */
 .section {
   padding-bottom: 60px;
-  position: relative;
-}
-.section-header {
-  margin-bottom: 28px;
-  position: relative;
 }
 .section-title {
   font-size: 1.3rem;
   letter-spacing: 1.2px;
-  text-shadow: 0 2px 10px rgba(0,0,0,.2);
 }
 
-/* --- TRENDING: Premium Glass --- */
+/* --- TRENDING (no backdrop-filter) --- */
 .trending-card {
-  transition: all .4s cubic-bezier(.4,0,.2,1);
+  transition: transform .35s, box-shadow .35s;
   background: linear-gradient(165deg, rgba(17,17,24,.95), rgba(22,22,35,.7));
-  backdrop-filter: blur(10px) saturate(1.1);
-  -webkit-backdrop-filter: blur(10px) saturate(1.1);
   box-shadow: 0 8px 28px rgba(0,0,0,.4);
   border: 1px solid rgba(255,255,255,.04);
   border-radius: 18px;
@@ -278,23 +213,14 @@
   box-shadow: 0 20px 60px rgba(0,0,0,.5), 0 0 40px rgba(249,115,22,.08);
   border-color: rgba(249,115,22,.2);
 }
-.trending-rank {
-  box-shadow: 0 4px 16px rgba(0,0,0,.5);
-  font-size: 1rem;
-}
 .trending-info {
   background: linear-gradient(to top, rgba(10,10,15,1) 15%, rgba(10,10,15,.8) 50%, transparent 100%) !important;
 }
-.trending-info .title {
-  font-weight: 700;
-  text-shadow: 0 2px 8px rgba(0,0,0,.3);
-}
 
-/* --- GENRE CARDS: Premium Glass --- */
+/* --- GENRE CARDS --- */
 .genre-card {
-  transition: all .4s cubic-bezier(.4,0,.2,1);
+  transition: transform .35s, box-shadow .35s;
   background: linear-gradient(165deg, rgba(17,17,24,.9), rgba(22,22,35,.65));
-  backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 36px 20px;
   border: 1px solid rgba(255,255,255,.04);
@@ -305,43 +231,15 @@
   border-color: rgba(249,115,22,.15);
 }
 
-/* --- MODAL: Premium Glass --- */
+/* --- MODAL --- */
 .modal-content {
   background: rgba(14,14,22,.97);
-  backdrop-filter: blur(50px) saturate(1.3);
-  -webkit-backdrop-filter: blur(50px) saturate(1.3);
 }
 
-/* --- SCROLL FADE-IN ANIMATION --- */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.grid .card,
-.trending-card {
-  animation: fadeUp .6s cubic-bezier(.4,0,.2,1) both;
-}
-.grid .card:nth-child(1), .trending-card:nth-child(1) { animation-delay: .04s }
-.grid .card:nth-child(2), .trending-card:nth-child(2) { animation-delay: .08s }
-.grid .card:nth-child(3), .trending-card:nth-child(3) { animation-delay: .12s }
-.grid .card:nth-child(4), .trending-card:nth-child(4) { animation-delay: .16s }
-.grid .card:nth-child(5), .trending-card:nth-child(5) { animation-delay: .20s }
-.grid .card:nth-child(6), .trending-card:nth-child(6) { animation-delay: .24s }
-.grid .card:nth-child(7), .trending-card:nth-child(7) { animation-delay: .28s }
-.grid .card:nth-child(8), .trending-card:nth-child(8) { animation-delay: .32s }
-.grid .card:nth-child(9), .trending-card:nth-child(9) { animation-delay: .36s }
-.grid .card:nth-child(10), .trending-card:nth-child(10) { animation-delay: .40s }
-
-/* --- SCROLL PROGRESS: Animated --- */
-@keyframes progressShine {
-  0% { background-position: 0% 0; }
-  100% { background-position: 200% 0; }
-}
+/* --- SCROLL PROGRESS (no animation) --- */
 .scroll-progress {
   height: 3px;
-  background: linear-gradient(90deg, #f97316, #ea580c, #fbbf24, #f97316);
-  background-size: 200% 100%;
-  animation: progressShine 2s linear infinite;
+  background: rgba(249,115,22,.4);
 }
 
 /* --- CAROUSEL: Edge Fade --- */
@@ -350,12 +248,10 @@
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 93%, transparent 100%);
 }
 
-/* --- FILTER SELECTS: Glass --- */
+/* --- FILTER SELECTS (no backdrop-filter) --- */
 .filters select {
-  transition: all .3s cubic-bezier(.4,0,.2,1);
+  transition: border-color .25s, background .25s;
   background-color: rgba(17,17,24,.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
 }
 .filters select:hover {
@@ -364,16 +260,15 @@
   transform: translateY(-2px);
 }
 
-/* --- PAGINATION: Modern --- */
+/* --- PAGINATION --- */
 .pagination button {
-  backdrop-filter: blur(6px);
   border-radius: 14px;
 }
 .pagination button.active {
   box-shadow: 0 4px 24px rgba(249,115,22,.35);
 }
 
-/* --- FOOTER: Glow Line --- */
+/* --- FOOTER --- */
 .site-footer::before {
   opacity: .4;
   left: 6%;
@@ -382,10 +277,9 @@
   background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
 }
 
-/* --- MOBILE GRID: Premium --- */
+/* --- MOBILE GRID --- */
 .mob-sub-grid a {
-  transition: all .25s ease;
-  backdrop-filter: blur(8px);
+  transition: background .25s, border-color .25s;
   background: rgba(255,255,255,.04);
   border-radius: 12px;
 }
@@ -393,36 +287,28 @@
   background: rgba(249,115,22,.15) !important;
   border-color: rgba(249,115,22,.25) !important;
   color: var(--accent) !important;
-  transform: translateY(-3px);
 }
 
-/* --- MOBILE: Kill ALL blue tap-highlight --- */
+/* --- MOBILE: tap-highlight kill --- */
 @media(hover:none) and (pointer:coarse){
   *{-webkit-tap-highlight-color:rgba(0,0,0,0)!important}
   *:active{-webkit-tap-highlight-color:rgba(0,0,0,0)!important}
-  *:focus{-webkit-tap-highlight-color:rgba(0,0,0,0)!outline:none}
-  *:hover{-webkit-tap-highlight-color:rgba(0,0,0,0)!important}
   div:active,span:active,label:active,input:active,select:active,textarea:active{
-    -webkit-tap-highlight-color:rgba(0,0,0,0)!important;
-    transform:none!important
+    -webkit-tap-highlight-color:rgba(0,0,0,0)!important
   }
 }
 
-/* --- NAVBAR: Enhanced --- */
+/* --- NAVBAR (no backdrop-filter) --- */
 .navbar {
   border-bottom: 1px solid rgba(255,255,255,.04);
 }
-.navbar::after {
-  opacity: .25;
-  height: 2px;
-}
 
-/* --- MAIN CONTENT: Spacing --- */
+/* --- MAIN CONTENT --- */
 .main-content {
   padding-top: calc(var(--nav-height) + 32px);
 }
 
-/* --- DETAIL PAGE: Recommendations Section --- */
+/* --- SECTION TITLE --- */
 .section-title::before {
   width: 6px;
   height: 26px;
@@ -455,7 +341,7 @@
 
 /* --- WATCHLIST BUTTON --- */
 .btn-watchlist {
-  transition: all .25s ease;
+  transition: background .25s, border-color .25s, color .25s;
   padding: 14px 28px;
   border-radius: 999px;
   background: transparent;
@@ -463,7 +349,6 @@
   font-size: .92rem;
   font-weight: 500;
   border: 1px solid rgba(255,255,255,.1);
-  backdrop-filter: blur(8px);
   display: inline-flex;
   align-items: center;
   gap: 8px;
