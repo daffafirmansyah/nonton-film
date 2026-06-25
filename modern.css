@@ -366,35 +366,7 @@
   color: #ef4444;
 }
 
-/* --- MOBILE EXPANDABLE GRIDS --- */
-.mob-sub-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  padding: 0 20px 12px;
-  max-height: 60vh;
-  overflow-y: auto;
-}
-.mob-sub-grid a {
-  display: block;
-  padding: 10px 6px;
-  text-align: center;
-  font-size: .78rem;
-  color: var(--text2);
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.06);
-  border-radius: 10px;
-  text-decoration: none;
-  transition: background .2s;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.mob-sub-grid a:active {
-  background: rgba(249,115,22,.15);
-  border-color: rgba(249,115,22,.25);
-  color: var(--accent);
-}
+
 
 /* --- MOBILE MENU: LEFT SLIDE + ACTIVE STATE --- */
 .mobile-menu a[data-nav] {
