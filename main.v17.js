@@ -1367,7 +1367,6 @@ function initGlobalEvents() {
         function toggleMenu(force) {
             const open = force !== undefined ? force : !mobileMenu.classList.contains('open');
             mobileMenu.classList.toggle('open', open);
-            document.body.style.overflow = open ? 'hidden' : '';
         }
         menuBtn.onclick = (e) => { e.stopPropagation(); toggleMenu(); };
         // Mobile expandable dropdowns - init once
