@@ -1339,15 +1339,20 @@ function initGlobalEvents() {
     initNavDropdowns();
     initScrollEvents();
     initKeyboard();
-    // Set active nav link based on current page
+    // Set active nav link based on current page (use data-nav to avoid false matches)
     const curPage = window.location.pathname.split('/').pop() || 'index.html';
     const hasWatchlist = window.location.search.includes('watchlist');
-    document.querySelectorAll('.nav-links a[href], .mobile-menu a[href]').forEach(a => {
+    const navMap = {
+        'index.html': 'home', '': 'home',
+        'movies.html': 'movies',
+        'tv.html': 'tv',
+        'genre.html': 'genre',
+        'leaderboard.html': 'leaderboard'
+    };
+    const activeNav = hasWatchlist ? 'watchlist' : (navMap[curPage] || '');
+    document.querySelectorAll('.nav-links a[data-nav], .mobile-menu a[data-nav]').forEach(a => {
         a.classList.remove('active');
-        const href = a.getAttribute('href') || '';
-        if (href === './' && (curPage === 'index.html' || curPage === '') && !hasWatchlist) a.classList.add('active');
-        else if (href && href.includes('watchlist') && hasWatchlist) a.classList.add('active');
-        else if (href && href !== './' && href !== '#' && !href.includes('?') && href === curPage) a.classList.add('active');
+        if (a.getAttribute('data-nav') === activeNav) a.classList.add('active');
     });
     // Search
     const searchInput = el('#searchInput');
@@ -1366,10 +1371,6 @@ function initGlobalEvents() {
         }
         menuBtn.onclick = (e) => { e.stopPropagation(); toggleMenu(); };
         // Mobile expandable dropdowns - init once
-        let _mobInited = false;
-        function initMobDropdowns() {
-            if (_mobInited) return;
-            _mobInited = true;
         function makeExpandable(link, html) {
             if (!link) return;
             link.removeAttribute('href');
@@ -1411,23 +1412,21 @@ function initGlobalEvents() {
         // Genre expandable
         const mobGenre = mobileMenu.querySelector('[data-nav="genre"]');
         if (mobGenre) {
-            mobGenre.removeAttribute('href');
-            mobGenre.style.cursor = 'pointer';
             const arrow = document.createElement('span');
             arrow.textContent = '▾';
-            arrow.style.cssText = 'margin-left:auto;font-size:.7rem;opacity:.5;transition:transform .2s';
+            arrow.style.cssText = 'margin-left:auto;font-size:.7rem;opacity:.5';
             mobGenre.appendChild(arrow);
             const grid = document.createElement('div');
             grid.className = 'mob-sub-grid';
+            const genreMap = {28:'Action',35:'Comedy',18:'Drama',27:'Horror',878:'Sci-Fi',10749:'Romance',80:'Crime',53:'Thriller',16:'Animation',99:'Documentary'};
             let gh = '';
-            const genres = ['Action','Comedy','Drama','Horror','Sci-Fi','Romance','Crime','Thriller','Animation','Documentary'];
-            genres.forEach(g => { const gObj = MOVIE_GENRES.find(x=>x.name===g); if(gObj) gh += `<a href="movies.html?genre=${gObj.id}">${g}</a>`; });
+            for (const [id, name] of Object.entries(genreMap)) gh += `<a href="movies.html?genre=${id}">${name}</a>`;
             grid.innerHTML = gh;
             mobGenre.after(grid);
             mobGenre.onclick = (e) => {
                 e.stopPropagation();
-                const isOpen = grid.classList.toggle('show');
-                arrow.style.transform = isOpen ? 'rotate(180deg)' : '';
+                grid.classList.toggle('show');
+                arrow.style.transform = grid.classList.contains('show') ? 'rotate(180deg)' : '';
             };
             grid.querySelectorAll('a').forEach(a => { a.onclick = () => toggleMenu(false); });
         }
@@ -1438,8 +1437,6 @@ function initGlobalEvents() {
                 a.onclick = () => toggleMenu(false);
             }
         });
-        }
-        initMobDropdowns();
     }
 
     // Mobile search
