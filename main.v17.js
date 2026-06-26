@@ -1,3 +1,4 @@
+// v12 - card fix: Film/Series, no 1080p, ★ Top
 // CONFIG
 const TMDB_KEY = '245f8c4922de78b5017c149fbfa89ab5';
 const TMDB = 'https://api.themoviedb.org/3';
