@@ -686,6 +686,16 @@ async function loadHomeCarousel(path, containerId, type) {
 
 // TRENDING WITH RANK
 let trendingFilter = 'all';
+// SKELETON LOADER
+function showSkeleton(container, count) {
+    if (!container) return;
+    var html = '';
+    for (var i = 0; i < count; i++) {
+        html += '<div class="skeleton-card"><div class="skeleton-poster"></div><div class="skeleton-text"></div><div class="skeleton-text short"></div></div>';
+    }
+    container.innerHTML = html;
+}
+
 async function loadTrending(filter) {
     trendingFilter = filter || 'all';
     const list = el('#trendingList');
