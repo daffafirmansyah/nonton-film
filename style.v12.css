@@ -314,10 +314,10 @@ to{transform:translateY(0)}}
 /* === MOBILE MENU (smooth, no lag) === */
 .mobile-menu {
   position: fixed;
-  top: 0;
+  top: var(--nav-height);
   left: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100% - var(--nav-height));
   background: rgba(10,10,15,.98);
   z-index: 99;
   overflow-y: auto;
