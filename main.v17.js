@@ -1371,7 +1371,8 @@ function initGlobalEvents() {
         menuBtn.onclick = (e) => { e.stopPropagation(); toggleMenu(); };
         // Mobile expandable dropdowns - init once
         function makeExpandable(link, html) {
-            if (!link) return;
+            if (!link || link._expanded) return;
+            link._expanded = true;
             link.removeAttribute('href');
             link.style.cursor = 'pointer';
             // Add arrow indicator
@@ -1410,7 +1411,8 @@ function initGlobalEvents() {
         }
         // Genre expandable
         const mobGenre = mobileMenu.querySelector('[data-nav="genre"]');
-        if (mobGenre) {
+        if (mobGenre && !mobGenre._expanded) {
+            mobGenre._expanded = true;
             const arrow = document.createElement('span');
             arrow.textContent = '▾';
             arrow.style.cssText = 'margin-left:auto;font-size:.7rem;opacity:.5';
