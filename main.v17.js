@@ -1413,6 +1413,8 @@ function initGlobalEvents() {
         const mobGenre = mobileMenu.querySelector('[data-nav="genre"]');
         if (mobGenre && !mobGenre._expanded) {
             mobGenre._expanded = true;
+            mobGenre.removeAttribute('href');
+            mobGenre.style.cursor = 'pointer';
             const arrow = document.createElement('span');
             arrow.textContent = '▾';
             arrow.style.cssText = 'margin-left:auto;font-size:.7rem;opacity:.5';
