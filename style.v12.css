@@ -130,7 +130,11 @@ input{font-family:inherit;outline:none}
 .card-title{font-size:.85rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;letter-spacing:.2px}
 .card-meta{display:flex;align-items:center;gap:6px;font-size:.68rem;color:var(--text3);font-weight:300}
 .card-rating{color:#f5a623;font-weight:600}
-.card-badge{position:absolute;top:8px;right:8px;padding:4px 12px;border-radius:999px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;font-size:.6rem;font-weight:800;z-index:2;letter-spacing:.8px;text-transform:uppercase;box-shadow:0 0 20px rgba(249,115,22,.35),inset 0 1px 0 rgba(255,255,255,.15);top:8px;left:8px;padding:3px 10px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font-size:.55rem;font-weight:700;z-index:2;letter-spacing:1px;border:1px solid rgba(255,255,255,.1);text-transform:uppercase}
+.card-badges{position:absolute;top:8px;left:8px;right:8px;display:flex;align-items:center;justify-content:space-between;z-index:2}
+.card-type{padding:3px 8px;border-radius:6px;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.type-movie{background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.15)}
+.type-tv{background:rgba(249,115,22,.8);border:1px solid rgba(249,115,22,.9)}
+.card-badge{padding:4px 10px;border-radius:6px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;box-shadow:0 2px 8px rgba(249,115,22,.3)}
 .card-quality{position:absolute;bottom:52px;right:8px;padding:3px 10px;border-radius:999px;font-size:.55rem;font-weight:700;z-index:2;letter-spacing:.5px;border:1px solid rgba(255,255,255,.1);text-transform:uppercase}
 .card-quality.q-hd{background:linear-gradient(135deg,rgba(249,115,22,.35),rgba(234,88,12,.2));color:#fdba74;border-color:rgba(249,115,22,.3)}
 
