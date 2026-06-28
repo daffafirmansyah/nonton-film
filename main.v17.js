@@ -1608,21 +1608,7 @@ async function loadDetailPage(id, type) {
         sim.appendChild(c);
     });
 
-    // Watchlist button on detail page
-    const wlBtn = document.getElementById('detailWatchlistBtn');
-    if (wlBtn) {
-        const item = { id, type: mediaType, title, poster: detail.poster_path };
-        const updateWlBtn = () => {
-            const inWl = isInWatchlist(item.id, item.type);
-            wlBtn.innerHTML = inWl ? '♥ Hapus dari Watchlist' : '♥ Tambah ke Watchlist';
-            wlBtn.classList.toggle('active', inWl);
-        };
-        updateWlBtn();
-        wlBtn.onclick = () => {
-            toggleWatchlist(item, item.type);
-            updateWlBtn();
-        };
-    }
+
 
     // Trailer section (inline embed below synopsis)
     const trailerSection = document.getElementById('trailerSection');
