@@ -118,7 +118,7 @@
 
     <div class="detail-page hidden" id="detailPage">
         <div class="detail-hero" id="detailHero">
-            <button class="back-btn" id="detailBackBtn" onclick="history.back()">←</button>
+            <button class="back-btn" id="detailBackBtn" onclick="if(history.length>1)history.back();else window.location.href='./'">←</button>
         </div>
         <div class="detail-body">
             <h1 id="detailTitle"></h1>
