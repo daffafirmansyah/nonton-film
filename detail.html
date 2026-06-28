@@ -118,7 +118,7 @@
 
     <div class="detail-page hidden" id="detailPage">
         <div class="detail-hero" id="detailHero">
-            <button class="back-btn" id="detailBackBtn" onclick="if(document.referrer.includes(location.hostname))history.back();else location.href='./'">←</button>
+            <button class="back-btn" id="detailBackBtn" onclick="(function(){var n=history.length;history.back();setTimeout(function(){if(history.length===n)location.href='./'},100)})()">←</button>
         </div>
         <div class="detail-body">
             <h1 id="detailTitle"></h1>
